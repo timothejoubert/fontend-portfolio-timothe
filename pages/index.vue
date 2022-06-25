@@ -1,5 +1,6 @@
 <template>
   <main>
+    <h1>test tim</h1>
     <h1>Notion Nuxt Todo</h1>
     <ul>
       <li v-for="task in taskList" :key="task.id">
