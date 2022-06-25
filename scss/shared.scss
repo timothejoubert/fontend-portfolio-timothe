@@ -1,0 +1,10 @@
+// this file will be imported by @nuxtjs/style-resources
+// all these resources will be included into every component imported by webpack
+// ⚠️ do not include css file or css var declaration
+
+@import 'functions';
+@import 'mixins';
+@import 'variables';
+// vendors
+@import '~include-media/dist/_include-media.scss';
+@import 'vendors/include-media';

@@ -1,0 +1,12 @@
+@use 'sass:map';
+
+@function ease($key) {
+    @if map.has-key($ease-curves, $key) {
+        @return map.get($ease-curves, $key);
+    }
+
+    // stylelint-disable-next-line order/order
+    @warn 'Unkown #{$key} in $ease-curves.';
+
+    @return null;
+}

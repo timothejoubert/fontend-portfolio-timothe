@@ -1,42 +1,65 @@
 <template>
-  <main>
-    <h1>test tim</h1>
-    <h1>Notion Nuxt Todo</h1>
-    <ul>
-      <li v-for="task in taskList" :key="task.id">
-        <button @click="getPageContent(task.id)">
-          {{ task.properties.Name.title[0].plain_text }} -
-          {{ task.properties['Tags'] }}
-        </button>
-        <p>{{ task }} -</p>
-      </li>
-    </ul>
+  <main :class="$style.root">
+    <h1 :class="$style.title" class="text-h1">Notion Nuxt Todo</h1>
+
+    <v-card-project />
+
   </main>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    taskList: [],
-  }),
-  methods: {
-    async getPageContent(id) {
-      const postResponse = await fetch('/.netlify/functions/task', {
-        method: 'POST',
-        body: JSON.stringify({
-          pageId: id,
-        }),
-      }).then((res) => res.json())
+<script lang="ts">
+import type { PropType } from 'vue'
+import { NotionDatabaseContent, NotionDateProperty } from '~/netlify/responseDataType'
+import VCardProject from '~/components/molecules/VCardProject.vue'
+import Vue from "vue";
 
-      console.log({ postResponse })
-    },
+type StringOrMultiple = string | string[] | null
+
+export interface ProjectData {
+  id: string | null
+  pageName?: string | null
+  url: string | null
+  cover?: string | null
+  date?: NotionDateProperty | null
+  annee?: string | number | null
+  techno?: StringOrMultiple | null
+  cadre: StringOrMultiple
+  media: string[] | null
+  github: string | null
+  domaines: StringOrMultiple
+  focus?: boolean | null
+  Lien: string | null
+  thumbnail: string | null
+}
+
+export default Vue.extend({
+  name: 'index',
+  components: {VCardProject},
+  data() {
+    return {
+      isLoaded: false,
+    }
   },
-  async mounted() {
-    const response = await fetch('/.netlify/functions/tasks').then((res) =>
-      res.json()
-    )
-
-    this.taskList = response.results
+  mounted() {
+    window.setTimeout( () => this.checkContentLoaded, 3000 )
+  },
+  computed: {
+  },
+  methods: {
+    checkContentLoaded(): void {
+      this.isLoaded = true
+    }
   },
 }
 </script>
+
+<style lang="scss" module>
+.root {
+  width: 100%;
+  height: 100vh;
+}
+.title {
+  color: color(orange);
+}
+
+</style>

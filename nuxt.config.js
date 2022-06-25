@@ -4,9 +4,9 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'nuxt-notion-blog',
+    title: 'Justine Saez',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'fr'
     },
     meta: [
       { charset: 'utf-8' },
@@ -20,8 +20,14 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
+  css: ['@/scss/main'],
+
+
+  // https://github.com/nuxt-community/style-resources-module#setup
+  styleResources: {
+    scss: ['@/scss/shared.scss'],
+    hoistUseStatements: true,
+  },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -32,15 +38,35 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    // https://go.nuxtjs.dev/typescript
+    '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
+    // https://github.com/nuxt/postcss8
+    '@nuxt/postcss8',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
   ],
 
+  loading: '@/components/organisms/VLoadingPage.vue',
+
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    loaders: {
+      sass: {
+        implementation: require('sass')
+      },
+      scss: {
+        implementation: require('sass')
+      },
+      cssModules: {
+        modules: {
+          localIdentName: "[local]--[Frida]_[hash:base64:4]",
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,109 @@
+@use 'sass:math';
+
+@mixin text-h1 {
+    @include dida;
+    font-size: 24px;
+    line-height: math.div(108, 120);
+}
+
+@mixin text-h2 {
+    @include noi;
+    font-size: 24px;
+    line-height: 1;
+}
+
+@mixin text-h3 {
+    @include noi;
+    font-size: 24px;
+    line-height: 1;
+}
+
+@mixin text-h4 {
+    @include noi;
+    font-size: 24px;
+    line-height: 1;
+}
+
+@mixin text-h5 {
+    @include noi;
+    font-size: 24px;
+    line-height: 1;
+}
+
+@mixin text-h6 {
+    @include noi;
+    font-size: 24px;
+    line-height: 1;
+}
+
+@mixin text-body-l {
+    line-height: math.div(25, 18);
+}
+
+@mixin text-body-m {
+    font-size: 24px;
+    line-height: 1.4;
+
+}
+
+@mixin text-body-s {
+    line-height: 1.4;
+}
+
+@mixin text-quote {
+    @include noi;
+    font-size: 24px;
+    line-height: 1;
+}
+
+@mixin text-list {
+    @include text-body-l;
+    @include media('<md') {
+    }
+}
+
+@mixin text-tooltip {
+    @include text-body-s;
+
+    line-height: 1.2;
+}
+
+@mixin text-overtitle-s {
+    @include noi;
+
+    font-weight: 600;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+@mixin text-overtitle-m {
+    @include noi;
+
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+@mixin text-tag {
+    @include text-overtitle-m;
+
+    font-weight: 700;
+}
+
+@mixin text-tag-xs {
+    @include text-tag;
+
+}
+
+@mixin text-tag-l {
+    @include text-tag;
+    @include media('>=lg') {
+    }
+}
+
+@mixin text-review {
+    line-height: 1.4;
+
+    @include media('>=lg') {
+    }
+}

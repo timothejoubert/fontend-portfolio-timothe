@@ -1,0 +1,12 @@
+@use 'sass:map';
+
+@function color($key) {
+    @if map.has-key($colors, $key) {
+        @return map.get($colors, $key);
+    }
+
+    // stylelint-disable-next-line order/order
+    @warn 'Unkown #{$key} in $colors.';
+
+    @return null;
+}
