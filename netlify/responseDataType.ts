@@ -90,7 +90,7 @@ export interface NameProperty extends PropertiesIdentity {
 }
 
 export interface CadreProperty extends PropertiesIdentity {
-  select: NotionSelectContent[]
+  select: NotionSelectContent[] | null
 }
 
 export interface DomaineProperty extends PropertiesIdentity {

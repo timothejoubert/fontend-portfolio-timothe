@@ -2,7 +2,8 @@
 
 @mixin text-h1 {
     @include dida;
-    font-size: 24px;
+    font-size: 72px;
+  font-weight: 400;
     line-height: math.div(108, 120);
 }
 
