@@ -10,7 +10,6 @@ exports.handler = async (event) => {
   const pageBlockChildren = await notion.blocks.children.list({
     block_id: pageId,
   })
-  console.log('page',pageBlockChildren)
 
   return {
     statusCode: 200,

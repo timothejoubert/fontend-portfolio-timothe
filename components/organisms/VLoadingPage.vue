@@ -1,35 +1,37 @@
-<template>
-    <div :class="$style.root" />
+<template lang="html">
+  <div v-if="loading" class="loading-page">
+    <p>Loading...</p>
+  </div>
 </template>
-<script lang="ts">
-import Vue from 'vue'
 
-export default Vue.extend({
-    name: 'VLoading',
-    methods: {
-        start() {
-            this.$el.classList.add(this.$style.root__is_loading)
-        },
-        finish() {
-            this.$el.classList.remove(this.$style.root__is_loading)
-        },
+<script>
+export default {
+  name: 'VLoading',
+  data: () => ({
+    loading: false
+  }),
+  methods: {
+    start() {
+      this.loading = true
     },
-})
+    finish() {
+      this.loading = false
+    }
+  }
+}
 </script>
 
-<style lang="scss" module>
-.root {
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    cursor: wait;
-    visibility: hidden;
-}
-
-.root__is_loading {
-    visibility: visible;
+<style scoped>
+.loading-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding-top: 200px;
+  font-size: 30px;
+  font-family: sans-serif;
 }
 </style>

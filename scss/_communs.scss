@@ -10,15 +10,20 @@
 
 html {
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: Noi, Dida, sans-serif;
-}
 
-a {
+}
+a, button {
   text-decoration: none;
   color: inherit;
+  outline: none;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
 }
 
 li {

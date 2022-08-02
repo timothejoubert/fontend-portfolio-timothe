@@ -1,91 +1,124 @@
 <template>
 
-  <div :class="$style.root">
-    <header :class="$style.header">
-      <h1 :class="$style.title" class="text-h1" ref="title">Justine Saez</h1>
-      <v-loading-bar :start-loading="startLoading"/>
-      <v-hero-image />
-    </header>
+    <div :class="rootClass">
 
-    <main :class="$style.main">
-      <v-list-project  v-bind="{projectList}"/>
-    </main>
-  </div>
+      <v-about-section v-show="aboutOpen" @toggleAbout="toggleAbout"/>
+
+      <div :class="$style.grain"></div>
+
+      <header :class="$style.header">
+
+        <h1 :class="$style.title" class="text-h1" ref="title">Justine Saez</h1>
+
+        <v-loading-bar />
+
+        <v-hero-image :class="$style['image-header']"/>
+
+        <h2 :class="$style['text-intro']" class="text-h2" ref="intro">
+          <strong>Illustratrice curieuse du corps humain,</strong><br/> je  m’amuse à gribouiller des moments<br/> cocasse du quotidien.</h2>
+
+        <button @click="toggleAbout(true)" :class="[$style['about-icon'], aboutOpen && $style['about-icon--open']]" aria-label="open modal à propos">
+          <img :src="require(`~/static/icons/icon-about.png`)" alt="illustration justine" />
+        </button>
+
+      </header>
+
+      <v-rich-text v-if="getIntroText" :content="getIntroText" />
+
+      <v-list-project/>
+
+      <v-see-more/>
+    </div>
 
 </template>
 
 <script lang="ts">
 import Vue from "vue"
-import type { PropType } from 'vue'
-import { NotionDatabaseContent, NotionDateProperty, NotionSelectContent } from '~/netlify/responseDataType'
+import VAboutSection from "~/components/organisms/VAboutSection.vue";
 import VListProject from '~/components/molecules/VListProject.vue'
 import VLoadingBar from '~/components/organisms/VLoadingBar.vue'
 import VHeroImage from '~/components/organisms/VHeroImage.vue'
-
-
-export interface ProjectData {
-  id: string | null
-  name?: string | null
-  url: string | null
-  cover?: string | null
-  date?: NotionDateProperty | null
-  annee?: string | number | null
-  techno?: NotionSelectContent
-  cadre: NotionSelectContent
-  media: string[] | null
-  github: string | null
-  domaines: NotionSelectContent
-  focus?: boolean | null
-  externalLien: string | null
-  thumbnail: string | null
-}
+import VSeeMore from '~/components/molecules/VSeeMore.vue'
+import {mapGetters} from "vuex"
+import { parseProjectData } from '~/utils/functions'
+// @ts-ignore
+import { DataBaseResponse, ProjectData } from '~/types/api-type.d.ts'
+import VRichText from "~/components/atoms/VRichText.vue";
+import { NotionPlainText } from "~/netlify/responseDataType";
 
 export default Vue.extend({
   name: 'index',
-  components: { VListProject, VLoadingBar, VHeroImage},
+  head() {
+    return {
+      titleTemplate: 'Accueil - Justine Saez', //'%s - Justine Saez',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'my description'
+        }
+      ]
+    }
+  },
+  components: {VRichText, VListProject, VLoadingBar, VHeroImage, VAboutSection, VSeeMore },
   data(){
     return {
-      projectList: [] as PropType<ProjectData[]>,
       letterIntervalTitle: 30,
-      startLoading: false,
+      aboutOpen: false,
     }
   },
-  mounted() {
-    this.getProjectData()
-    this.$nextTick(this.parseTitle)
+  fetchOnServer: false,
+  async fetch() {
+    this.$store.commit('apiDataLoaded', false)
+    this.$store.commit('introDone', false)
+
+    const projectListPromise = await fetch('/.netlify/functions/projectList').then((res) => {
+      //console.log(res)
+      if(res.ok){
+        this.$nuxt.$loading.finish() // hide loading
+        return res.json()
+      }
+      // throw new Error('error pendant le fetch')
+    })
+
+    const generalDataPromise = await fetch('/.netlify/functions/generalInfo').then((res) => {
+      //console.log(res)
+      if(res.ok){
+        this.$nuxt.$loading.finish() // hide loading
+        return res.json()
+      }
+      // throw new Error('error pendant le fetch')
+    })
+    window.setTimeout(
+      () => {
+        console.log(projectListPromise.results)
+        this.$store.commit('projectsData', parseProjectData(projectListPromise))
+        this.$store.commit('generalData', generalDataPromise)
+      },
+      1000 )
+
+  },
+  activated() { // Call fetch again if last fetch more than 30 sec ago
+    if (this.$fetchState.timestamp <= Date.now() - 30000) this.$fetch()
   },
   computed: {
-    isDataProjectLoaded(): boolean {
-      return this.projectList.length > 0
-    }
+    ...mapGetters(['introDone', 'projectsData', 'generalData']),
+    rootClass(): (string| undefined | boolean)[] {
+      return [this.$style.root, this.introDone && this.projectsData && this.$style['root--done']]
+      //return [this.$style.root, (!!this.projectsData && this.introDone) && this.$style['root--minify']]
+    },
+    getIntroText(): NotionPlainText | null {
+      return this.generalData?.results?.[0]?.properties?.["description-intro"]
+    },
+  },
+  mounted() {
+    this.$nextTick(this.parseTitle)
+    this.$nextTick(this.parseIntro)
   },
   methods: {
-    async getProjectData(){
-      const response = await fetch('/.netlify/functions/projectList').then((res) =>
-        res.json()
-      )
-
-      this.projectList = response.results.map((page: NotionDatabaseContent) => {
-        const properties = page.properties
-        return {
-          id: page.id,
-          name: properties?.Name?.title?.[0]?.text?.content ?? 'unknow name',
-          thumbnail: properties?.["Thumbnail"]?.files?.[0]?.file?.url,
-          medias: properties?.["Média"] && Array.isArray(properties?.["Média"]) ? properties?.["Média"] : [properties?.["Média"]],
-          cover: page?.cover,
-          url: page.url ?? '/',
-          date: page.date ?? 'no date',
-          annee: properties?.["Année"]?.formula?.name,
-          techno: properties?.["Techno"]?.multi_select,
-          cadre: properties?.["Cadre"]?.select,
-          github: properties?.["Github"]?.url,
-          domaines: properties?.["Domaines"]?.multi_select,
-          focus: properties?.['🔥']?.checkbox,
-          externalLien:  properties?.["Lien"]?.url,
-        }
-      })
-      //console.log(this.projectList)
-      //console.log(this.projectList[0].pageName)
+    toggleAbout(action: boolean) {
+      console.log(this.aboutOpen)
+      this.aboutOpen = action
     },
     async getPageContent(id: string) {
       const postResponse = await fetch('/.netlify/functions/projectPage', {
@@ -120,42 +153,98 @@ export default Vue.extend({
         })
       })
       element.classList.add(this.$style["title--active"])
-      window.setTimeout(() => this.startLoading = true, 1600 )
-    }
+      window.setTimeout(
+        () => this.$store.commit('introDone', true),
+       1000 )
+    },
+    parseIntro() {
+      const element = this.$refs["intro"] as HTMLElement
+      if(!element) return
+      const line = element.innerHTML.split('<br>')
+
+      element.innerHTML = ''
+
+      line.forEach((line,i) => {
+        const lines = document.createElement("div");
+        lines.classList.add(this.$style.line);
+        lines.style.setProperty("--delay", i * 6 * this.letterIntervalTitle + 500 + 'ms');
+
+        const span = document.createElement("span");
+        span.classList.add(this.$style.line__inner);
+        span.innerHTML = line;
+
+        lines.appendChild(span)
+        element.appendChild(lines)
+      })
+
+
+    },
   },
+
 })
 </script>
 
 <style lang="scss" module>
-$orange: #DF5A3F;
+
+.root {
+   position: relative;
+   width: 100%;
+   overflow: hidden;
+  //position: fixed;
+  //top: 0;
+  //left: 0;
+}
+
+.grain {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  opacity: 0.05;
+  mix-blend-mode: darken;
+  background: url('~static/images/texture-grain.png');
+  user-select: none;
+}
 
 .header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background-color: color(grey-300);
+  overflow: hidden;
+
+  .root--done & {
+    overflow: inherit;
+  }
 }
+
 .title {
-  //color: $orange;
-  color: color(grey-300);
+  //color: color(main-orange);
   text-align: center;
   opacity: 0;
   transition: opacity 200ms;
+  font-size: 13rem;
+  line-height: 11rem;
 
   &--active {
     opacity: 1;
+    transition: all 1s 600ms;
 
     .letter {
       display: inline-block;
       opacity: 0;
       padding: 0 10px;
-      animation: slide-in 1s var(--delay) ease-in-out forwards;
+      animation: slide-in 1s var(--delay) ease(out-quart) forwards;
     }
   }
+  .root--minify & {
+    font-size: 2rem;
+    line-height: 2rem;
+  }
 }
+
 // ease(out-quart)
 @keyframes slide-in {
   0%{
@@ -167,7 +256,104 @@ $orange: #DF5A3F;
     padding: 0;
   }
 }
-.main {
-  min-height: 100vh;
+
+.image-header{
+  position: absolute;
+  top: 0;
 }
+
+/*
+.fade {
+  &:global(#{'-enter-active'}),
+  &:global(#{'-leave-active'}) {
+    transition: opacity 800ms 200ms;
+  }
+  &:global(#{'-enter'}),
+  &:global(#{'-leave-to'}) {
+    opacity: 0;
+  }
+}
+ */
+
+.text-intro {
+  position: absolute;
+  left: 50px;
+  bottom: 50px;
+  max-width: 440px;
+  font-weight: 300;
+  font-style: italic;
+  opacity: 0;
+  transition: background-color 300ms;
+  padding: 8px 15px;
+
+  .root--done & {
+    opacity: 1;
+    background-color: color(light-yellow);
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  .line {
+    overflow: hidden;
+    padding: 2px 0;
+  }
+
+  .line__inner {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%) rotate(5deg);
+    transition: transform 300ms var(--delay) ease-in-out, opacity 300ms var(--delay) ease-in-out;
+    display: inline-block;
+
+    .root--done & {
+      transform: translateY(0) rotate(0);
+      opacity: 1;
+      visibility: inherit;
+    }
+  }
+}
+
+.about-icon {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  padding: 10px;
+  border: 4px solid black;
+  border-radius: 100%;
+  width: 80px;
+  height: 80px;
+  z-index: 11;
+  visibility: hidden;
+  transform: translateX(calc(100% + 20px));
+  transition: transform 700ms ease(out-quart) 800ms;
+
+  .root--done & {
+    transform: translateX(0);
+    visibility: inherit;
+  }
+
+  &--open {
+    user-select: none;
+    z-index: -3;
+  }
+
+  span {
+    position: absolute;
+    top: 110%;
+    left: 50%;
+  }
+
+  img {
+    transition: transform 600ms ease(out-quart);
+  }
+
+  &:not(#{&}--open):hover {
+    img {
+      transform: rotateY(180deg);
+    }
+  }
+}
+
 </style>

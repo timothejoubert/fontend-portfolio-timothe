@@ -1,17 +1,19 @@
-export default {
+const pkg = require('./package')
+
+export default{
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  target: 'universal',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Justine Saez',
+    title: pkg.name,
     htmlAttrs: {
       lang: 'fr'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: pkg.description },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
@@ -19,9 +21,12 @@ export default {
     ]
   },
 
+  serverMiddleware: [
+    // {path: '/api', handler: '~/api/index.js'}
+  ],
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['@/scss/main'],
-
 
   // https://github.com/nuxt-community/style-resources-module#setup
   styleResources: {
@@ -31,6 +36,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    // '~/plugins/api-client.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -44,6 +50,8 @@ export default {
     '@nuxtjs/eslint-module',
     // https://github.com/nuxt/postcss8
     '@nuxt/postcss8',
+    // https://github.com/nuxt-community/style-resources-module#setup
+    '@nuxtjs/style-resources',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

@@ -3,108 +3,75 @@
 @mixin text-h1 {
     @include dida;
     font-size: 72px;
-  font-weight: 400;
+    font-weight: 400;
     line-height: math.div(108, 120);
+    color: color(main-orange);
 }
 
 @mixin text-h2 {
     @include noi;
-    font-size: 24px;
+    font-size: 21px;
     line-height: 1;
+    color: color(main-orange);
 }
 
 @mixin text-h3 {
     @include noi;
     font-size: 24px;
     line-height: 1;
+    color: color(main-orange);
 }
 
 @mixin text-h4 {
     @include noi;
     font-size: 24px;
     line-height: 1;
+    color: color(main-orange);
 }
 
 @mixin text-h5 {
     @include noi;
     font-size: 24px;
     line-height: 1;
+    color: color(main-orange);
 }
 
 @mixin text-h6 {
     @include noi;
     font-size: 24px;
     line-height: 1;
+    color: color(main-orange);
 }
 
-@mixin text-body-l {
-    line-height: math.div(25, 18);
+@mixin title-card {
+  @include dida;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: math.div(73, 82);
+    color: color(main-orange);
 }
 
-@mixin text-body-m {
-    font-size: 24px;
-    line-height: 1.4;
-
+@mixin title-section {
+  @include noi;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 400;
+  opacity: 0.7;
+  color: color(light-yellow)
 }
 
-@mixin text-body-s {
-    line-height: 1.4;
+@mixin body-l {
+  @include noi;
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 600;
+  color: color(light-yellow)
 }
 
-@mixin text-quote {
-    @include noi;
-    font-size: 24px;
-    line-height: 1;
-}
-
-@mixin text-list {
-    @include text-body-l;
-    @include media('<md') {
-    }
-}
-
-@mixin text-tooltip {
-    @include text-body-s;
-
-    line-height: 1.2;
-}
-
-@mixin text-overtitle-s {
-    @include noi;
-
-    font-weight: 600;
-    line-height: 1.1;
-    text-transform: uppercase;
-}
-
-@mixin text-overtitle-m {
-    @include noi;
-
-    font-weight: 600;
-    line-height: 1;
-    text-transform: uppercase;
-}
-
-@mixin text-tag {
-    @include text-overtitle-m;
-
-    font-weight: 700;
-}
-
-@mixin text-tag-xs {
-    @include text-tag;
-
-}
-
-@mixin text-tag-l {
-    @include text-tag;
-    @include media('>=lg') {
-    }
-}
-
-@mixin text-review {
-    line-height: 1.4;
-
-    @include media('>=lg') {
-    }
+@mixin body-s {
+  @include noi;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 750;
+  color: color(light-yellow)
 }

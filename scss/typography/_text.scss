@@ -22,46 +22,18 @@
     @include text-h6;
 }
 
-.text-body-l {
-    @include text-body-l;
+.title-card {
+    @include title-card;
 }
 
-.text-body-m {
-    @include text-body-m;
+.title-section {
+    @include title-section;
 }
 
-.text-body-s {
-    @include text-body-s;
+.body-l {
+  @include body-l;
 }
 
-.text-quote {
-    @include text-quote;
-}
-
-.text-list {
-    @include text-list;
-}
-
-.text-tooltip {
-    @include text-tooltip;
-}
-
-.text-overtitle-m {
-    @include text-overtitle-m;
-}
-
-.text-overtitle-s {
-    @include text-overtitle-s;
-}
-
-.text-tag {
-    @include text-tag;
-}
-
-.text-tag-l {
-    @include text-tag-l;
-}
-
-.text-tag-xs {
-    @include text-tag-xs;
+.body-s {
+  @include body-s;
 }

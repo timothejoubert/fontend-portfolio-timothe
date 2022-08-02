@@ -3,8 +3,10 @@
 // ⚠️ do not include css file or css var declaration
 
 @import 'functions';
-@import 'mixins';
 @import 'variables';
+@import 'mixins';
+@import 'variables/colors';
+
 // vendors
 @import '~include-media/dist/_include-media.scss';
 @import 'vendors/include-media';

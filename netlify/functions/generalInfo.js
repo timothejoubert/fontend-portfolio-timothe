@@ -5,8 +5,10 @@ exports.handler = async () => {
     auth: process.env.NOTION_API_KEY,
   })
 
+  const databaseId = 'fd697b929bf8453395b6d335b7ef110b'
+
   const myPage = await notion.databases.query({
-    database_id: '9630213c155243d2833732cb91e63951',
+    database_id: databaseId,
   })
 
   return {
