@@ -1,4 +1,5 @@
 import {NotionDatabaseContent, NotionDateProperty, NotionSelectContent} from "~/netlify/responseDataType";
+import {MediaContent} from "~/components/molecules/VCardProject.vue";
 
 export interface PageData {
   id: string
@@ -8,11 +9,11 @@ export interface PageData {
 
 export interface ProjectData extends PageData {
   name?: string | null
-  thumbnail?: string | null
+  thumbnail?: MediaContent[] | null
   date?: string | number | null
   cadre?: NotionSelectContent[] | null
   shortDescription?: string | null
-  type: string[] | null
+  type?: string[] | null
 }
 
 /*export interface ProjectData {

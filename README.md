@@ -15,6 +15,14 @@ $ yarn start
 
 # generate static project
 $ yarn generate
+
+# launch netlify server
+$ yarn netlify dev
+
+# deploy on netlify server
+$ yarn netlify build
+
+
 ```
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).

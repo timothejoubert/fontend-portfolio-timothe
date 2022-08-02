@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType } from 'vue'
-import { ProjectData } from "~/types/api-type.d.ts";
+import { ProjectData } from '~/types/api-type'
 // import {NotionDatabaseContent, NotionDateProperty} from "~/netlify/responseDataType";
 
 export interface MediaContent {
@@ -43,14 +43,13 @@ export interface ProjectMainInfo {
 export default Vue.extend({
   name: 'VCardProject',
   props: {
-      cardIndex: 0,
+      cardIndex: Number,
       project: {} as PropType<ProjectData>,
   },
   computed: {
     projectInfo(): ProjectMainInfo {
-      //console.log(this.project)
-      const {id, name, url, cover, annee, focus, thumbnail } = this.project || {}
-      return { id, name, url, cover, annee, focus, thumbnail }
+      const {id, name, url, thumbnail } = this.project || {}
+      return { id, name, url, thumbnail }
     },
   },
   methods: {

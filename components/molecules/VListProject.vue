@@ -27,7 +27,7 @@ export default Vue.extend({
   components: { VCardProject },
   computed: {
     ...mapGetters(['projectsData', 'introDone']),
-    projectInfo(): ProjectCardInfo[] | undefined {
+    projectInfo(): ProjectCardInfo[] {
       return this.projectsData?.map((project: ProjectCardInfo) => {
         const {id, name, url, cover, annee, focus, thumbnail } = project || {}
         return { id, name, url, cover, annee, focus, thumbnail }
