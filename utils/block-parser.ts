@@ -4,7 +4,6 @@ import {
   NotionPropertiesTitle,
   NotionRichText, NotionSelectProperty
 } from "~/utils/api/notion-block-type";
-import {MultiSelectProperty, SelectProperty} from "@notionhq/client/build/src/api-types";
 
 export interface MediaContent {
   url?: string | null

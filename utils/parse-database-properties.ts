@@ -6,9 +6,7 @@ import {
   NotionResponseProjectProperties,
   ProjectData
 } from "~/utils/api/notion-custom-type";
-import {parseMedia, parseRichTitle, parseSelect, parseTitle} from "~/utils/block-parser";
-import {NotionFilesContent, NotionPlainText} from "~/utils/api/notion-block-type";
-import {MultiSelectProperty} from "@notionhq/client/build/src/api-types";
+import { parseSelect, parseTitle} from "~/utils/block-parser";
 
 
 export const parseProjectData = (dataBaseResponse : DataBaseResponse): ProjectData[] => {
