@@ -1,16 +1,9 @@
 
 
 // COMMONS
-
 export interface NotionParentPage {
   type?: string | null
   databaseId?: string | null
-}
-
-export interface NotionPageTitle {
-  id?: string | null
-  type?: string | null
-  title?: NotionRichText[] | null
 }
 
 export interface PropertiesIdentity {
@@ -19,10 +12,33 @@ export interface PropertiesIdentity {
 }
 
 // NOTION TYPE
+export interface NotionPropertiesTitle {
+  id?: string | null
+  type?: string | null
+  title?: NotionRichText[] | null
+}
+
 export interface NotionDateProperty {
   start?: string | null
   end?: string | null
   timeZone?: any | null
+}
+
+export interface optionContent extends PropertiesIdentity{
+  color: string | null
+  id: string | null
+  name: string | null
+}
+
+
+export interface NotionMultiSelectProperty extends PropertiesIdentity{
+  type: string
+  multi_select: optionContent[]
+}
+
+export interface NotionSelectProperty extends PropertiesIdentity{
+  type: string
+  select: optionContent
 }
 
 export interface NotionFormulaContent {
@@ -84,32 +100,6 @@ export interface NotionAnnotation {
   italic: boolean | null
   strikethrough: boolean | null
   underline: boolean | null
-}
-
-// CUSTOM DATABASE TYPE
-
-export type PropertiesPage = "nom" | "type" | "description courte" | "année" | "thumbnail" | "lien externe" | "description google"
-
-export interface NotionPageProperties {
-  Nom?: NotionPageTitle | null
-  type?: NotionSelectContent[] | null
-  "description courte"?: NotionPlainText | null
-  "année"?: PropertiesIdentity | null
-  thumbnail?: NotionFilesContent | null
-  "lien externe"?: NotionLinkContent | null
-  "description google"?: NotionRichText | null
-}
-
-export interface NotionDatabaseContent {
-  date?: NotionDateProperty | null
-  object?: string | null
-  id?: string | null
-  createdTime?: string | null
-  cover?: any | null
-  icon?: any | null
-  parent?: NotionParentPage | null
-  properties?: NotionPageProperties | null
-  url?: string | null
 }
 
 

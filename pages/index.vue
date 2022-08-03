@@ -23,8 +23,6 @@
 
       </header>
 
-      <v-rich-text v-if="getIntroText" :content="getIntroText" />
-
       <v-list-project/>
 
       <v-see-more/>
@@ -40,11 +38,9 @@ import VLoadingBar from '~/components/organisms/VLoadingBar.vue'
 import VHeroImage from '~/components/organisms/VHeroImage.vue'
 import VSeeMore from '~/components/molecules/VSeeMore.vue'
 import {mapGetters} from "vuex"
-import { parseProjectData } from '~/utils/functions'
-// @ts-ignore
-import { DataBaseResponse, ProjectData } from '~/types/api-type.d.ts'
+import { parseProjectData } from '~/utils/parse-database-properties'
 import VRichText from "~/components/atoms/VRichText.vue";
-import { NotionPlainText } from "~/netlify/responseDataType";
+import { NotionPlainText } from "~/utils/api/notion-block-type";
 
 export default Vue.extend({
   name: 'index',
@@ -82,18 +78,20 @@ export default Vue.extend({
     })
 
     const generalDataPromise = await fetch('/.netlify/functions/generalInfo').then((res) => {
-      //console.log(res)
-      if(res.ok){
-        this.$nuxt.$loading.finish() // hide loading
-        return res.json()
-      }
-      // throw new Error('error pendant le fetch')
+      if(res.ok)return res.json()
     })
+
+    const aboutDataPromise = await fetch('/.netlify/functions/aboutData').then((res) => {
+      if(res.ok) return res.json()
+    })
+
     window.setTimeout(
       () => {
-        console.log(projectListPromise.results)
+        console.log('project fetch response',projectListPromise.results)
+        //console.log('about fetch response',aboutDataPromise.results)
         this.$store.commit('projectsData', parseProjectData(projectListPromise))
         this.$store.commit('generalData', generalDataPromise)
+        this.$store.commit('aboutData', aboutDataPromise)
       },
       1000 )
 
@@ -117,7 +115,6 @@ export default Vue.extend({
   },
   methods: {
     toggleAbout(action: boolean) {
-      console.log(this.aboutOpen)
       this.aboutOpen = action
     },
     async getPageContent(id: string) {

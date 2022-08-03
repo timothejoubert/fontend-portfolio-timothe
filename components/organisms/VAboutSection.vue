@@ -1,18 +1,17 @@
 <template>
 
   <section :class="$style.root" @click="onClick">
-
     <div :class="$style.content" ref="aboutSection">
 
       <div :class="$style.main">
         <div :class="$style['wrapper-title']">
-          <h1 :class="$style.title">Justine Saez</h1>
+          <h1 :class="$style.title">{{ about.title }}</h1>
           <button :class="$style.close" @click="(e) => onClick(e, true)" aria-label="close modal">
-            <img v-if="aboutData.iconClose.imagePath" :src="aboutData.iconClose.imagePath" alt="">
+            <img v-if="aboutData?.iconClose?.imagePath" :src="aboutData.iconClose.imagePath" alt="">
           </button>
         </div>
-        <p :class="$style.description">Illustratrice curieuse du corps humain, je  m’amuse à gribouiller des moments cocasse du quotidien.</p>
-        <ul :class="$style['social-list']" v-if="!!aboutData.socials.length">
+        <v-rich-text v-if="about.description" :class="$style.description" :content="about.description"/>
+        <ul :class="$style['social-list']" v-if="!!aboutData?.socials?.length">
           <li v-for="(link,i) in aboutData.socials" :key="i" :class="$style['social-item']">
             <a :href="link.externalUrl" target="_blank">
               <img v-if="link.imagePath" :src="link.imagePath" :alt="link.alt">
@@ -22,24 +21,28 @@
       </div>
 
       <div :class="$style.section">
-        <h2 :class="$style.section__title" class="title-section">Expérience</h2>
-        <ul :class="$style['section__list']">
-          <li :class="$style['section__list__item']" class="body-l">2019 - BTS Montpellier</li>
-          <li :class="$style['section__list__item']" class="body-l">2019 - BTS Montpellier</li>
-          <li :class="$style['section__list__item']" class="body-l">2019 - BTS Montpellier</li>
+        <h2 :class="$style.section__title" class="title-section" v-if="about?.experiences?.keyName">{{ about.experiences.keyName }}</h2>
+        <ul :class="$style['section__list']" v-if="!!about?.experiences?.options?.length">
+          <li
+            :class="$style['section__list__item']"
+            class="body-l"
+            v-for="(experience, i) in about.experiences.options"
+            :key="`${i}-${experience.id}`">
+            {{experience.name}}
+          </li>
         </ul>
       </div>
 
       <div :class="[$style.section, $style['section--horizontal']]">
-        <h2 :class="$style.section__title" class="title-section">Talent</h2>
-        <ul :class="$style['section__list']">
-          <li :class="$style['section__list__item']" class="body-s">Dessin jeunesse</li>
-          <li :class="$style['section__list__item']" class="body-s">Dessin jeunesse</li>
-          <li :class="$style['section__list__item']" class="body-s">Dessin jeunesse</li>
-          <li :class="$style['section__list__item']" class="body-s">Dessin jeunesse</li>
-          <li :class="$style['section__list__item']" class="body-s">Dessin jeunesse</li>
-          <li :class="$style['section__list__item']" class="body-s">Dessin jeunesse</li>
-          <li :class="$style['section__list__item']" class="body-s">Dessin jeunesse</li>
+        <h2 :class="$style.section__title" class="title-section" v-if="about?.skills?.keyName">{{about.skills.keyName}}</h2>
+        <ul :class="$style['section__list']" v-if="!!about?.skills?.options?.length">
+          <li
+            :class="$style['section__list__item']"
+            class="body-s"
+            v-for="(skill, i) in about.skills.options"
+            :key="`${i}-${skill.id}`">
+            {{ skill.name }}
+          </li>
         </ul>
       </div>
 
@@ -52,8 +55,13 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from 'vue'
-import {NotionFileContent, NotionPlainText} from "~/netlify/responseDataType";
+import Vue from "vue"
+// import type { PropType } from 'vue'
+import {mapGetters} from "vuex"
+import {AboutData} from "~/utils/api/notion-custom-type"
+import {parseAboutData} from "~/utils/parse-database-properties"
+import VRichText from '~/components/atoms/VRichText.vue'
+import { NotionPlainText} from "~/utils/api/notion-block-type";
 
 const staticData = {
   iconClose: { imagePath: 'https://img.icons8.com/ios-glyphs/344/delete-sign.png'},
@@ -98,12 +106,20 @@ interface ContentAbout {
   content?: ContentListInfo[] | null
 }
 
-import Vue from "vue"
 export default Vue.extend({
   name: 'AboutSection',
-  data() {
-    return {
-      aboutData: staticData as ContentAbout,
+  /*  data() {
+      return {
+        aboutData: staticData as ContentAbout,
+      }
+    },*/
+  components: { VRichText },
+  computed: {
+    ...mapGetters(['aboutData']),
+    about(): AboutData {
+      const res = parseAboutData(this.aboutData)
+      console.log(res)
+      return res
     }
   },
   methods: {

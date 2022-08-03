@@ -1,7 +1,7 @@
 <template >
-    <main id="main" :class="$style.root" v-if="projectInfo">
-      <template v-for="(project,i) in projectInfo">
-        <v-card-project v-bind="{project}" :card-index="i" :key="i"/>
+    <main id="main" :class="$style.root" v-if="projectDataList">
+      <template v-for="(projectData,i) in projectDataList">
+        <v-card-project v-bind="{projectData}" :card-index="i" :key="i"/>
       </template>
   </main>
 
@@ -9,28 +9,19 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import VCardProject, {MediaContent} from "~/components/molecules/VCardProject.vue";
+import VCardProject from "~/components/molecules/VCardProject.vue";
 import { mapGetters } from 'vuex'
-
-export interface ProjectCardInfo {
-  name?: any | null
-  id?: string | null
-  url?: string | null
-  cover?: string | null
-  annee?: string | number | null
-  focus?: boolean | null
-  thumbnail?: MediaContent[] | null
-}
+import { ProjectData } from '~/utils/api/notion-custom-type';
 
 export default Vue.extend({
   name: 'VListProject',
   components: { VCardProject },
   computed: {
     ...mapGetters(['projectsData', 'introDone']),
-    projectInfo(): ProjectCardInfo[] {
-      return this.projectsData?.map((project: ProjectCardInfo) => {
-        const {id, name, url, cover, annee, focus, thumbnail } = project || {}
-        return { id, name, url, cover, annee, focus, thumbnail }
+    projectDataList(): ProjectData[] {
+      return this.projectsData?.map((project: ProjectData) => {
+        const {id, name, url, thumbnail, date, shortDescription, type } = project || {}
+        return { id, name, url, thumbnail, date, shortDescription, type }
       })
     },
   }

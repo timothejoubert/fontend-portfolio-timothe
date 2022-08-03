@@ -1,18 +1,18 @@
 <template>
 
-    <div :class="[$style.card, cardIndex % 2 && $style['card--odd']]" v-if="!!projectInfo">
+    <div :class="[$style.card, cardIndex % 2 && $style['card--odd']]" v-if="!!projectData">
       <nuxt-link to="/" :class="$style.card__inner">
 
         <div :class="$style.infos">
-          <h1 v-if="projectInfo.name" class="title-card" :class="$style.title">
-            {{ projectInfo.name }}
+          <h1 v-if="title" class="title-card" :class="$style.title">
+            {{ title }}
             <img :src="require('~/static/icons/arrow-project.png')" alt="icon arrow link inside project" :class="$style['arrow-project']">
           </h1>
-          <p :class="$style['short-description']">Des corps congestionnés par la feuille</p>
+          <v-rich-text :content="projectData.shortDescription" :class="$style['description']"/>
         </div>
 
         <div :class="$style['wrapper-media']">
-          <img v-if="projectInfo.thumbnail[0].url" :class="$style.media" :src="projectInfo.thumbnail[0].url" :alt="projectInfo.thumbnail[0].name" />
+          <img v-if="thumbnail.url" :class="$style.media" :src="thumbnail.url" :alt="thumbnail.name" />
         </div>
       </nuxt-link>
     </div>
@@ -22,34 +22,24 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType } from 'vue'
-import { ProjectData } from '~/types/api-type'
-// import {NotionDatabaseContent, NotionDateProperty} from "~/netlify/responseDataType";
-
-export interface MediaContent {
-  url?: string | null
-  alt?: string | null
-}
-
-export interface ProjectMainInfo {
-  id?: string | null
-  name?: string | null
-  url?: string | null
-  cover?: string | null
-  annee?: string | number | null
-  focus?: boolean | null
-  thumbnail?: MediaContent[] | null
-}
+import { ProjectData} from "~/utils/api/notion-custom-type";
+import VRichText from "~/components/atoms/VRichText.vue";
+import {MediaContent, parseMedia, parseTitle} from "~/utils/block-parser";
+import { NotionPropertiesTitle} from "~/utils/api/notion-block-type";
 
 export default Vue.extend({
   name: 'VCardProject',
+  components: { VRichText },
   props: {
       cardIndex: Number,
-      project: {} as PropType<ProjectData>,
+      projectData: {} as PropType<ProjectData>,
   },
   computed: {
-    projectInfo(): ProjectMainInfo {
-      const {id, name, url, thumbnail } = this.project || {}
-      return { id, name, url, thumbnail }
+    title(): string | null | undefined {
+      return this.projectData?.name && parseTitle(this.projectData.name as NotionPropertiesTitle)
+    },
+    thumbnail(): MediaContent | null | undefined {
+      return this.projectData?.thumbnail && parseMedia(this.projectData.thumbnail)?.[0]
     },
   },
   methods: {
@@ -121,10 +111,11 @@ export default Vue.extend({
     width: 100%;
   }
 }
-.short-description {
+.description {
   @include noi;
   font-weight: 300;
-  margin-top: 10px;
+  margin-top: 15px;
+  display: block;
 }
 .wrapper-media {
   position: relative;

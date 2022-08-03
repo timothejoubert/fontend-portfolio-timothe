@@ -7,14 +7,14 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue'
-import { NotionPlainText} from "~/netlify/responseDataType";
+import { NotionPlainText} from "~/utils/api/notion-block-type";
 
-interface colorStyle {
+interface ColorStyle {
   color?: string | undefined
   backgroundColor?: string | undefined
 }
 
-interface propsContent {
+interface PropsContent {
   is: string
   content: string | null
   class?: string | null
@@ -31,9 +31,9 @@ export default Vue.extend({
     content: {} as PropType<NotionPlainText | undefined | null>,
   },
   computed: {
-    elements(): propsContent[] | undefined {
+    elements(): PropsContent[] | undefined {
       if(!this.content) return
-      return this.content?.rich_text?.map( el => {
+      return this.content?.rich_text?.map( (el) => {
         const link = (el.href && el.href[0] !== '/') ? el.href : null
         const is = link
           ? 'a' : el.annotations.code === true
