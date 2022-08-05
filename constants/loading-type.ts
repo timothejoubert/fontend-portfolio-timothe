@@ -1,7 +1,4 @@
-enum LoadingData {
-    IMAGE_NUMBER_LOADING = 20,
-    EMPTY_CENTER_IMAGE = 'true',
-    EMPTY_BORDER_IMAGE = '',
-}
+enum LoadingData {}
+// IMAGE_NUMBER_LOADING = 20,
 
 export default LoadingData

@@ -1,8 +1,9 @@
 import {
-  NotionDateProperty, NotionPageTitle,
+  NotionDateProperty,
+  NotionPageTitle,
   NotionParentPage,
-} from "~/utils/api/notion-block-type";
-import {NotionResponseProjectProperties} from "~/utils/api/notion-custom-type";
+} from '~/utils/api/notion-block-type'
+import { NotionResponseProjectProperties } from '~/utils/api/notion-custom-type'
 
 export interface PageData {
   id: string
@@ -29,3 +30,25 @@ export interface NotionDatabaseContent {
   url?: string | null
 }
 
+export interface NotionBlockObject {
+  object: string
+  id: string
+  parent: NotionParentPage
+  created_time: string
+  last_edited_time: string
+  created_by: NotionUser
+  last_edited_by: NotionUser
+  has_children: boolean
+  archived: boolean
+  type: string
+  [key: string]: any
+}
+
+export interface NotionUser {
+  object: string
+  id: string
+}
+export interface NotionParentPage {
+  type: string
+  page_id: string
+}

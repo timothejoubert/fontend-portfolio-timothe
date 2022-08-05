@@ -1,195 +1,242 @@
 <template>
+  <div :class="rootClass">
+    <v-about-section v-show="aboutOpen" @toggleAbout="toggleAbout" />
 
-    <div :class="rootClass">
+    <div :class="$style.grain"></div>
 
-      <v-about-section v-show="aboutOpen" @toggleAbout="toggleAbout"/>
+    <header :class="$style.header">
+      <h1
+        ref="title"
+        :class="[
+          $style.title,
+          titleAnimationDone && !allDataFetch && $style['title--moving'],
+          allDataFetch && $style['title--visible'],
+        ]"
+        class="text-h1"
+      >
+        Justine Saez
+      </h1>
 
-      <div :class="$style.grain"></div>
+      <v-loading-bar :begin-animation="titleAnimationDone" />
 
-      <header :class="$style.header">
+      <v-hero-image v-if="titleAnimationDone" :class="$style['image-header']" />
 
-        <h1 :class="$style.title" class="text-h1" ref="title">Justine Saez</h1>
+      <h2 ref="intro" :class="$style['text-intro']" class="text-h2">
+        <strong>Illustratrice curieuse du corps humain,</strong><br />
+        je m’amuse à gribouiller des moments<br />
+        cocasse du quotidien.
+      </h2>
 
-        <v-loading-bar />
+      <button
+        :class="[$style['about-icon'], aboutOpen && $style['about-icon--open']]"
+        aria-label="open modal à propos"
+        @click="toggleAbout(true)"
+      >
+        <img
+          :src="require(`~/static/icons/icon-about.png`)"
+          alt="illustration justine"
+        />
+      </button>
+    </header>
 
-        <v-hero-image :class="$style['image-header']"/>
+    <v-list-project v-if="allDataFetch" />
 
-        <h2 :class="$style['text-intro']" class="text-h2" ref="intro">
-          <strong>Illustratrice curieuse du corps humain,</strong><br/> je  m’amuse à gribouiller des moments<br/> cocasse du quotidien.</h2>
-
-        <button @click="toggleAbout(true)" :class="[$style['about-icon'], aboutOpen && $style['about-icon--open']]" aria-label="open modal à propos">
-          <img :src="require(`~/static/icons/icon-about.png`)" alt="illustration justine" />
-        </button>
-
-      </header>
-
-      <v-list-project/>
-
-      <v-see-more/>
-    </div>
-
+    <v-see-more v-if="allDataFetch" />
+  </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue"
-import VAboutSection from "~/components/organisms/VAboutSection.vue";
+import Vue from 'vue'
+import { mapGetters } from 'vuex'
+import VAboutSection from '~/components/organisms/VAboutSection.vue'
 import VListProject from '~/components/molecules/VListProject.vue'
 import VLoadingBar from '~/components/organisms/VLoadingBar.vue'
 import VHeroImage from '~/components/organisms/VHeroImage.vue'
 import VSeeMore from '~/components/molecules/VSeeMore.vue'
-import {mapGetters} from "vuex"
-import { parseProjectData } from '~/utils/parse-database-properties'
-import VRichText from "~/components/atoms/VRichText.vue";
-import { NotionPlainText } from "~/utils/api/notion-block-type";
+import {
+  parseLoadingImage,
+  parseProjectData,
+} from '~/utils/parse-database-properties'
+import { ComponentWithCustomOptionsConstructor } from '~/utils/types/options'
 
-export default Vue.extend({
-  name: 'index',
-  head() {
-    return {
-      titleTemplate: 'Accueil - Justine Saez', //'%s - Justine Saez',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'my description'
-        }
-      ]
-    }
+interface VHomeOptions {
+  letterIntervalTitle: number
+  delayStartIntroText: number
+  letterIntervalIntro: number
+}
+
+export default (
+  Vue as ComponentWithCustomOptionsConstructor<VHomeOptions>
+).extend({
+  name: 'Index',
+  components: {
+    VListProject,
+    VLoadingBar,
+    VHeroImage,
+    VAboutSection,
+    VSeeMore,
   },
-  components: {VRichText, VListProject, VLoadingBar, VHeroImage, VAboutSection, VSeeMore },
-  data(){
-    return {
-      letterIntervalTitle: 30,
-      aboutOpen: false,
-    }
-  },
+  letterIntervalTitle: 100,
+  letterIntervalIntro: 200,
+  delayStartIntroText: 1000,
   fetchOnServer: false,
+  data() {
+    return {
+      aboutOpen: false,
+      titleAnimationDone: false,
+    }
+  },
   async fetch() {
     this.$store.commit('apiDataLoaded', false)
     this.$store.commit('introDone', false)
 
-    const projectListPromise = await fetch('/.netlify/functions/projectList').then((res) => {
-      //console.log(res)
-      if(res.ok){
-        this.$nuxt.$loading.finish() // hide loading
+    const imageLoadingPromise = await fetch(
+      '/.netlify/functions/loadingImage'
+    ).then((res) => {
+      if (res.ok) return res.json()
+    })
+    this.$store.commit(
+      'imageLoadingList',
+      parseLoadingImage(imageLoadingPromise)
+    )
+    console.log('imageLoading data: ', parseLoadingImage(imageLoadingPromise))
+
+    const projectListPromise = await fetch(
+      '/.netlify/functions/projectList'
+    ).then((res) => {
+      // console.log(res)
+      if (res.ok) {
+        // hide loading
+        // this.$nuxt.$loading.finish()
         return res.json()
       }
       // throw new Error('error pendant le fetch')
     })
+    this.$store.commit('projectsData', parseProjectData(projectListPromise))
+    console.log('projectsData data: ', parseProjectData(projectListPromise))
 
-    const generalDataPromise = await fetch('/.netlify/functions/generalInfo').then((res) => {
-      if(res.ok)return res.json()
+    const generalDataPromise = await fetch(
+      '/.netlify/functions/generalInfo'
+    ).then((res) => {
+      if (res.ok) return res.json()
     })
+    this.$store.commit('generalData', generalDataPromise)
+    console.log('general data: ', generalDataPromise)
 
-    const aboutDataPromise = await fetch('/.netlify/functions/aboutData').then((res) => {
-      if(res.ok) return res.json()
-    })
+    const aboutDataPromise = await fetch('/.netlify/functions/aboutData').then(
+      (res) => {
+        if (res.ok) return res.json()
+      }
+    )
+    this.$store.commit('aboutData', aboutDataPromise)
+    console.log('about data: ', aboutDataPromise)
 
-    window.setTimeout(
-      () => {
-        console.log('project fetch response',projectListPromise.results)
-        //console.log('about fetch response',aboutDataPromise.results)
-        this.$store.commit('projectsData', parseProjectData(projectListPromise))
-        this.$store.commit('generalData', generalDataPromise)
-        this.$store.commit('aboutData', aboutDataPromise)
-      },
-      1000 )
-
+    window.setTimeout(() => {
+      this.$store.commit('allDataFetch', true)
+      console.log('all data fetch: ')
+    }, 2000)
   },
-  activated() { // Call fetch again if last fetch more than 30 sec ago
-    if (this.$fetchState.timestamp <= Date.now() - 30000) this.$fetch()
+  head() {
+    return {
+      titleTemplate: 'Accueil - Justine Saez', // '%s - Justine Saez',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'my description',
+        },
+      ],
+    }
   },
   computed: {
-    ...mapGetters(['introDone', 'projectsData', 'generalData']),
-    rootClass(): (string| undefined | boolean)[] {
-      return [this.$style.root, this.introDone && this.projectsData && this.$style['root--done']]
-      //return [this.$style.root, (!!this.projectsData && this.introDone) && this.$style['root--minify']]
-    },
-    getIntroText(): NotionPlainText | null {
-      return this.generalData?.results?.[0]?.properties?.["description-intro"]
+    ...mapGetters(['introDone', 'projectsData', 'generalData', 'allDataFetch']),
+    rootClass(): (string | undefined | boolean)[] {
+      return [this.$style.root, this.allDataFetch && this.$style['root--done']]
     },
   },
+  activated() {
+    // Call fetch again if last fetch more than 25 sec ago
+    if (this.$fetchState.timestamp <= Date.now() - 25000) this.$fetch()
+  },
   mounted() {
-    this.$nextTick(this.parseTitle)
-    this.$nextTick(this.parseIntro)
+    this.parseTitle()
+    this.parseIntro()
+    // loader page
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      setTimeout(() => this.$nuxt.$loading.finish(), 2000)
+    })
   },
   methods: {
     toggleAbout(action: boolean) {
       this.aboutOpen = action
     },
-    async getPageContent(id: string) {
-      const postResponse = await fetch('/.netlify/functions/projectPage', {
-        method: 'POST',
-        body: JSON.stringify({
-          pageId: id,
-        }),
-      }).then((res) => res.json())
-
-      console.log({ postResponse })
-    },
     parseTitle() {
-      const element = this.$refs["title"] as HTMLElement
-      if(!element) return
+      const element = this.$refs.title as HTMLElement
+      if (!element) return
 
-      const words = element.innerHTML.split(' ')
+      const words = element.innerHTML.trim().split(' ')
       element.innerHTML = ''
-      let indexItem = 0;
+      let indexItem = 0
 
-      words.forEach(word => {
-        const wordTag = document.createElement("div");
-        wordTag.classList.add(this.$style.word);
+      words.forEach((word) => {
+        const wordTag = document.createElement('div')
+        // wordTag.classList.add(this.$style.word)
         element.appendChild(wordTag)
 
-        word.split('').forEach(letter => {
-          const letterTag = document.createElement("span");
-          letterTag.innerHTML = letter;
-          letterTag.classList.add(this.$style.letter);
-          indexItem ++;
-          letterTag.style.setProperty("--delay", indexItem * this.letterIntervalTitle + 'ms');
-          wordTag.appendChild(letterTag);
+        word.split('').forEach((letter) => {
+          const letterTag = document.createElement('span')
+          letterTag.innerHTML = letter
+          letterTag.classList.add(this.$style.letter)
+          indexItem++
+          letterTag.style.setProperty(
+            '--delay',
+            indexItem * this.$options.letterIntervalTitle + 'ms'
+          )
+          wordTag.appendChild(letterTag)
         })
       })
-      element.classList.add(this.$style["title--active"])
-      window.setTimeout(
-        () => this.$store.commit('introDone', true),
-       1000 )
+      element.classList.add(this.$style['title--active'])
+
+      window.setTimeout(() => {
+        this.titleAnimationDone = true
+        console.log('title animation done ', this.titleAnimationDone)
+      }, indexItem * this.$options.letterIntervalTitle * 2)
     },
     parseIntro() {
-      const element = this.$refs["intro"] as HTMLElement
-      if(!element) return
+      const element = this.$refs.intro as HTMLElement
+      if (!element) return
       const line = element.innerHTML.split('<br>')
 
       element.innerHTML = ''
 
-      line.forEach((line,i) => {
-        const lines = document.createElement("div");
-        lines.classList.add(this.$style.line);
-        lines.style.setProperty("--delay", i * 6 * this.letterIntervalTitle + 500 + 'ms');
+      line.forEach((line, i) => {
+        const lines = document.createElement('div')
+        lines.classList.add(this.$style.line)
+        lines.style.setProperty(
+          '--delay',
+          i * this.$options.letterIntervalIntro +
+            this.$options.delayStartIntroText +
+            'ms'
+        )
 
-        const span = document.createElement("span");
-        span.classList.add(this.$style.line__inner);
-        span.innerHTML = line;
+        const span = document.createElement('span')
+        span.classList.add(this.$style.line__inner)
+        span.innerHTML = line
 
         lines.appendChild(span)
         element.appendChild(lines)
       })
-
-
     },
   },
-
 })
 </script>
 
 <style lang="scss" module>
-
 .root {
-   position: relative;
-   width: 100%;
-   overflow: hidden;
-  //position: fixed;
-  //top: 0;
-  //left: 0;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
 .grain {
@@ -218,59 +265,81 @@ export default Vue.extend({
 }
 
 .title {
-  //color: color(main-orange);
   text-align: center;
   opacity: 0;
+  //font-size: 13rem;
+  font-size: 13vw;
+  line-height: 0.9;
+  //z-index: 10;
   transition: opacity 200ms;
-  font-size: 13rem;
-  line-height: 11rem;
 
+  .letter {
+    transition: all 500ms;
+  }
   &--active {
     opacity: 1;
-    transition: all 1s 600ms;
 
     .letter {
       display: inline-block;
       opacity: 0;
       padding: 0 10px;
-      animation: slide-in 1s var(--delay) ease(out-quart) forwards;
+      transition: all 500ms;
+      animation: slide-in 0.7s var(--delay) ease(out-quart) forwards;
     }
   }
-  .root--minify & {
-    font-size: 2rem;
-    line-height: 2rem;
+
+  &--moving {
+    opacity: 1;
+
+    .letter {
+      display: inline-block;
+      opacity: 1;
+      animation: moving 0.8s var(--delay) infinite steps(6, jump-none);
+    }
+  }
+  &--visible {
+    opacity: 1;
   }
 }
 
 // ease(out-quart)
 @keyframes slide-in {
-  0%{
+  0% {
     transform: scale(0);
+    opacity: 1;
   }
-  100%{
+  100% {
     transform: scale(1);
     opacity: 1;
     padding: 0;
   }
 }
 
-.image-header{
+@keyframes moving {
+  0% {
+    transform: scale(1, 1);
+  }
+  20% {
+    transform: scale(1, 1.1) rotate(2deg);
+  }
+  40% {
+    transform: scale(0.95, 0.9) rotate(-4deg);
+  }
+  60% {
+    transform: scale(0.9, 1) rotate(1deg);
+  }
+  80% {
+    transform: scale(1, 1.05) rotate(-4deg);
+  }
+  100% {
+    transform: scale(1.1, 0.9);
+  }
+}
+
+.image-header {
   position: absolute;
   top: 0;
 }
-
-/*
-.fade {
-  &:global(#{'-enter-active'}),
-  &:global(#{'-leave-active'}) {
-    transition: opacity 800ms 200ms;
-  }
-  &:global(#{'-enter'}),
-  &:global(#{'-leave-to'}) {
-    opacity: 0;
-  }
-}
- */
 
 .text-intro {
   position: absolute;
@@ -301,7 +370,8 @@ export default Vue.extend({
     opacity: 0;
     visibility: hidden;
     transform: translateY(100%) rotate(5deg);
-    transition: transform 300ms var(--delay) ease-in-out, opacity 300ms var(--delay) ease-in-out;
+    transition: transform 300ms var(--delay) ease-in-out,
+      opacity 300ms var(--delay) ease-in-out;
     display: inline-block;
 
     .root--done & {
@@ -352,5 +422,4 @@ export default Vue.extend({
     }
   }
 }
-
 </style>

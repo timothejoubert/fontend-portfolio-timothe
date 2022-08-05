@@ -6,4 +6,5 @@ export default (): RootState => ({
   projectsData: undefined,
   generalData: undefined,
   aboutData: undefined,
+  allDataFetch: undefined,
 })

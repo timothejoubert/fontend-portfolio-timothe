@@ -1,6 +1,11 @@
 <template>
-
-  <div :class="[$style.root, introDone && projectsData && $style['root--done']]">
+  <div
+    :class="[
+      $style.root,
+      beginAnimation && $style['root--visible'],
+      allDataFetch && percentage >= 100 && $style['root--done'],
+    ]"
+  >
     <div :class="$style.bar">
       <span>{{ isBarComplete ? 'Done' : 'loading' }}</span>
 
@@ -27,41 +32,51 @@
       </div>
     </div>
     <a href="#main" :class="$style['scroll-text']" class="text-h3">
-      <img :class="$style['scroll-hand']" :src="require('~/static/icons/icon-hand.png')" alt="icon hand scroll to">
+      <img
+        :class="$style['scroll-hand']"
+        :src="require('~/static/icons/icon-hand.png')"
+        alt="icon hand scroll to"
+      />
       Scroll pour découvrir
     </a>
   </div>
-
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
+import { mapRange } from '~/utils/functions'
 
 export default Vue.extend({
   name: 'VLoader',
+  props: {
+    beginAnimation: Boolean,
+  },
   data() {
     return {
       percentage: 0,
     }
   },
   computed: {
-    ...mapGetters(['introDone', 'projectsData']),
+    ...mapGetters(['allDataFetch']),
     isBarComplete(): boolean {
       return this.percentage >= 100
     },
     loadingPathStyle(): Record<string, any> {
       return {
-        '--stroke-shift': this.mapRange(Number(this.percentage), 0, 100, 850, 100),
-        '--stroke-dash': 850 // this.mapRange(Number(this.percentage), 0, 100, 100, 700)
+        '--stroke-shift': mapRange(this.percentage, 0, 100, 850, 100),
+        '--stroke-dash': 850, // this.mapRange(Number(this.percentage), 0, 100, 100, 700)
       }
-    }
+    },
+  },
+  watch: {
+    beginAnimation: {
+      handler() {
+        if (this.beginAnimation) this.addPercentValue()
+      },
+    },
   },
   methods: {
-    mapRange(value: number, a: number, b: number, c: number, d: number): number {
-      value = (value - a) / (b - a)
-      return c + value * (d - c)
-    },
     randomFromInterval(min: number, max: number): number {
       return Math.floor(Math.random() * (max - min + 1) + min)
     },
@@ -74,25 +89,22 @@ export default Vue.extend({
           this.percentage = 100
         }
       }, 10)
-    }
+    },
   },
-  watch: {
-    introDone: {
-      handler(newValue, oldValue) {
-        if(this.introDone) this.addPercentValue()
-      }
-    }
-  }
 })
 </script>
 
 <style lang="scss" module>
-
 .root {
   position: relative;
   text-align: center;
   margin-top: 20px;
-  transition: margin-top 300ms;
+  transition: opacity 200ms, margin-top 300ms;
+  opacity: 0;
+
+  &--visible {
+    opacity: 1;
+  }
   &.root--done {
     margin-top: 0;
   }
@@ -169,20 +181,14 @@ export default Vue.extend({
 }
 
 @keyframes scroll-img {
-  40%{
+  40% {
     transform: translateY(0);
   }
-  50%{
+  50% {
     transform: translateY(12px);
   }
-  70%{
+  70% {
     transform: translateY(0px);
   }
 }
-
-
-
-
-
-
 </style>

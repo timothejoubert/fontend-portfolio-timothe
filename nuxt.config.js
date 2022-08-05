@@ -1,24 +1,23 @@
 const pkg = require('./package')
 
-export default{
+export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+  // ssr: true,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: pkg.name,
     htmlAttrs: {
-      lang: 'fr'
+      lang: 'fr',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: pkg.description },
-      { name: 'format-detection', content: 'telephone=no' }
+      { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
   serverMiddleware: [
@@ -46,6 +45,8 @@ export default{
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
+    // https://go.nuxtjs.dev/stylelint
+    '@nuxtjs/stylelint-module',
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://github.com/nuxt/postcss8
@@ -55,26 +56,31 @@ export default{
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-  ],
+  modules: [],
 
   loading: '@/components/organisms/VLoadingPage.vue',
-
+  /*   loading: {
+      color: 'blue',
+      height: '50px',
+      throttle: 0,
+      continuous: true,
+      duration: 2000,
+    }, */
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     loaders: {
       sass: {
-        implementation: require('sass')
+        implementation: require('sass'),
       },
       scss: {
-        implementation: require('sass')
+        implementation: require('sass'),
       },
       cssModules: {
         modules: {
-          localIdentName: "[local]--[Frida]_[hash:base64:4]",
-        }
-      }
-    }
-  }
+          localIdentName: '[local]--[Frida]_[hash:base64:4]',
+        },
+      },
+    },
+  },
 }

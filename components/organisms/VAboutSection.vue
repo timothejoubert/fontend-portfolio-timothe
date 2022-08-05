@@ -1,136 +1,123 @@
 <template>
-
   <section :class="$style.root" @click="onClick">
-    <div :class="$style.content" ref="aboutSection">
-
+    <div ref="aboutSection" :class="$style.content">
       <div :class="$style.main">
         <div :class="$style['wrapper-title']">
           <h1 :class="$style.title">{{ about.title }}</h1>
-          <button :class="$style.close" @click="(e) => onClick(e, true)" aria-label="close modal">
-            <img v-if="aboutData?.iconClose?.imagePath" :src="aboutData.iconClose.imagePath" alt="">
+          <button
+            :class="$style.close"
+            aria-label="close modal"
+            @click="(e) => onClick(e, true)"
+          >
+            <img
+              v-if="aboutData?.iconClose?.imagePath"
+              :src="aboutData.iconClose.imagePath"
+              alt=""
+            />
           </button>
         </div>
-        <v-rich-text v-if="about.description" :class="$style.description" :content="about.description"/>
-        <ul :class="$style['social-list']" v-if="!!aboutData?.socials?.length">
-          <li v-for="(link,i) in aboutData.socials" :key="i" :class="$style['social-item']">
+        <v-rich-text
+          v-if="about.description"
+          :class="$style.description"
+          :content="about.description"
+        />
+        <ul v-if="!!aboutData?.socials?.length" :class="$style['social-list']">
+          <li
+            v-for="(link, i) in aboutData.socials"
+            :key="i"
+            :class="$style['social-item']"
+          >
             <a :href="link.externalUrl" target="_blank">
-              <img v-if="link.imagePath" :src="link.imagePath" :alt="link.alt">
+              <img
+                v-if="link.imagePath"
+                :src="link.imagePath"
+                :alt="link.alt"
+              />
             </a>
           </li>
         </ul>
       </div>
 
       <div :class="$style.section">
-        <h2 :class="$style.section__title" class="title-section" v-if="about?.experiences?.keyName">{{ about.experiences.keyName }}</h2>
-        <ul :class="$style['section__list']" v-if="!!about?.experiences?.options?.length">
+        <h2
+          v-if="about?.experiences?.keyName"
+          :class="$style.section__title"
+          class="title-section"
+        >
+          {{ about.experiences.keyName }}
+        </h2>
+        <ul
+          v-if="!!about?.experiences?.options?.length"
+          :class="$style['section__list']"
+        >
           <li
+            v-for="(experience, i) in about.experiences.options"
+            :key="`${i}-${experience.id}`"
             :class="$style['section__list__item']"
             class="body-l"
-            v-for="(experience, i) in about.experiences.options"
-            :key="`${i}-${experience.id}`">
-            {{experience.name}}
+          >
+            {{ experience.name }}
           </li>
         </ul>
       </div>
 
       <div :class="[$style.section, $style['section--horizontal']]">
-        <h2 :class="$style.section__title" class="title-section" v-if="about?.skills?.keyName">{{about.skills.keyName}}</h2>
-        <ul :class="$style['section__list']" v-if="!!about?.skills?.options?.length">
+        <h2
+          v-if="about?.skills?.keyName"
+          :class="$style.section__title"
+          class="title-section"
+        >
+          {{ about.skills.keyName }}
+        </h2>
+        <ul
+          v-if="!!about?.skills?.options?.length"
+          :class="$style['section__list']"
+        >
           <li
+            v-for="(skill, i) in about.skills.options"
+            :key="`${i}-${skill.id}`"
             :class="$style['section__list__item']"
             class="body-s"
-            v-for="(skill, i) in about.skills.options"
-            :key="`${i}-${skill.id}`">
+          >
             {{ skill.name }}
           </li>
         </ul>
       </div>
 
       <div :class="$style.texture"></div>
-
     </div>
-
   </section>
-
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+import Vue from 'vue'
 // import type { PropType } from 'vue'
-import {mapGetters} from "vuex"
-import {AboutData} from "~/utils/api/notion-custom-type"
-import {parseAboutData} from "~/utils/parse-database-properties"
+import { mapGetters } from 'vuex'
+import { AboutData } from '~/utils/api/notion-custom-type'
+import { parseAboutData } from '~/utils/parse-database-properties'
 import VRichText from '~/components/atoms/VRichText.vue'
-import { NotionPlainText} from "~/utils/api/notion-block-type";
-
-const staticData = {
-  iconClose: { imagePath: 'https://img.icons8.com/ios-glyphs/344/delete-sign.png'},
-  title: 'Justine Saez',
-  description: 'Illustratrice curieuse du corps humain, je  m’amuse à gribouiller des moments cocasse du quotidien.',
-  socials: [
-    {externalUrl: 'https://www.instagram.com/malotruru/', imagePath: 'https://cdn-icons-png.flaticon.com/512/1384/1384063.png', name: 'Instagram', alt: 'instagram icon'},
-    {externalUrl: 'https://www.instagram.com/malotruru/', imagePath: 'https://cdn-icons-png.flaticon.com/512/1409/1409945.png', name: 'Linkdin', alt: 'Linkdin icon'}
-  ],
-  content: [
-    {
-      title: 'Expérience',
-      content: ['2019 - BTS Montpellier', '2019 - BTS Montpellier', '2019 - BTS Montpellier']
-    },
-    {
-      title: 'Talent',
-      content: ['Dessin jeunesse', 'Dessin jeunesse', 'Dessin jeunesse', 'Dessin jeunesse', 'Dessin jeunesse']
-    }
-  ],
-}
-
-interface ImageContent {
-  imagePath: string
-  name?: string | null
-  alt?: string | null
-}
-
-interface SocialContent extends ImageContent {
-  externalUrl: string
-}
-
-interface ContentListInfo {
-  title?: string | null
-  content: string[] | null
-}
-
-interface ContentAbout {
-  iconClose?: ImageContent | null
-  title?: string | null
-  description?: NotionPlainText | string | null
-  socials?: SocialContent[] | null
-  content?: ContentListInfo[] | null
-}
 
 export default Vue.extend({
   name: 'AboutSection',
-  /*  data() {
-      return {
-        aboutData: staticData as ContentAbout,
-      }
-    },*/
   components: { VRichText },
   computed: {
     ...mapGetters(['aboutData']),
     about(): AboutData {
-      const res = parseAboutData(this.aboutData)
-      console.log(res)
-      return res
-    }
+      return parseAboutData(this.aboutData)
+    },
   },
   methods: {
     onClick(event: Event, close: boolean = false) {
       const target = this.$refs.aboutSection as HTMLElement
       const currentElementClicked = event.target as HTMLElement
-      if ((target !== event.target && !target?.contains(currentElementClicked) || close)) {
+      if (
+        (target !== event.target && !target?.contains(currentElementClicked)) ||
+        close
+      ) {
         this.$emit('toggleAbout', false)
       }
-    }
-  }
+    },
+  },
 })
 </script>
 
@@ -143,7 +130,7 @@ export default Vue.extend({
   width: 100%;
   height: 100vh;
   background-color: rgba(color(dark), 0.2);
-  z-index: 10;
+  z-index: 20;
   cursor: pointer;
 }
 
@@ -187,7 +174,7 @@ export default Vue.extend({
   width: 30px;
   height: 30px;
 
-  img{
+  img {
     width: 100%;
     height: 100%;
   }
@@ -228,11 +215,9 @@ export default Vue.extend({
   &.section--horizontal {
     font-style: inherit;
   }
-
 }
 
 .section__list {
-
   .section--horizontal & {
     display: flex;
     flex-wrap: wrap;
@@ -245,7 +230,5 @@ export default Vue.extend({
   .section--horizontal &:not(:last-child) {
     margin-right: 40px;
   }
-
 }
-
 </style>

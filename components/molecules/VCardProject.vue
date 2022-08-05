@@ -1,45 +1,63 @@
 <template>
+  <div
+    v-if="!!projectData"
+    :class="[$style.card, cardIndex % 2 && $style['card--odd']]"
+  >
+    <nuxt-link to="/" :class="$style.card__inner">
+      <div :class="$style.infos">
+        <h1 v-if="title" class="title-card" :class="$style.title">
+          {{ title }}
+          <img
+            :src="require('~/static/icons/arrow-project.png')"
+            alt="icon arrow link inside project"
+            :class="$style['arrow-project']"
+          />
+        </h1>
+        <v-rich-text
+          :content="projectData.shortDescription"
+          :class="$style['description']"
+        />
+      </div>
 
-    <div :class="[$style.card, cardIndex % 2 && $style['card--odd']]" v-if="!!projectData">
-      <nuxt-link to="/" :class="$style.card__inner">
-
-        <div :class="$style.infos">
-          <h1 v-if="title" class="title-card" :class="$style.title">
-            {{ title }}
-            <img :src="require('~/static/icons/arrow-project.png')" alt="icon arrow link inside project" :class="$style['arrow-project']">
-          </h1>
-          <v-rich-text :content="projectData.shortDescription" :class="$style['description']"/>
-        </div>
-
-        <div :class="$style['wrapper-media']">
-          <img v-if="thumbnail.url" :class="$style.media" :src="thumbnail.url" :alt="thumbnail.name" />
-        </div>
-      </nuxt-link>
-    </div>
-
+      <div :class="$style['wrapper-media']">
+        <img
+          v-if="thumbnail.url"
+          :class="$style.media"
+          :src="thumbnail.url"
+          :alt="thumbnail.name"
+        />
+      </div>
+    </nuxt-link>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType } from 'vue'
-import { ProjectData} from "~/utils/api/notion-custom-type";
-import VRichText from "~/components/atoms/VRichText.vue";
-import {MediaContent, parseMedia, parseTitle} from "~/utils/block-parser";
-import { NotionPropertiesTitle} from "~/utils/api/notion-block-type";
+import { ProjectData } from '~/utils/api/notion-custom-type'
+import VRichText from '~/components/atoms/VRichText.vue'
+import { MediaContent, parseMedia, parseTitle } from '~/utils/block-parser'
+import { NotionPropertiesTitle } from '~/utils/api/notion-block-type'
 
 export default Vue.extend({
   name: 'VCardProject',
   components: { VRichText },
   props: {
-      cardIndex: Number,
-      projectData: {} as PropType<ProjectData>,
+    cardIndex: Number,
+    projectData: {} as PropType<ProjectData>,
   },
   computed: {
     title(): string | null | undefined {
-      return this.projectData?.name && parseTitle(this.projectData.name as NotionPropertiesTitle)
+      return (
+        this.projectData?.name &&
+        parseTitle(this.projectData.name as NotionPropertiesTitle)
+      )
     },
     thumbnail(): MediaContent | null | undefined {
-      return this.projectData?.thumbnail && parseMedia(this.projectData.thumbnail)?.[0]
+      return (
+        this.projectData?.thumbnail &&
+        parseMedia(this.projectData.thumbnail)?.[0]
+      )
     },
   },
   methods: {
@@ -53,12 +71,11 @@ export default Vue.extend({
 
       console.log({ postResponse })
     },
-  }
+  },
 })
 </script>
 
 <style lang="scss" module>
-
 .card {
   margin: 0 auto 300px auto;
   max-width: 1100px;
@@ -76,7 +93,6 @@ export default Vue.extend({
       transform: rotate(3deg);
     }
   }
-
 }
 
 .card__inner {
@@ -149,7 +165,7 @@ export default Vue.extend({
   }
 }
 
-.media{
+.media {
   width: 100%;
 }
 </style>

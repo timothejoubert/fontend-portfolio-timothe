@@ -2,8 +2,9 @@ import {
   NotionFilesContent,
   NotionMultiSelectProperty,
   NotionPropertiesTitle,
-  NotionRichText, NotionSelectProperty
-} from "~/utils/api/notion-block-type";
+  NotionRichText,
+  NotionSelectProperty,
+} from '~/utils/api/notion-block-type'
 
 export interface MediaContent {
   url?: string | null
@@ -22,32 +23,46 @@ export interface SelectContentParsed {
   options: SelectOptionParsed[] | null
 }
 
-export const parseTitle = (richBlock: NotionPropertiesTitle): string | null | undefined => {
+export const parseTitle = (
+  richBlock: NotionPropertiesTitle
+): string | null | undefined => {
   const title = (richBlock as NotionPropertiesTitle)?.title as NotionRichText[]
-  if(!richBlock && !title && !Array.isArray(title)) return null
-  return title.length > 1 ? richBlock?.title?.map(text => text?.plain_text).join('') : title?.[0]?.plain_text
+  if (!richBlock && !title && !Array.isArray(title)) return null
+  return title.length > 1
+    ? richBlock?.title?.map((text) => text?.plain_text).join('')
+    : title?.[0]?.plain_text
 }
 
-export const parseMedia = (mediaBlock: NotionFilesContent): MediaContent[] | null | undefined  => {
-  if ( !mediaBlock || !mediaBlock?.files?.length) return null
-  return mediaBlock.files.map(media => {
-    const removeExtension = media.name?.replace(/-/g, ' ').replace(/\.[^.]*$/,'')
+export const parseMedia = (
+  mediaBlock: NotionFilesContent
+): MediaContent[] | null | undefined => {
+  if (!mediaBlock || !mediaBlock?.files?.length) return null
+  return mediaBlock.files.map((media) => {
+    const removeExtension = media.name
+      ?.replace(/-/g, ' ')
+      .replace(/\.[^.]*$/, '')
     return {
       url: media?.file?.url,
       name: removeExtension,
-      alt: media.name
+      alt: media.name,
     }
   })
 }
 
-export const parseSelect = (block: NotionMultiSelectProperty | NotionSelectProperty, keyName: string): SelectContentParsed => {
-  if(block.type === 'select'){
-    const {name, id, color} = (block as NotionSelectProperty).select || {}
-    return {keyName: keyName, options: [{name, id, color}]}
+export const parseSelect = (
+  block: NotionMultiSelectProperty | NotionSelectProperty,
+  keyName: string
+): SelectContentParsed => {
+  if (block.type === 'select') {
+    const { name, id, color } = (block as NotionSelectProperty).select || {}
+    return { keyName, options: [{ name, id, color }] }
   } else {
-    const multiOptions = (block as NotionMultiSelectProperty).multi_select.map((option) => {
-      if (option?.name) return {name: option.name, id: option.id, color: option.color}
-    }) as SelectOptionParsed[]
-    return {keyName: keyName, options: multiOptions}
+    const multiOptions = (block as NotionMultiSelectProperty).multi_select.map(
+      (option) => {
+        if (option?.name)
+          return { name: option.name, id: option.id, color: option.color }
+      }
+    ) as SelectOptionParsed[]
+    return { keyName, options: multiOptions }
   }
 }

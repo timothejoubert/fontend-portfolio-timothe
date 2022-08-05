@@ -1,37 +1,52 @@
-<template lang="html">
-  <div v-if="loading" class="loading-page">
-    <p>Loading...</p>
+<template>
+  <div :class="[$style.root]">
+    <div :class="$style.bar"></div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'VLoading',
-  data: () => ({
-    loading: false
-  }),
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: 'VLoadingPage',
   methods: {
     start() {
-      this.loading = true
+      this.$el.classList.add(this.$style['root--loading'])
     },
     finish() {
-      this.loading = false
-    }
-  }
-}
+      this.$el.classList.remove(this.$style['root--loading'])
+    },
+  },
+})
 </script>
 
-<style scoped>
-.loading-page {
+<style lang="scss" module>
+.root {
   position: fixed;
+  z-index: 1000;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  padding-top: 200px;
-  font-size: 30px;
-  font-family: sans-serif;
+  height: 100vh;
+  cursor: wait;
+  visibility: hidden;
+  overflow: hidden;
+
+  &--loading {
+    visibility: visible;
+  }
+}
+.bar {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: color(main-orange);
+  transition: width 2000ms;
+
+  .root--loading & {
+    width: 100%;
+  }
 }
 </style>

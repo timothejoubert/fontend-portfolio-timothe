@@ -1,22 +1,36 @@
 <template>
   <section :class="$style.root">
-    <div v-for="i in 6" :class="[$style.line, i % 2 && $style['line--odd']]">
-      <h1 class="text-h1" :data-text="text" :class="$style['text']" ref="line" :style="{transform: `translateX(${i % 2 ? '' : '-'}${translateValue}px)`}">{{ text }}</h1>
-    </div>
+    <nuxt-link to="/VMoreProject">
+      <div
+        v-for="i in 6"
+        :key="i"
+        :class="[$style.line, i % 2 && $style['line--odd']]"
+      >
+        <h1
+          ref="line"
+          class="text-h1"
+          :data-text="text"
+          :class="$style['text']"
+          :style="{
+            transform: `translateX(${i % 2 ? '' : '-'}${translateValue}px)`,
+          }"
+        >
+          {{ text }}
+        </h1>
+      </div>
+    </nuxt-link>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
-import { mapRange, lerp } from '~/utils/functions';
+import { mapRange, lerp } from '~/utils/functions'
 
 export default Vue.extend({
   name: 'VSeeMore',
-  components: { },
   props: {
-    repeatNumber: {type: Number, default: 6},
-    text: {type: String, default: 'Envie d\'en voir plus ?'},
+    repeatNumber: { type: Number, default: 6 },
+    text: { type: String, default: "Envie d'en voir plus ?" },
   },
   data() {
     return {
@@ -24,10 +38,10 @@ export default Vue.extend({
     }
   },
   mounted() {
-    window.addEventListener("scroll", this.marqueeMove);
+    window.addEventListener('scroll', this.marqueeMove)
   },
   destroyed() {
-    window.removeEventListener("scroll", this.marqueeMove);
+    window.removeEventListener('scroll', this.marqueeMove)
   },
   methods: {
     marqueeMove() {
@@ -35,32 +49,32 @@ export default Vue.extend({
       const isInStartView = targetBox.top - window.innerHeight < 0
       const isOffView = targetBox.top + targetBox.height > 0
 
-      if(!isInStartView || !isOffView) return
-      const scrollVal = Math.floor(mapRange(targetBox.top, window.innerHeight, -window.innerHeight, 0, 100))
-      //console.log(scrollVal)
+      if (!isInStartView || !isOffView) return
+      const scrollVal = Math.floor(
+        mapRange(targetBox.top, window.innerHeight, -window.innerHeight, 0, 100)
+      )
+      // console.log(scrollVal)
       this.translateCalc(scrollVal)
     },
     translateCalc(scroll: number) {
-      const newVal = mapRange(scroll,0, 100, -1000, 1000)
+      const newVal = mapRange(scroll, 0, 100, -1000, 1000)
       const line = this.$refs?.line as HTMLElement[]
-      //const translateX = parseInt(line[3].style.transform.replace(/[^\d.]/g, ''))
-      //console.log(translateX)
+      // const translateX = parseInt(line[3].style.transform.replace(/[^\d.]/g, ''))
+      // console.log(translateX)
       this.translateValue = lerp(newVal, newVal, 0.1)
-    }
-  }
+    },
+  },
 })
 </script>
 
 <style lang="scss" module>
-
 .root {
   margin: 300px 0 200vh;
   transform-origin: center center;
   transform: rotate(-14deg);
 }
 
-.line{
-
+.line {
   &--odd {
     opacity: 0.22;
   }
@@ -72,7 +86,8 @@ export default Vue.extend({
   margin: 25px 0;
   font-size: 134px;
 
-  &::before, &::after {
+  &::before,
+  &::after {
     position: relative;
     display: inline-block;
     content: attr(data-text);
@@ -83,5 +98,4 @@ export default Vue.extend({
     left: -300px;
   }
 }
-
 </style>

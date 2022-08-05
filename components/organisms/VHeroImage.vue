@@ -1,28 +1,32 @@
 <template>
-
-  <div :class="[$style.hero__cul, projectsData && $style['hero__cul--visible']]" :style="gridSize" v-if="imageAndPosReady">
-
+  <div
+    v-if="imageAndPosReady && !!imageData.length"
+    :class="[$style.hero__cul, allDataFetch && $style['hero__cul--finished']]"
+    :style="gridSize"
+  >
     <div
-        :class="$style['wrapper-img']"
-        v-for="(media, i) in imageData"
-        :key="i"
-        v-if="posArray[i]"
-        :style="{'--pos-column': posArray[i][0], '--pos-row': posArray[i][1]}"
+      v-for="(media, i) in imageData"
+      :key="i"
+      :class="$style['wrapper-img']"
+      :style="{ '--pos-column': posArray[i][0], '--pos-row': posArray[i][1] }"
     >
-      <img @mouseover="onMouseOver" @mouseleave="onMouseLeave" :src="media.url" alt="" :class="$style.media" ref="image" />
+      <img
+        ref="image"
+        :src="media.url"
+        alt=""
+        :class="$style.media"
+        @mouseover="onMouseOver"
+        @mouseleave="onMouseLeave"
+      />
     </div>
-
   </div>
-
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import {mapGetters} from "vuex";
+import { mapGetters } from 'vuex'
 // import type { PropType } from 'vue'
-// import { ComponentWithCustomOptionsConstructor } from '~/types/options'
-import TagSlug from '~/constants/loading-type'
-import loadingType from "~/constants/loading-type";
+import { ComponentWithCustomOptionsConstructor } from '~/utils/types/options'
 
 export interface LoaderImage {
   url?: string | null
@@ -33,55 +37,69 @@ export interface LoaderImage {
 
 type LocationContent = [number, number]
 
-//const IMAGE_NUMBER_LOADING = 20
-//const EMPTY_CENTER_IMAGE = true;
-//const EMPTY_BORDER_IMAGE = false;
+interface VHeroImageOptions {
+  images: number
+  emptyCenter: boolean
+  emptyBorder: boolean
+}
 
-export default Vue.extend({
+export default (
+  Vue as ComponentWithCustomOptionsConstructor<VHeroImageOptions>
+).extend({
   name: 'VHeroImage',
-  created(){
-    const self = this
-      const interval = setInterval(function() {
-        if(!self.projectsData){
-           self.generatePositionArray(false)
-        } else {
-          clearInterval(interval)
-        }
-      }, 200)
+  images: 20,
+  emptyCenter: true,
+  emptyBorder: false,
+  props: {
+    beginAnimation: Boolean,
   },
-
-  data(){
+  data() {
     return {
-        intervalId: -1,
-        posArray: [] as LocationContent[],
-        imageData: [] as LoaderImage[],
-        gridSize: {} as Record<string, string>,
+      intervalId: -1,
+      posArray: [] as LocationContent[],
+      imageData: [] as LoaderImage[],
+      gridSize: {} as Record<string, string>,
     }
+  },
+  computed: {
+    ...mapGetters(['allDataFetch']),
+    imageAndPosReady(): boolean {
+      return this.imageData.length > 0 && this.posArray.length > 0
+    },
+  },
+  created() {
+    const self = this
+    const interval = setInterval(function () {
+      if (!self.allDataFetch) {
+        self.generatePositionArray(false)
+      } else {
+        clearInterval(interval)
+      }
+    }, 200)
   },
   mounted() {
     this.storeImageData()
     this.sizeGridItem()
     window.addEventListener('keydown', this.generatePositionArray)
-    window.addEventListener('resize', this.sizeGridItem);
+    window.addEventListener('resize', this.sizeGridItem)
   },
   destroyed() {
     window.removeEventListener('keydown', this.generatePositionArray)
-    window.removeEventListener('resize', this.sizeGridItem);
-  },
-  computed: {
-    ...mapGetters(['introDone', 'projectsData']),
-    imageAndPosReady(): boolean {
-      return this.imageData.length > 0 && this.posArray.length > 0
-    },
+    window.removeEventListener('resize', this.sizeGridItem)
   },
   methods: {
     sizeGridItem() {
-      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth  || 15
-      this.gridSize = {'--width-column': Math.floor((window.innerWidth - scrollBarWidth ) / 10)  + 'px', '--height-row': Math.floor(window.innerHeight / 7) + 'px'}
+      const scrollBarWidth =
+        window.innerWidth - document.documentElement.clientWidth || 15
+      this.gridSize = {
+        '--width-column':
+          Math.floor((window.innerWidth - scrollBarWidth) / 10) + 'px',
+        '--height-row': Math.floor(window.innerHeight / 7) + 'px',
+      }
     },
     storeImageData() {
       const medias = []
-      for (let i: number = 0; i < loadingType.IMAGE_NUMBER_LOADING; i++) {
+      for (let i: number = 0; i < this.$options.images; i++) {
         const decimal = i < 10 ? '0' : ''
         const imgPath = require(`~/static/images/cul-${decimal}${i}.png`)
         medias.push({
@@ -93,19 +111,25 @@ export default Vue.extend({
       this.imageData = medias
     },
     generatePositionArray(event: KeyboardEvent | false): void {
-      if(event && (event.key === 'Tab' || event.key === ' ')) return
-      let coordinate: LocationContent[] = [];
-      let index = 0;
-      const addValue = !!loadingType.EMPTY_BORDER_IMAGE ? 2 : 1;
+      if (event && (event.key === 'Tab' || event.key === ' ')) return
+      const coordinate: LocationContent[] = []
+      let index = 0
+      const addValue = this.$options.emptyBorder ? 2 : 1
 
       for (let column = addValue; column < 12 - addValue; column++) {
         for (let row = addValue; row < 9 - addValue; row++) {
-          if(!!loadingType.EMPTY_CENTER_IMAGE && (column < 3 || column > 8 ||  row < 3 && column > 2 && column < 9 || row > 5 && column > 2 && column < 9)  ) {
-            coordinate[index] = [column, row] as LocationContent;
+          if (
+            this.$options.emptyCenter &&
+            (column < 3 ||
+              column > 8 ||
+              (row < 3 && column > 2 && column < 9) ||
+              (row > 5 && column > 2 && column < 9))
+          ) {
+            coordinate[index] = [column, row] as LocationContent
             index++
           }
-          if(!loadingType.EMPTY_CENTER_IMAGE){
-            coordinate[index] = [column, row] as LocationContent;
+          if (!this.$options.emptyCenter) {
+            coordinate[index] = [column, row] as LocationContent
             index++
           }
         }
@@ -113,22 +137,25 @@ export default Vue.extend({
 
       this.posArray = this.getRandomXItems(coordinate, this.imageData.length)
     },
-    getRandomXItems(sourceArray: LocationContent[], neededElements: number): LocationContent[] {
-      let result = [];
+    getRandomXItems(
+      sourceArray: LocationContent[],
+      neededElements: number
+    ): LocationContent[] {
+      const result = []
 
       for (let i = 0; i < neededElements; i++) {
         const index = Math.floor(Math.random() * sourceArray.length)
-        result.push(sourceArray[index]);
-        sourceArray.splice(index, 1);
+        result.push(sourceArray[index])
+        sourceArray.splice(index, 1)
       }
       return result
     },
-    repeatRandomizeImage(image: HTMLImageElement){
+    repeatRandomizeImage(image: HTMLImageElement) {
       const url = this.getRandomImagePath()
-      if(!!url) image.src = url
+      if (url) image.src = url
     },
     getRandomImagePath(): string {
-      const index = Math.floor(Math.random() * (this.imageData.length))
+      const index = Math.floor(Math.random() * this.imageData.length)
       return this.imageData[index].url ?? ''
     },
     onMouseOver(event: Event): void {
@@ -138,19 +165,21 @@ export default Vue.extend({
       }
       const target = event.target as HTMLImageElement
 
-      this.intervalId = window.setInterval(() => this.repeatRandomizeImage(target), 400)
+      this.intervalId = window.setInterval(
+        () => this.repeatRandomizeImage(target),
+        400
+      )
     },
-    onMouseLeave(){
+    onMouseLeave() {
       window.clearTimeout(this.intervalId)
       this.intervalId = -1
     },
   },
 })
-
 </script>
 
 <style lang="scss" module>
-.hero__cul{
+.hero__cul {
   --height-row: 1fr;
   --width-column: 1fr;
   position: absolute;
@@ -162,7 +191,7 @@ export default Vue.extend({
   grid-gap: 0px;
   //overflow: hidden;
 }
-.wrapper-img{
+.wrapper-img {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -174,7 +203,7 @@ export default Vue.extend({
   transform-origin: center;
   transition: all 400ms;
 
-  .hero__cul--visible & {
+  .hero__cul--finished & {
     opacity: 0.6;
     transform: scale(1);
 
@@ -188,5 +217,4 @@ export default Vue.extend({
   max-width: 100px;
   object-fit: contain;
 }
-
 </style>
