@@ -182,7 +182,8 @@ export default (
         {
           hid: 'description',
           name: 'description',
-          content: 'my description',
+          content:
+            'Justine Saez est une illustratrice Lyonnaise passionnée par le corps de la femme. Je me spécialise dans le dessin au crayon mettant en scène des situations quotidiennes de manière humoristique. Dans une démarches autant artistique que de design, je cherche à mettre en avant les émotions via le dessin traditionnel.',
         },
       ],
     }
