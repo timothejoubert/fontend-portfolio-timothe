@@ -46,7 +46,7 @@ export const getFileNameByUrl = (url: string): urlParserContent => {
 }
 
 export async function getWebResponseResult(
-  url: string,
+  url: string | URL,
   id: string
 ): Promise<any> {
   return await fetch(url + id).then((response) => {
