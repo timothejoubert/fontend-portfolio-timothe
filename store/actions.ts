@@ -11,6 +11,7 @@ import {
   pageBlockResponse,
 } from '~/types/api-type'
 import { getWebResponseResult } from '~/utils/functions'
+
 declare let process: any
 const env = process.env
 
@@ -34,7 +35,7 @@ const actions: ActionTree<RootState, RootState> = {
     const baseUrl =
       (env.NODE_ENV === 'production'
         ? process.env.BASE_URL
-        : 'http://localhost:8888') + process.env.API_URL
+        : 'http://localhost:8888') + env.API_URL
     const queryPageBlocks = baseUrl + 'getPageBlocks?pageId='
     const queryDatabaseContent = baseUrl + 'getDatabasePages?databaseId='
 
