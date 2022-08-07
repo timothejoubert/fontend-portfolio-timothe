@@ -34,11 +34,8 @@ const actions: ActionTree<RootState, RootState> = {
     const baseURL =
       (env?.NODE_ENV !== 'production' ? 'http://localhost:8888' : '') +
       process.env.API_URL
-    const queryPageBlocks = new URL('getPageBlocks?pageId=', baseURL)
-    const queryDatabaseContent = new URL(
-      'getDatabasePages?databaseId=',
-      baseURL
-    )
+    const queryPageBlocks = baseURL + 'getPageBlocks?pageId='
+    const queryDatabaseContent = baseURL + 'getDatabasePages?databaseId='
 
     commit('apiDataLoaded', false)
     commit('introDone', false)
