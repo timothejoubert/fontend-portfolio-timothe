@@ -1,7 +1,9 @@
 const { Client } = require('@notionhq/client')
 
 exports.handler = async (event) => {
-  const { pageId } = JSON.parse(event.body)
+  const pageId = event.queryStringParameters.pageId
+
+  console.log(event, pageId, event.queryStringParameters.pageId)
 
   const notion = new Client({
     auth: process.env.NOTION_API_KEY,

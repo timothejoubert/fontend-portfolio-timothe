@@ -30,6 +30,11 @@
     @include title-section;
 }
 
+
+.tag-m {
+  @include tag-m;
+}
+
 .body-l {
   @include body-l;
 }

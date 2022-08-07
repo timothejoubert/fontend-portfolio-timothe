@@ -4,6 +4,11 @@ export interface NotionParentPage {
   databaseId?: string | null
 }
 
+export interface NotionBlockParentPage {
+  type: string
+  page_id: string
+}
+
 export interface PropertiesIdentity {
   id: string | null
   type: string | null
@@ -13,7 +18,7 @@ export interface PropertiesIdentity {
 export interface NotionPropertiesTitle {
   id?: string | null
   type?: string | null
-  title?: NotionRichText[] | null
+  title?: NotionRichTextContent[] | null
 }
 
 export interface NotionDateProperty {
@@ -43,6 +48,7 @@ export interface NotionFormulaContent {
   id: string | null
   name: string | null
 }
+
 export interface NotionSelectContent {
   color: string | null
   id: string | null
@@ -79,13 +85,13 @@ export interface NotionFilesContent extends PropertiesIdentity {
 }
 
 export interface NotionNumberContent extends PropertiesIdentity {
-  number: Number
+  number: number
 }
-export interface NotionPlainText extends PropertiesIdentity {
-  rich_text: NotionRichText[]
+export interface NotionRichText extends PropertiesIdentity {
+  rich_text: NotionRichTextContent[]
 }
 
-export interface NotionRichText {
+export interface NotionRichTextContent {
   type: string | null
   text: NotionTextContent | null
   annotations: NotionAnnotation

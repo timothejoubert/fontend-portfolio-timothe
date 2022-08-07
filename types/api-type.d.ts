@@ -1,13 +1,18 @@
 import {
+  NotionBlockParentPage,
   NotionDateProperty,
-  NotionPageTitle,
   NotionParentPage,
+  NotionPropertiesTitle,
+  NotionRichText,
 } from '~/utils/api/notion-block-type'
-import { NotionResponseProjectProperties } from '~/utils/api/notion-custom-type'
+import {
+  NotionResponseAboutProperties,
+  NotionResponseProjectProperties,
+} from '~/utils/api/notion-custom-type'
 
 export interface PageData {
   id: string
-  name?: NotionPageTitle | string | null
+  name: NotionPropertiesTitle | string | null
   url: string
 }
 
@@ -18,22 +23,34 @@ export interface DataBaseResponse {
   results: NotionDatabaseContent[]
 }
 
+export interface pageBlockResponse {
+  has_more: boolean
+  next_cursor: null
+  object: string
+  results: NotionBlockObject[]
+}
+
 export interface NotionDatabaseContent {
   date?: NotionDateProperty | null
   object?: string | null
-  id?: string | null
+  id: string
   createdTime?: string | null
   cover?: any | null
   icon?: any | null
   parent?: NotionParentPage | null
-  properties?: NotionResponseProjectProperties | null
-  url?: string | null
+  properties?:
+    | NotionResponseProjectProperties
+    | NotionResponseAboutProperties
+    | null
+  url: string
+  archived: boolean
+  description?: NotionRichText | null
 }
 
 export interface NotionBlockObject {
   object: string
   id: string
-  parent: NotionParentPage
+  parent: NotionBlockParentPage
   created_time: string
   last_edited_time: string
   created_by: NotionUser
@@ -48,6 +65,7 @@ export interface NotionUser {
   object: string
   id: string
 }
+
 export interface NotionParentPage {
   type: string
   page_id: string

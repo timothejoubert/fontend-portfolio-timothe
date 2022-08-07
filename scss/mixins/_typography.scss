@@ -60,6 +60,13 @@
   color: color(light-yellow)
 }
 
+@mixin tag-m {
+  @include noi;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 200;
+}
+
 @mixin body-l {
   @include noi;
   font-size: 21px;
@@ -72,6 +79,6 @@
   @include noi;
   font-size: 18px;
   line-height: 1;
-  font-weight: 750;
+  font-weight: 300;
   color: color(light-yellow)
 }

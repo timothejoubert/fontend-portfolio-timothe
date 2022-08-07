@@ -1,5 +1,9 @@
 const pkg = require('./package')
 
+const server = {
+  host: '0.0.0.0', // allow external access in dev mode
+}
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -23,6 +27,8 @@ export default {
   serverMiddleware: [
     // {path: '/api', handler: '~/api/index.js'}
   ],
+
+  server,
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['@/scss/main'],

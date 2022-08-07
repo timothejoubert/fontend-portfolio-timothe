@@ -1,7 +1,11 @@
 <template>
-  <main v-if="projectDataList" id="main" :class="$style.root">
-    <template v-for="(projectData, i) in projectDataList">
-      <v-card-project v-bind="{ projectData }" :key="i" :card-index="i" />
+  <main v-if="!!projectsData.length" id="main" :class="$style.root">
+    <template v-for="(projectData, i) in projectsData">
+      <v-card-project
+        v-bind="{ projectData }"
+        :key="projectData.id"
+        :card-index="i"
+      />
     </template>
   </main>
 </template>
@@ -10,27 +14,19 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import VCardProject from '~/components/molecules/VCardProject.vue'
-import { ProjectData } from '~/utils/api/notion-custom-type'
 
 export default Vue.extend({
   name: 'VListProject',
   components: { VCardProject },
   computed: {
-    ...mapGetters(['projectsData', 'introDone']),
-    projectDataList(): ProjectData[] {
-      return this.projectsData?.map((project: ProjectData) => {
-        const { id, name, url, thumbnail, date, shortDescription, type } =
-          project || {}
-        return { id, name, url, thumbnail, date, shortDescription, type }
-      })
-    },
+    ...mapGetters(['projectsData']),
   },
 })
 </script>
 
 <style lang="scss" module>
 .root {
-  padding-top: 400px;
+  padding-top: 300px;
   display: flex;
   flex-direction: column;
 }

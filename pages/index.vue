@@ -58,6 +58,12 @@ import {
   parseProjectData,
 } from '~/utils/parse-database-properties'
 import { ComponentWithCustomOptionsConstructor } from '~/utils/types/options'
+import {
+  DataBaseResponse,
+  NotionBlockObject,
+  NotionDatabaseContent,
+} from '~/types/api-type'
+import { getWebResponseResult } from '~/utils/functions'
 
 interface VHomeOptions {
   letterIntervalTitle: number
@@ -86,56 +92,89 @@ export default (
       titleAnimationDone: false,
     }
   },
-  async fetch() {
+  /*  async fetch() {
+    const pageLoaderImg = '1ebb67c36ee14fab80166d3a126908c7'
+    const databaseProjectListId = '9630213c155243d2833732cb91e63951'
+    const databaseMoreId = 'adaa0f3eb6ac464c8281820d1979ec25'
+    const databaseGeneralId = 'fd697b929bf8453395b6d335b7ef110b'
+    const databaseAboutId = '36bf0a170d624dd78cbca381acbf8879'
+
+    const queryPageBlocks = '/.netlify/functions/getPageBlocks?pageId='
+    const queryDatabaseContent =
+      '/.netlify/functions/getDatabasePages?databaseId='
+
     this.$store.commit('apiDataLoaded', false)
     this.$store.commit('introDone', false)
 
-    const imageLoadingPromise = await fetch(
-      '/.netlify/functions/loadingImage'
-    ).then((res) => {
-      if (res.ok) return res.json()
-    })
+    const imageLoadingPromise = await getWebResponseResult(
+      queryPageBlocks,
+      pageLoaderImg
+    )
+
     this.$store.commit(
       'imageLoadingList',
+      imageLoadingPromise,
       parseLoadingImage(imageLoadingPromise)
     )
     console.log('imageLoading data: ', parseLoadingImage(imageLoadingPromise))
 
-    const projectListPromise = await fetch(
-      '/.netlify/functions/projectList'
-    ).then((res) => {
-      // console.log(res)
-      if (res.ok) {
-        // hide loading
-        // this.$nuxt.$loading.finish()
-        return res.json()
-      }
-      // throw new Error('error pendant le fetch')
-    })
-    this.$store.commit('projectsData', parseProjectData(projectListPromise))
-    console.log('projectsData data: ', parseProjectData(projectListPromise))
-
-    const generalDataPromise = await fetch(
-      '/.netlify/functions/generalInfo'
-    ).then((res) => {
-      if (res.ok) return res.json()
-    })
-    this.$store.commit('generalData', generalDataPromise)
-    console.log('general data: ', generalDataPromise)
-
-    const aboutDataPromise = await fetch('/.netlify/functions/aboutData').then(
-      (res) => {
-        if (res.ok) return res.json()
-      }
+    //
+    // projects
+    //
+    const projectListPromise = await getWebResponseResult(
+      queryDatabaseContent,
+      databaseProjectListId
     )
-    this.$store.commit('aboutData', aboutDataPromise)
-    console.log('about data: ', aboutDataPromise)
 
+    const getProjectPageIdList: string[] = (
+      projectListPromise.results as NotionDatabaseContent[]
+    ).map((page) => page.id)
+
+    const projectChildren = (await Promise.all(
+      getProjectPageIdList.map(async (id) => {
+        return await getWebResponseResult(queryPageBlocks, id)
+      })
+    )) as NotionBlockObject[]
+
+    console.log(
+      'projectPage properties promise ',
+      projectListPromise,
+      projectChildren
+    )
+
+    this.$store.commit(
+      'projectsData',
+      parseProjectData(projectListPromise, projectChildren)
+    )
+
+    //
+    // general data
+    //
+    // const generalDataPromise = await getWebResponseResult(
+    //   queryDatabaseContent + databaseGeneralId
+    // )
+    //
+    // this.$store.commit('generalData', generalDataPromise)
+    // console.log('general data: ', generalDataPromise)
+    //
+    // //
+    // // about data
+    // //
+    // const aboutDataPromise = await getWebResponseResult(
+    //   queryDatabaseContent + databaseAboutId
+    // )
+    // this.$store.commit('aboutData', aboutDataPromise)
+    // console.log('about data: ', aboutDataPromise)
+
+    //
+    // all data fetch
+    //
+    this.$store.commit('allDataFetch', true)
     window.setTimeout(() => {
-      this.$store.commit('allDataFetch', true)
+      // this.$store.commit('allDataFetch', true)
       console.log('all data fetch: ')
     }, 2000)
-  },
+  }, */
   head() {
     return {
       titleTemplate: 'Accueil - Justine Saez', // '%s - Justine Saez',

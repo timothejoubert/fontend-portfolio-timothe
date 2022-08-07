@@ -3,28 +3,38 @@
     v-if="!!projectData"
     :class="[$style.card, cardIndex % 2 && $style['card--odd']]"
   >
-    <nuxt-link to="/" :class="$style.card__inner">
+    <nuxt-link :to="`/projets/${projectData.slug}`" :class="$style.card__inner">
       <div :class="$style.infos">
-        <h1 v-if="title" class="title-card" :class="$style.title">
-          {{ title }}
+        <h1 v-if="projectData.name" class="title-card" :class="$style.title">
+          {{ projectData.name }}
           <img
             :src="require('~/static/icons/arrow-project.png')"
             alt="icon arrow link inside project"
             :class="$style['arrow-project']"
           />
         </h1>
+        <div v-if="!!projectData?.type?.options.length" :class="$style.types">
+          <span
+            v-for="type in projectData.type.options"
+            :key="type.id"
+            :class="$style.type"
+            class="tag-m"
+            >{{ type.name }}</span
+          >
+        </div>
         <v-rich-text
           :content="projectData.shortDescription"
           :class="$style['description']"
+          class="body-s"
         />
       </div>
 
       <div :class="$style['wrapper-media']">
         <img
-          v-if="thumbnail.url"
+          v-if="projectData.thumbnail"
           :class="$style.media"
-          :src="thumbnail.url"
-          :alt="thumbnail.name"
+          :src="projectData.thumbnail.url"
+          :alt="projectData.thumbnail.name"
         />
       </div>
     </nuxt-link>
@@ -44,40 +54,29 @@ export default Vue.extend({
   components: { VRichText },
   props: {
     cardIndex: Number,
-    projectData: {} as PropType<ProjectData>,
-  },
-  computed: {
-    title(): string | null | undefined {
-      return (
-        this.projectData?.name &&
-        parseTitle(this.projectData.name as NotionPropertiesTitle)
-      )
-    },
-    thumbnail(): MediaContent | null | undefined {
-      return (
-        this.projectData?.thumbnail &&
-        parseMedia(this.projectData.thumbnail)?.[0]
-      )
+    projectData: {
+      type: Object as PropType<ProjectData>,
+      required: true,
     },
   },
-  methods: {
-    async getPageContent(id: string) {
-      const postResponse = await fetch('/.netlify/functions/projectPage', {
-        method: 'POST',
-        body: JSON.stringify({
-          pageId: id,
-        }),
-      }).then((res) => res.json())
-
-      console.log({ postResponse })
-    },
-  },
+  // methods: {
+  //   async getPageContent(id: string) {
+  //     const postResponse = await fetch('/.netlify/functions/projectPage', {
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         pageId: id,
+  //       }),
+  //     }).then((res) => res.json())
+  //
+  //     console.log({ postResponse })
+  //   },
+  // },
 })
 </script>
 
 <style lang="scss" module>
 .card {
-  margin: 0 auto 300px auto;
+  margin: 0 auto 200px auto;
   max-width: 1100px;
   padding: 0 40px;
   transform: rotate(-5deg);
@@ -117,6 +116,7 @@ export default Vue.extend({
 .title {
   display: inline;
 }
+
 .arrow-project {
   position: relative;
   width: 55px;
@@ -127,12 +127,26 @@ export default Vue.extend({
     width: 100%;
   }
 }
+.types {
+  margin: 15px 0;
+}
+.type {
+  padding: 3px 12px;
+  border-radius: 24px;
+  background-color: color(main-orange);
+  color: color(white);
+
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
 .description {
-  @include noi;
-  font-weight: 300;
   margin-top: 15px;
   display: block;
+  color: color(main-orange);
 }
+
 .wrapper-media {
   position: relative;
   display: inline-flex;

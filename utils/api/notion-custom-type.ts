@@ -4,14 +4,14 @@ import {
   NotionFilesContent,
   NotionLinkContent,
   NotionPropertiesTitle,
-  NotionPlainText,
   NotionRichText,
+  NotionRichTextContent,
   NotionSelectContent,
   NotionMultiSelectProperty,
   NotionNumberContent,
 } from '~/utils/api/notion-block-type'
 import { PageData } from '~/types/api-type'
-import { SelectContentParsed } from '~/utils/block-parser'
+import { MediaContent, SelectContentParsed } from '~/utils/block-parser'
 
 // CUSTOM DATABASE TYPE
 export type PropertiesPage =
@@ -25,21 +25,21 @@ export type PropertiesPage =
 
 // RESPONSE DATA
 export interface NotionResponseProjectProperties {
-  Nom?: NotionPropertiesTitle | null
-  type?: NotionSelectContent[] | null
-  'description courte'?: NotionPlainText | null
+  Nom: NotionPropertiesTitle | null
+  type?: NotionMultiSelectProperty | null
+  'description courte'?: NotionRichText | null
   année?: NotionNumberContent | null
   thumbnail?: NotionFilesContent | null
   'lien externe'?: NotionLinkContent | null
-  'description google'?: NotionRichText | null
+  'description google'?: NotionRichTextContent | null
   ordre?: NotionNumberContent | null
 }
 
 export interface NotionResponseAboutProperties {
-  Titre: NotionPlainText | null
+  Titre: NotionRichText | null
   'Contenu description': NotionRichText | null
   Experiences: NotionMultiSelectProperty | null
-  Réseaux: NotionPlainText | null
+  Réseaux: NotionRichText | null
   Compétences: NotionMultiSelectProperty | null
   'Icon modal': NotionFilesContent | null
   CV: NotionFilesContent | null
@@ -48,21 +48,22 @@ export interface NotionResponseAboutProperties {
 
 // PARSED DATA
 export interface ProjectData extends PageData {
-  thumbnail?: NotionFilesContent | null
-  date?: NotionNumberContent | null
-  cadre?: NotionSelectContent[] | null
-  shortDescription?: NotionPlainText | null
-  type?: NotionSelectContent[] | null
-  externalLink?: NotionLinkContent | null
+  slug: string
+  thumbnail?: MediaContent[] | null
+  date?: number | null
+  shortDescription?: NotionRichText | null
+  type?: SelectContentParsed | null
+  externalLink?: string | null
   googleDesc?: NotionRichText | null
-  order?: NotionNumberContent | null
+  order?: number | null
+  imageList: MediaContent[] | null
 }
 
 export interface AboutData {
   title?: string | null
   description?: NotionRichText | null
   experiences?: SelectContentParsed | null
-  socials?: NotionPlainText | null
+  socials?: NotionRichText | null
   skills?: SelectContentParsed | null
   modalIcon?: NotionFilesContent | null
   resume?: NotionFilesContent | null

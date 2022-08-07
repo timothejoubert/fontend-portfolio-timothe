@@ -2,52 +2,69 @@ import {
   DataBaseResponse,
   NotionBlockObject,
   NotionDatabaseContent,
+  pageBlockResponse,
 } from '~/types/api-type'
 import { uid } from '~/utils/random-id'
 import {
   AboutData,
-  LoadingImage,
   NotionResponseAboutProperties,
   NotionResponseProjectProperties,
   ProjectData,
 } from '~/utils/api/notion-custom-type'
-import { MediaContent, parseSelect, parseTitle } from '~/utils/block-parser'
-import { NotionFilesContent } from '~/utils/api/notion-block-type'
+import {
+  MediaContent,
+  parseBlockImage,
+  parseLink,
+  parseMedia,
+  parseNumber,
+  parseSelect,
+  parseTitle,
+} from '~/utils/block-parser'
+import { slugify } from '~/utils/functions'
 
 export const parseProjectData = (
-  dataBaseResponse: DataBaseResponse
+  dataBaseResponse: DataBaseResponse,
+  projectBlockResponse: pageBlockResponse[]
 ): ProjectData[] => {
-  const dataBaseContent: NotionDatabaseContent[] = dataBaseResponse.results
+  const dataBaseContent = dataBaseResponse.results as NotionDatabaseContent[]
+
+  console.log(dataBaseContent, projectBlockResponse)
 
   const parsedProject = dataBaseContent.map((page) => {
     const properties = page.properties as NotionResponseProjectProperties
+
+    const currentProjectBlocks = projectBlockResponse.find((projectBlock) => {
+      const blocks = projectBlock.results?.[0] as NotionBlockObject
+      return blocks?.parent?.page_id === page.id
+    })
+
+    if (!page) return {}
     return {
       id: page.id || uid.toString(),
-      url: page.url || '/',
+      url: page.url ?? '/',
+      slug: properties?.Nom && slugify(parseTitle(properties.Nom)),
+      name: properties?.Nom && parseTitle(properties.Nom),
       creationDate: page?.date,
-      name: properties?.Nom,
-      type: properties?.type,
+      type: parseSelect(properties?.type, 'type'),
       shortDescription: properties?.['description courte'],
-      date: properties?.['année'],
-      thumbnail: properties?.thumbnail,
-      externalLink: properties?.['lien externe'],
+      date: parseNumber(properties?.['année']),
+      thumbnail: properties?.thumbnail && parseMedia(properties.thumbnail)?.[0],
+      externalLink: parseLink(properties?.['lien externe']),
       googleDesc: properties?.['description google'],
-      order: properties?.ordre || 1,
+      order: parseNumber(properties?.ordre) || 1,
+      imageList: parseBlockImage(currentProjectBlocks?.results),
     }
   }) as ProjectData[]
 
-  // @ts-ignore
   return parsedProject.sort(function (a, b) {
-    return (
-      ((a.order?.number || 1) as number) - ((b.order?.number || 1) as number)
-    )
+    return ((a.order || 1) as number) - ((b.order || 1) as number)
   })
 }
 
 export const parseAboutData = (
   dataBaseResponse: DataBaseResponse
 ): AboutData => {
-  const dataBaseContent: NotionDatabaseContent[] = dataBaseResponse?.results
+  const dataBaseContent = dataBaseResponse?.results as NotionDatabaseContent[]
 
   const properties = dataBaseContent?.[0]
     ?.properties as NotionResponseAboutProperties
@@ -69,10 +86,11 @@ export const parseAboutData = (
 }
 
 export const parseLoadingImage = (
-  pageBlockResponse: DataBaseResponse
+  pageBlockResponse: pageBlockResponse
 ): MediaContent[] => {
   const dataBaseContent = pageBlockResponse.results as NotionBlockObject[]
 
+  if (!dataBaseContent) return []
   return dataBaseContent
     .filter((block) => block.type === 'image' && !!block.image?.file?.url)
     .map((block, i) => {
