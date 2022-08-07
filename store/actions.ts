@@ -27,14 +27,13 @@ const actions: ActionTree<RootState, RootState> = {
 
     const pageLoaderImg = '1ebb67c36ee14fab80166d3a126908c7'
     const databaseProjectListId = '9630213c155243d2833732cb91e63951'
-    const databaseMoreId = 'adaa0f3eb6ac464c8281820d1979ec25'
-    const databaseGeneralId = 'fd697b929bf8453395b6d335b7ef110b'
-    const databaseAboutId = '36bf0a170d624dd78cbca381acbf8879'
+    // const databaseMoreId = 'adaa0f3eb6ac464c8281820d1979ec25'
+    // const databaseGeneralId = 'fd697b929bf8453395b6d335b7ef110b'
+    // const databaseAboutId = '36bf0a170d624dd78cbca381acbf8879'
 
     const baseURL =
-      (env.NODE_ENV === 'production'
-        ? process.env.BASE_URL
-        : 'http://localhost:8888') + process.env.API_URL
+      (env?.NODE_ENV !== 'production' ? 'http://localhost:8888' : '') +
+      process.env.API_URL
     const queryPageBlocks = new URL('getPageBlocks?pageId=', baseURL)
     const queryDatabaseContent = new URL(
       'getDatabasePages?databaseId=',
