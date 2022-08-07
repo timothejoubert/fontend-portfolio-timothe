@@ -11,9 +11,8 @@ import {
   pageBlockResponse,
 } from '~/types/api-type'
 import { getWebResponseResult } from '~/utils/functions'
-
 declare let process: any
-const env = process.env
+const env = process.env.BASE_URL
 
 const actions: ActionTree<RootState, RootState> = {
   async nuxtServerInit(
@@ -32,12 +31,15 @@ const actions: ActionTree<RootState, RootState> = {
     const databaseGeneralId = 'fd697b929bf8453395b6d335b7ef110b'
     const databaseAboutId = '36bf0a170d624dd78cbca381acbf8879'
 
-    const baseUrl =
+    const baseURL =
       (env.NODE_ENV === 'production'
         ? process.env.BASE_URL
-        : 'http://localhost:8888') + env.API_URL
-    const queryPageBlocks = baseUrl + 'getPageBlocks?pageId='
-    const queryDatabaseContent = baseUrl + 'getDatabasePages?databaseId='
+        : 'http://localhost:8888') + process.env.API_URL
+    const queryPageBlocks = new URL('getPageBlocks?pageId=', baseURL)
+    const queryDatabaseContent = new URL(
+      'getDatabasePages?databaseId=',
+      baseURL
+    )
 
     commit('apiDataLoaded', false)
     commit('introDone', false)
