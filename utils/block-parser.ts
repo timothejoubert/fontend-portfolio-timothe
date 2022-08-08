@@ -8,7 +8,7 @@ import {
   NotionSelectProperty,
 } from '~/utils/api/notion-block-type'
 import { DataBaseResponse, NotionBlockObject } from '~/types/api-type'
-import { getFileNameByUrl } from '~/utils/functions'
+import { getFileNameByUrl, getMeta } from '~/utils/functions'
 
 export interface MediaContent {
   url?: string | null

@@ -1,11 +1,11 @@
 <template>
   <div
-    v-if="imageAndPosReady && !!imageData.length"
+    v-if="!!images.length && !!posArray.length"
     :class="[$style.hero__cul, allDataFetch && $style['hero__cul--finished']]"
     :style="gridSize"
   >
     <div
-      v-for="(media, i) in imageData"
+      v-for="(media, i) in images"
       :key="i"
       :class="$style['wrapper-img']"
       :style="{ '--pos-column': posArray[i][0], '--pos-row': posArray[i][1] }"
@@ -13,7 +13,7 @@
       <img
         ref="image"
         :src="media.url"
-        alt=""
+        :alt="media.alt"
         :class="$style.media"
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave"
@@ -25,13 +25,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
-// import type { PropType } from 'vue'
 import { ComponentWithCustomOptionsConstructor } from '~/utils/types/options'
+import { MediaContent } from '~/utils/block-parser'
 
-export interface LoaderImage {
-  url?: string | null
-  name?: string | null
-  slug?: string | null
+export interface LoaderImage extends MediaContent {
   pos?: LocationContent | null
 }
 
@@ -41,6 +38,7 @@ interface VHeroImageOptions {
   images: number
   emptyCenter: boolean
   emptyBorder: boolean
+  repeatTime: number
 }
 
 export default (
@@ -48,6 +46,7 @@ export default (
 ).extend({
   name: 'VHeroImage',
   images: 20,
+  repeatTime: 20,
   emptyCenter: true,
   emptyBorder: false,
   props: {
@@ -57,33 +56,32 @@ export default (
     return {
       intervalId: -1,
       posArray: [] as LocationContent[],
-      imageData: [] as LoaderImage[],
       gridSize: {} as Record<string, string>,
     }
   },
   computed: {
-    ...mapGetters(['allDataFetch']),
-    imageAndPosReady(): boolean {
-      return this.imageData.length > 0 && this.posArray.length > 0
+    ...mapGetters(['imageLoadingList', 'allDataFetch']),
+    images(): LoaderImage[] {
+      console.log(this.imageLoadingList)
+      return this.imageLoadingList
     },
   },
-  created() {
-    const self = this
-    const interval = setInterval(function () {
-      if (!self.allDataFetch) {
-        self.generatePositionArray(false)
-      } else {
-        clearInterval(interval)
-      }
-    }, 200)
-  },
   mounted() {
-    this.storeImageData()
     this.sizeGridItem()
+    let repeat = 0
+    const self = this
+
+    const interval = setInterval(function () {
+      if (repeat === self.$options.repeatTime || self.allDataFetch)
+        clearInterval(interval)
+      self.generatePositionArray(false)
+      repeat++
+    }, 200)
+
     window.addEventListener('keydown', this.generatePositionArray)
     window.addEventListener('resize', this.sizeGridItem)
   },
-  destroyed() {
+  beforeDestroy() {
     window.removeEventListener('keydown', this.generatePositionArray)
     window.removeEventListener('resize', this.sizeGridItem)
   },
@@ -96,19 +94,6 @@ export default (
           Math.floor((window.innerWidth - scrollBarWidth) / 10) + 'px',
         '--height-row': Math.floor(window.innerHeight / 7) + 'px',
       }
-    },
-    storeImageData() {
-      const medias = []
-      for (let i: number = 0; i < this.$options.images; i++) {
-        const decimal = i < 10 ? '0' : ''
-        const imgPath = require(`~/static/images/cul-${decimal}${i}.png`)
-        medias.push({
-          url: imgPath,
-          name: `loader image ${i}`,
-          slug: `illustration-personnage-${i}`,
-        })
-      }
-      this.imageData = medias
     },
     generatePositionArray(event: KeyboardEvent | false): void {
       if (event && (event.key === 'Tab' || event.key === ' ')) return
@@ -135,7 +120,7 @@ export default (
         }
       }
 
-      this.posArray = this.getRandomXItems(coordinate, this.imageData.length)
+      this.posArray = this.getRandomXItems(coordinate, this.images.length)
     },
     getRandomXItems(
       sourceArray: LocationContent[],
@@ -155,8 +140,8 @@ export default (
       if (url) image.src = url
     },
     getRandomImagePath(): string {
-      const index = Math.floor(Math.random() * this.imageData.length)
-      return this.imageData[index].url ?? ''
+      const index = Math.floor(Math.random() * this.images.length)
+      return this.images[index].url ?? ''
     },
     onMouseOver(event: Event): void {
       if (this.intervalId !== -1) {

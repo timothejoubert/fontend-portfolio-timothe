@@ -28,8 +28,6 @@ export const parseProjectData = (
 ): ProjectData[] => {
   const dataBaseContent = dataBaseResponse.results as NotionDatabaseContent[]
 
-  console.log(dataBaseContent, projectBlockResponse)
-
   const parsedProject = dataBaseContent.map((page) => {
     const properties = page.properties as NotionResponseProjectProperties
 

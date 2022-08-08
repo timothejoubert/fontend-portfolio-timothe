@@ -20,6 +20,26 @@ export const lerp = (a: number, b: number, n: number): number => {
   return (1 - n) * a + n * b
 }
 
+export const getRandomFloat = (min: number, max: number, decimals: number) => {
+  const str = (Math.random() * (max - min) + min).toFixed(decimals)
+
+  return parseFloat(str)
+}
+
+export interface imageSize {
+  width?: number | null
+  height?: number | null
+}
+
+export const getMeta = (url: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = () => reject()
+    img.src = url
+  })
+}
+
 export const slugify = (text: string | null | undefined): string => {
   return text
     ? text
@@ -53,7 +73,6 @@ export async function getWebResponseResult(
     return response
       .json()
       .then((data) => {
-        console.log(data)
         return data
       })
       .catch((err) => {

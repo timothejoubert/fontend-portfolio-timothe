@@ -3,7 +3,9 @@
   command = "nuxt generate"
   functions = "netlify/functions"
   publish = "dist"
-
+  from = "/old-path"
+  to = "/new-path"
+  status = 301
 # [[redirect]]
 #   from = "/api/*"
 #   to = "/.netlify/functions/:splat"

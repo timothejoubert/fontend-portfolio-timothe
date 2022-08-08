@@ -9,10 +9,6 @@ import MutationType from '~/types/mutation-type'
 export default {
   [MutationType.IMAGE_LOADING_LIST]: (state, value: PagesRetrieveResponse) =>
     (state.imageLoadingList = value),
-  [MutationType.INTRO_DONE]: (state, value: boolean) =>
-    (state.introDone = value),
-  [MutationType.API_DATA_LOADED]: (state, value: boolean) =>
-    (state.apiDataLoaded = value),
   [MutationType.GENERAL_DATA]: (state, value: DatabasesQueryResponse[]) =>
     (state.generalData = value),
   [MutationType.PROJECTS_DATA]: (state, value: DatabasesQueryResponse[]) =>

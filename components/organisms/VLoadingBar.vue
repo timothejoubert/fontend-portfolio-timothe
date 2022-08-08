@@ -3,7 +3,7 @@
     :class="[
       $style.root,
       beginAnimation && $style['root--visible'],
-      allDataFetch && percentage >= 100 && $style['root--done'],
+      allDataFetch && $style['root--done'],
     ]"
   >
     <div :class="$style.bar">
@@ -87,6 +87,7 @@ export default Vue.extend({
         } else {
           clearInterval(interval)
           this.percentage = 100
+          // this.$store.commit('allDataFetch', true)
         }
       }, 10)
     },

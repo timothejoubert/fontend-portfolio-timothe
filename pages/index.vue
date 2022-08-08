@@ -10,7 +10,6 @@
         :class="[
           $style.title,
           titleAnimationDone && !allDataFetch && $style['title--moving'],
-          allDataFetch && $style['title--visible'],
         ]"
         class="text-h1"
       >
@@ -19,7 +18,10 @@
 
       <v-loading-bar :begin-animation="titleAnimationDone" />
 
-      <v-hero-image v-if="titleAnimationDone" :class="$style['image-header']" />
+      <v-hero-image
+        :begin-animation="titleAnimationDone"
+        :class="$style['image-header']"
+      />
 
       <h2 ref="intro" :class="$style['text-intro']" class="text-h2">
         <strong>Illustratrice curieuse du corps humain,</strong><br />
@@ -53,17 +55,7 @@ import VListProject from '~/components/molecules/VListProject.vue'
 import VLoadingBar from '~/components/organisms/VLoadingBar.vue'
 import VHeroImage from '~/components/organisms/VHeroImage.vue'
 import VSeeMore from '~/components/molecules/VSeeMore.vue'
-import {
-  parseLoadingImage,
-  parseProjectData,
-} from '~/utils/parse-database-properties'
 import { ComponentWithCustomOptionsConstructor } from '~/utils/types/options'
-import {
-  DataBaseResponse,
-  NotionBlockObject,
-  NotionDatabaseContent,
-} from '~/types/api-type'
-import { getWebResponseResult } from '~/utils/functions'
 
 interface VHomeOptions {
   letterIntervalTitle: number
@@ -92,89 +84,6 @@ export default (
       titleAnimationDone: false,
     }
   },
-  /*  async fetch() {
-    const pageLoaderImg = '1ebb67c36ee14fab80166d3a126908c7'
-    const databaseProjectListId = '9630213c155243d2833732cb91e63951'
-    const databaseMoreId = 'adaa0f3eb6ac464c8281820d1979ec25'
-    const databaseGeneralId = 'fd697b929bf8453395b6d335b7ef110b'
-    const databaseAboutId = '36bf0a170d624dd78cbca381acbf8879'
-
-    const queryPageBlocks = '/.netlify/functions/getPageBlocks?pageId='
-    const queryDatabaseContent =
-      '/.netlify/functions/getDatabasePages?databaseId='
-
-    this.$store.commit('apiDataLoaded', false)
-    this.$store.commit('introDone', false)
-
-    const imageLoadingPromise = await getWebResponseResult(
-      queryPageBlocks,
-      pageLoaderImg
-    )
-
-    this.$store.commit(
-      'imageLoadingList',
-      imageLoadingPromise,
-      parseLoadingImage(imageLoadingPromise)
-    )
-    console.log('imageLoading data: ', parseLoadingImage(imageLoadingPromise))
-
-    //
-    // projects
-    //
-    const projectListPromise = await getWebResponseResult(
-      queryDatabaseContent,
-      databaseProjectListId
-    )
-
-    const getProjectPageIdList: string[] = (
-      projectListPromise.results as NotionDatabaseContent[]
-    ).map((page) => page.id)
-
-    const projectChildren = (await Promise.all(
-      getProjectPageIdList.map(async (id) => {
-        return await getWebResponseResult(queryPageBlocks, id)
-      })
-    )) as NotionBlockObject[]
-
-    console.log(
-      'projectPage properties promise ',
-      projectListPromise,
-      projectChildren
-    )
-
-    this.$store.commit(
-      'projectsData',
-      parseProjectData(projectListPromise, projectChildren)
-    )
-
-    //
-    // general data
-    //
-    // const generalDataPromise = await getWebResponseResult(
-    //   queryDatabaseContent + databaseGeneralId
-    // )
-    //
-    // this.$store.commit('generalData', generalDataPromise)
-    // console.log('general data: ', generalDataPromise)
-    //
-    // //
-    // // about data
-    // //
-    // const aboutDataPromise = await getWebResponseResult(
-    //   queryDatabaseContent + databaseAboutId
-    // )
-    // this.$store.commit('aboutData', aboutDataPromise)
-    // console.log('about data: ', aboutDataPromise)
-
-    //
-    // all data fetch
-    //
-    this.$store.commit('allDataFetch', true)
-    window.setTimeout(() => {
-      // this.$store.commit('allDataFetch', true)
-      console.log('all data fetch: ')
-    }, 2000)
-  }, */
   head() {
     return {
       titleTemplate: 'Accueil - Justine Saez', // '%s - Justine Saez',
@@ -183,15 +92,29 @@ export default (
           hid: 'description',
           name: 'description',
           content:
-            'Justine Saez est une illustratrice Lyonnaise passionnée par le corps de la femme. Je me spécialise dans le dessin au crayon mettant en scène des situations quotidiennes de manière humoristique. Dans une démarches autant artistique que de design, je cherche à mettre en avant les émotions via le dessin traditionnel.',
+            'Justine Saez est une illustratrice Lyonnaise passionnée par le corps de la femme. Je me spécialise dans le dessin au crayon mettant en scène des situations quotidiennes de manière humoristique. Je cherche à mettre en avant les émotions via le dessin traditionnel.',
         },
       ],
     }
   },
   computed: {
-    ...mapGetters(['introDone', 'projectsData', 'generalData', 'allDataFetch']),
+    ...mapGetters(['projectsData', 'generalData', 'allDataFetch']),
     rootClass(): (string | undefined | boolean)[] {
-      return [this.$style.root, this.allDataFetch && this.$style['root--done']]
+      console.log(
+        'anim title ',
+        this.titleAnimationDone,
+        'projects data ',
+        this.projectsData,
+        'general data ',
+        this.generalData,
+        'all data ',
+        this.allDataFetch
+      )
+      return [
+        this.$style.root,
+        this.titleAnimationDone && this.$style['root--title-done'],
+        this.allDataFetch && this.$style['root--loading-done'],
+      ]
     },
   },
   activated() {
@@ -199,6 +122,7 @@ export default (
     if (this.$fetchState.timestamp <= Date.now() - 25000) this.$fetch()
   },
   mounted() {
+    this.$store.commit('allDataFetch', true)
     this.parseTitle()
     this.parseIntro()
     // loader page
@@ -236,7 +160,7 @@ export default (
           wordTag.appendChild(letterTag)
         })
       })
-      element.classList.add(this.$style['title--active'])
+      element.classList.add(this.$style['title--visible'])
 
       window.setTimeout(() => {
         this.titleAnimationDone = true
@@ -299,25 +223,23 @@ export default (
   height: 100vh;
   overflow: hidden;
 
-  .root--done & {
+  .root--loading-done & {
     overflow: inherit;
   }
 }
 
 .title {
   text-align: center;
-  opacity: 0;
-  //font-size: 13rem;
   font-size: 13vw;
   line-height: 0.9;
-  //z-index: 10;
-  transition: opacity 200ms;
+  visibility: hidden;
 
   .letter {
     transition: all 500ms;
   }
-  &--active {
-    opacity: 1;
+
+  .root:not(.root--loading-done) &--visible {
+    visibility: visible;
 
     .letter {
       display: inline-block;
@@ -329,7 +251,7 @@ export default (
   }
 
   &--moving {
-    opacity: 1;
+    visibility: visible;
 
     .letter {
       display: inline-block;
@@ -337,8 +259,13 @@ export default (
       animation: moving 0.8s var(--delay) infinite steps(6, jump-none);
     }
   }
-  &--visible {
-    opacity: 1;
+
+  .root--loading-done & {
+    visibility: visible;
+
+    .letter {
+      opacity: 1;
+    }
   }
 }
 
@@ -392,7 +319,7 @@ export default (
   transition: background-color 300ms;
   padding: 8px 15px;
 
-  .root--done & {
+  .root--loading-done & {
     opacity: 1;
     background-color: color(light-yellow);
   }
@@ -414,7 +341,7 @@ export default (
       opacity 300ms var(--delay) ease-in-out;
     display: inline-block;
 
-    .root--done & {
+    .root--loading-done & {
       transform: translateY(0) rotate(0);
       opacity: 1;
       visibility: inherit;
@@ -436,7 +363,7 @@ export default (
   transform: translateX(calc(100% + 20px));
   transition: transform 700ms ease(out-quart) 800ms;
 
-  .root--done & {
+  .root--loading-done & {
     transform: translateX(0);
     visibility: inherit;
   }

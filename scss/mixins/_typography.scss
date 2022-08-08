@@ -57,7 +57,7 @@
   line-height: 1;
   font-weight: 400;
   opacity: 0.7;
-  color: color(light-yellow)
+  color: color(light-yellow);
 }
 
 @mixin tag-m {
@@ -65,6 +65,11 @@
   font-size: 13px;
   line-height: 1;
   font-weight: 200;
+  background-color: color(main-orange);
+  color: color(white);
+  border-radius: 20px;
+  padding: 6px 19px;
+
 }
 
 @mixin body-l {
