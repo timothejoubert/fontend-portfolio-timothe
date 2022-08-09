@@ -9,7 +9,7 @@
         v-for="type in projectData.type.options"
         :key="type.id"
         :class="$style.type"
-        class="tag-m"
+        class="tag-s"
         >{{ type.name }}</span
       >
     </div>
@@ -37,8 +37,6 @@ import Vue from 'vue'
 import type { PropType } from 'vue'
 import { ProjectData } from '~/utils/api/notion-custom-type'
 import VRichText from '~/components/atoms/VRichText.vue'
-import { MediaContent, parseMedia, parseTitle } from '~/utils/block-parser'
-import { NotionPropertiesTitle } from '~/utils/api/notion-block-type'
 import { getMeta } from '~/utils/functions'
 
 export default Vue.extend({
@@ -64,17 +62,17 @@ export default Vue.extend({
 .root {
   grid-column: 2 / span 4;
   padding: 25px;
-  margin-bottom: 160px;
+  margin-bottom: 400px;
   display: block;
   background-color: color(white);
-  transition: transform 400ms;
+  //transition: transform 400ms;
 
   &--odd {
     grid-column: 7 / span 5;
   }
 
   &:hover {
-    transform: rotate(0) !important;
+    //transform: rotate(0) !important;
   }
 }
 
@@ -88,6 +86,11 @@ export default Vue.extend({
 }
 
 .type {
+  background-color: color(main-orange);
+  color: color(light-yellow);
+  border-radius: 20px;
+  padding: 6px 15px;
+
   &:not(:last-child) {
     margin-right: 15px;
   }
@@ -96,6 +99,7 @@ export default Vue.extend({
 .wrapper-media,
 .media {
   width: 100%;
+  background-color: color(grey-50);
 }
 
 .media {

@@ -1,8 +1,12 @@
 <template>
   <span v-if="elements" :class="$style.root" class="text-h2">
-    <component v-for="(el, i) in elements" :key="i" v-bind="el">{{
-      el.content
-    }}</component>
+    <component
+      :is="el.component"
+      v-for="(el, i) in elements"
+      :key="i"
+      v-bind="el"
+      >{{ el.content }}</component
+    >
   </span>
 </template>
 
@@ -16,7 +20,7 @@ interface ColorStyle {
 }
 
 interface PropsContent {
-  is: string
+  component: string
   content: string | null
   class?: string | null
   href?: string | null
@@ -29,14 +33,16 @@ type PropertiesContent = 'bold' | 'code' | 'color' | 'italic' | 'strikethrough'
 export default Vue.extend({
   name: 'VRichText',
   props: {
-    content: {} as PropType<NotionRichText | undefined | null>,
+    content: {
+      type: Object as PropType<NotionRichText>,
+      required: true,
+    },
   },
   computed: {
-    elements(): PropsContent[] | undefined {
-      if (!this.content) return
-      return this.content?.rich_text?.map((el) => {
+    elements(): PropsContent[] {
+      return this.content.rich_text?.map((el) => {
         const link = el.href && el.href[0] !== '/' ? el.href : null
-        const is = link
+        const component = link
           ? 'a'
           : el.annotations.code === true
           ? 'code'
@@ -64,7 +70,7 @@ export default Vue.extend({
             classNames += properties + ' '
         }
         return {
-          is,
+          component,
           content: el.plain_text,
           style: colorStyle,
           class: classNames,
@@ -79,6 +85,8 @@ export default Vue.extend({
 <style lang="scss" module>
 .root {
   position: relative;
+  white-space: break-spaces;
+
   strong {
     font-weight: 700;
   }

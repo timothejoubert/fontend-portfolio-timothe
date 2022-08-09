@@ -87,11 +87,11 @@ export default (
   },
   methods: {
     sizeGridItem() {
-      const scrollBarWidth =
-        window.innerWidth - document.documentElement.clientWidth || 15
+      const containerWidth =
+        (this.$el as Element).clientWidth || window.innerWidth - 80
+      console.log('width header', containerWidth, this.$el)
       this.gridSize = {
-        '--width-column':
-          Math.floor((window.innerWidth - scrollBarWidth) / 10) + 'px',
+        '--width-column': Math.floor(containerWidth / 10) + 'px',
         '--height-row': Math.floor(window.innerHeight / 7) + 'px',
       }
     },

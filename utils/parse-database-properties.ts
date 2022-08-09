@@ -45,6 +45,7 @@ export const parseProjectData = (
       creationDate: page?.date,
       type: parseSelect(properties?.type, 'type'),
       shortDescription: properties?.['description courte'],
+      description: properties?.['description longue'],
       date: parseNumber(properties?.['année']),
       thumbnail: properties?.thumbnail && parseMedia(properties.thumbnail)?.[0],
       externalLink: parseLink(properties?.['lien externe']),

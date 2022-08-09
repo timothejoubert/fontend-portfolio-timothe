@@ -54,7 +54,7 @@
             v-for="(experience, i) in about.experiences.options"
             :key="`${i}-${experience.id}`"
             :class="$style['section__list__item']"
-            class="body-l"
+            class="tag-l"
           >
             {{ experience.name }}
           </li>
@@ -77,7 +77,7 @@
             v-for="(skill, i) in about.skills.options"
             :key="`${i}-${skill.id}`"
             :class="$style['section__list__item']"
-            class="body-s"
+            class="tag-m"
           >
             {{ skill.name }}
           </li>
@@ -123,6 +123,7 @@ export default Vue.extend({
 
 <style lang="scss" module>
 .root {
+  top: 0;
   position: fixed;
   display: flex;
   align-items: center;
@@ -226,6 +227,7 @@ export default Vue.extend({
 
 .section__list__item {
   margin-top: 18px;
+  color: color(light-yellow);
 
   .section--horizontal &:not(:last-child) {
     margin-right: 40px;

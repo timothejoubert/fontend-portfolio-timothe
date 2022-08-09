@@ -9823,6 +9823,13 @@ locate-path@^7.0.0, locate-path@^7.1.0:
   dependencies:
     p-locate "^6.0.0"
 
+locomotive-scroll@3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/locomotive-scroll/-/locomotive-scroll-3.0.4.tgz#41303c6b2f7ba1c53d4239b01392289ff28e9af0"
+  integrity sha512-yvIRcoZQ48v+64yJDAh71qGfNyUOjkyfR6coaR9rSOiq1h9Oz5DwQZxa9rmQc/u64R2L/m94R2AJXHIU79z5Zw==
+  dependencies:
+    virtual-scroll "git+https://github.com/ayamflow/virtual-scroll.git"
+
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
@@ -14956,6 +14963,11 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha512-qsdtZH+vMoCARQtyod4imc2nIJwg9Cc7lPRrw9CzF8ZKR0khdr8+2nX80PBhET3tcyTtJDxAffGh2rXH4tyU8A==
 
+tiny-emitter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
+  integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
+
 tmp-promise@^3.0.2, tmp-promise@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/tmp-promise/-/tmp-promise-3.0.3.tgz#60a1a1cc98c988674fcbfd23b6e3367bdeac4ce7"
@@ -15598,6 +15610,12 @@ vendors@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/vendors/-/vendors-1.0.4.tgz#e2b800a53e7a29b93506c3cf41100d16c4c4ad8e"
   integrity sha512-/juG65kTL4Cy2su4P8HjtkTxk6VmJDiOPBufWniqQ6wknac6jNiXS9vU+hO3wgusiyqWlzTbVHi0dyJqRONg3w==
+
+"virtual-scroll@git+https://github.com/ayamflow/virtual-scroll.git":
+  version "2.2.1"
+  resolved "git+https://github.com/ayamflow/virtual-scroll.git#89601f16532efc0bd3a8b650dd7ed89532b010b9"
+  dependencies:
+    tiny-emitter "^2.1.0"
 
 vm-browserify@^1.0.1:
   version "1.1.2"

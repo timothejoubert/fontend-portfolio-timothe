@@ -12,10 +12,11 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
-    "@nuxt/image": "^0.6.2",
     "@notionhq/client": "^0.3.1",
+    "@nuxt/image": "^0.6.2",
     "@rezo-zero/intervention-request-provider": "^0.3.0",
     "core-js": "^3.15.1",
+    "locomotive-scroll": "3.0.4",
     "netlify-cli": "^10.6.2",
     "nuxt": "^2.15.7"
   },

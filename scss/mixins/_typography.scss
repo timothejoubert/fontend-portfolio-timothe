@@ -60,24 +60,33 @@
   color: color(light-yellow);
 }
 
+
+@mixin tag-l {
+  @include noi;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 600;
+}
+
 @mixin tag-m {
   @include noi;
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1;
-  font-weight: 200;
-  background-color: color(main-orange);
-  color: color(white);
-  border-radius: 20px;
-  padding: 6px 19px;
+  font-weight: 600;
+}
 
+@mixin tag-s {
+  @include noi;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 400;
 }
 
 @mixin body-l {
   @include noi;
-  font-size: 21px;
+  font-size: 24px;
   line-height: 1;
   font-weight: 600;
-  color: color(light-yellow)
 }
 
 @mixin body-s {
@@ -85,5 +94,4 @@
   font-size: 18px;
   line-height: 1;
   font-weight: 300;
-  color: color(light-yellow)
 }

@@ -28,6 +28,7 @@ export interface NotionResponseProjectProperties {
   Nom: NotionPropertiesTitle | null
   type?: NotionMultiSelectProperty | null
   'description courte'?: NotionRichText | null
+  'description longue'?: NotionRichText | null
   année?: NotionNumberContent | null
   thumbnail?: NotionFilesContent | null
   'lien externe'?: NotionLinkContent | null
@@ -49,9 +50,10 @@ export interface NotionResponseAboutProperties {
 // PARSED DATA
 export interface ProjectData extends PageData {
   slug: string
-  thumbnail?: MediaContent[] | null
+  thumbnail?: MediaContent | null
   date?: number | null
   shortDescription?: NotionRichText | null
+  description?: NotionRichText | null
   type?: SelectContentParsed | null
   externalLink?: string | null
   googleDesc?: NotionRichText | null

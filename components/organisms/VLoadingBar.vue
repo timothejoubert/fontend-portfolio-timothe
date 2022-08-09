@@ -87,7 +87,7 @@ export default Vue.extend({
         } else {
           clearInterval(interval)
           this.percentage = 100
-          // this.$store.commit('allDataFetch', true)
+          this.$store.commit('allDataFetch', true)
         }
       }, 10)
     },

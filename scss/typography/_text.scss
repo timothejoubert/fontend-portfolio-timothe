@@ -31,14 +31,22 @@
 }
 
 
-.tag-m {
-  @include tag-m;
+.tag-l {
+  @include tag-l;
 }
+
+.tag-m {
+   @include tag-m;
+ }
+
+.tag-s {
+  @include tag-s;
+}
+
 
 .body-l {
   @include body-l;
 }
-
 .body-s {
   @include body-s;
 }

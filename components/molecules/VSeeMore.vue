@@ -1,6 +1,6 @@
 <template>
-  <section :class="$style.root">
-    <nuxt-link to="/VMoreProject">
+  <section id="more" :class="$style.root">
+    <nuxt-link to="/VMoreProject" :class="$style.link">
       <div
         v-for="i in 6"
         :key="i"
@@ -11,9 +11,6 @@
           class="text-h1"
           :data-text="text"
           :class="$style['text']"
-          :style="{
-            transform: `translateX(${i % 2 ? '' : '-'}${translateValue}px)`,
-          }"
         >
           {{ text }}
         </h1>
@@ -38,10 +35,10 @@ export default Vue.extend({
     }
   },
   mounted() {
-    window.addEventListener('scroll', this.marqueeMove)
+    // window.addEventListener('scroll', this.marqueeMove)
   },
   destroyed() {
-    window.removeEventListener('scroll', this.marqueeMove)
+    // window.removeEventListener('scroll', this.marqueeMove)
   },
   methods: {
     marqueeMove() {
@@ -69,9 +66,14 @@ export default Vue.extend({
 
 <style lang="scss" module>
 .root {
-  margin: 300px 0 200vh;
+  padding: 350px 0;
+  overflow: hidden;
+}
+
+.link {
+  display: block;
   transform-origin: center center;
-  transform: rotate(-14deg);
+  //transform: rotate(-14deg);
 }
 
 .line {
@@ -95,7 +97,7 @@ export default Vue.extend({
   }
 
   .line--odd & {
-    left: -300px;
+    //left: -300px;
   }
 }
 </style>
