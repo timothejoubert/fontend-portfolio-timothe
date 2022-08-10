@@ -31,10 +31,12 @@ const actions: ActionTree<RootState, RootState> = {
     const databaseGeneralId = 'fd697b929bf8453395b6d335b7ef110b'
     const databaseAboutId = '36bf0a170d624dd78cbca381acbf8879'
 
-    const baseURL =
+    /*    const baseURL =
       env?.NODE_ENV !== 'production'
         ? 'http://localhost:8888/.netlify/functions/'
-        : 'https://justine-saez.netlify.app/.netlify/functions/'
+        : 'https://justine-saez.netlify.app/.netlify/functions/' */
+
+    const baseURL = 'https://justine-saez.netlify.app/.netlify/functions/'
     // process.env.BASE_URL + process.env.API_URL
     // (env?.NODE_ENV !== 'production' ? 'http://localhost:8888' : '') +
 
