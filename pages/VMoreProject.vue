@@ -1,7 +1,6 @@
 <template>
   <div>
-    <nuxt-link to="/">Retour home</nuxt-link>
-    <h1>More project</h1>
+    <h1 class="text-h1">More project</h1>
   </div>
 </template>
 
@@ -10,12 +9,12 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'MoreProject',
-  mounted() {
+  /*  mounted() {
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
       setTimeout(() => this.$nuxt.$loading.finish(), 2000)
     })
-  },
+  }, */
 })
 </script>
 

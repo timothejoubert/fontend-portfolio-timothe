@@ -7,7 +7,7 @@
     ]"
   >
     <header>
-      <h1>layout default</h1>
+      <nuxt-link to="/"><h1 class="text-h1">Justine saez</h1></nuxt-link>
     </header>
 
     <button
