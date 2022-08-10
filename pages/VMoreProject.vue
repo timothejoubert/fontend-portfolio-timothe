@@ -8,7 +8,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'MoreProject',
+  name: 'VMoreProject',
   /*  mounted() {
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
