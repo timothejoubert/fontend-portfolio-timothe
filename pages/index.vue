@@ -18,6 +18,8 @@ import VListProject from '~/components/molecules/VListProject.vue'
 import VSeeMore from '~/components/molecules/VSeeMore.vue'
 import { ComponentWithCustomOptionsConstructor } from '~/utils/types/options'
 
+// Vue.prototype.$lazyLoad = true
+
 interface VHomeOptions {
   letterIntervalTitle: number
   delayStartIntroText: number
@@ -43,7 +45,7 @@ export default (
   },
   head() {
     return {
-      titleTemplate: 'Accueil - Justine Saez', // '%s - Justine Saez',
+      titleTemplate: 'Justine Saez | portfolio', // '%s - Justine Saez',
       meta: [
         {
           hid: 'description',

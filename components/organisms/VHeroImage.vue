@@ -62,7 +62,7 @@ export default (
   computed: {
     ...mapGetters(['imageLoadingList', 'allDataFetch']),
     images(): LoaderImage[] {
-      console.log(this.imageLoadingList)
+      // console.log(this.imageLoadingList)
       return this.imageLoadingList
     },
   },

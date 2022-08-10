@@ -9,6 +9,8 @@ export default {
   target: 'static',
   // ssr: true,
 
+  dev: process.env.NODE_ENV !== 'production',
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: pkg.name,
@@ -34,6 +36,7 @@ export default {
   css: ['@/scss/main'],
 
   // https://github.com/nuxt-community/style-resources-module#setup
+  // share files in all project
   styleResources: {
     scss: ['@/scss/shared.scss'],
     hoistUseStatements: true,
@@ -42,7 +45,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     // '~/plugins/api-client.js'
-    '~/plugins/locomotive.client.js',
+    '~/plugins/vuePrlx.client.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -63,7 +66,13 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: [
+    // https://sitemap.nuxtjs.org/guide/setup
+    '@nuxtjs/sitemap',
+  ],
+  sitemap: {
+    hostname: 'https://justine-saez.netlify.app',
+  },
 
   loading: '@/components/organisms/VLoadingPage.vue',
   /*   loading: {

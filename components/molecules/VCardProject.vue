@@ -19,6 +19,7 @@
         :class="$style.media"
         :src="projectData.thumbnail.url"
         :alt="projectData.thumbnail.name"
+        :lazy="isLazyLoad"
       />
     </div>
     <h1 v-if="projectData.name" class="title-card" :class="$style.title">
@@ -37,7 +38,9 @@ import Vue from 'vue'
 import type { PropType } from 'vue'
 import { ProjectData } from '~/utils/api/notion-custom-type'
 import VRichText from '~/components/atoms/VRichText.vue'
-import { getMeta } from '~/utils/functions'
+// import { getMeta } from '~/utils/functions'
+import toBoolean from '~/utils/to-boolean'
+import GeneralsConst from '~/constants/generals'
 
 export default Vue.extend({
   name: 'VCardProject',
@@ -49,12 +52,17 @@ export default Vue.extend({
       required: true,
     },
   },
-  async mounted() {
+  computed: {
+    isLazyLoad(): boolean | string {
+      return !toBoolean(GeneralsConst.LAZY_LOAD_IMAGE) && 'false'
+    },
+  },
+  /*  async mounted() {
     const img = await (this.projectData?.thumbnail?.url &&
       getMeta(this.projectData.thumbnail.url))
 
     console.log(img?.width, img?.height, 'ratio ', img?.width / img?.height)
-  },
+  }, */
 })
 </script>
 
@@ -62,7 +70,7 @@ export default Vue.extend({
 .root {
   grid-column: 2 / span 4;
   padding: 25px;
-  margin-bottom: 400px;
+  margin-bottom: 600px;
   display: block;
   background-color: color(white);
   //transition: transform 400ms;

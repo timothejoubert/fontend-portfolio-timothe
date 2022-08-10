@@ -41,6 +41,19 @@ export default Vue.extend({
       aboutOpen: false,
     }
   },
+  head() {
+    return {
+      titleTemplate: 'Justine Saez | portfolio', // '%s - Justine Saez',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'Justine Saez est une illustratrice Lyonnaise passionnée par le corps de la femme. Je me spécialise dans le dessin au crayon mettant en scène des situations quotidiennes de manière humoristique. Je cherche à mettre en avant les émotions via le dessin traditionnel.',
+        },
+      ],
+    }
+  },
   computed: {
     ...mapGetters(['allDataFetch']),
   },

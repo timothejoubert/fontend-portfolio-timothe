@@ -1,41 +1,38 @@
 <template>
-  <div>
-    <nuxt-link to="/">Retour accueil</nuxt-link>
-    <section :class="$style.project">
-      <div :class="$style.head">
-        <v-rich-text
-          v-if="project.description"
-          :class="$style.description"
-          class="body-l"
-          :content="project.description"
+  <section :class="$style.project">
+    <div :class="$style.head">
+      <v-rich-text
+        v-if="project.description"
+        :class="$style.description"
+        class="body-l"
+        :content="project.description"
+      />
+      <div v-if="mainTag" :class="$style['main-tag']" class="tag-m">
+        {{ mainTag.name }}
+      </div>
+      <h1 class="text-h1" :class="$style.name">{{ project.name }}</h1>
+      <div :class="$style['thumbnail-wrapper']">
+        <img
+          v-if="project.thumbnail"
+          :class="$style.thumbnail"
+          :src="project.thumbnail.url"
+          :alt="project.thumbnail.name"
         />
-        <div v-if="mainTag" :class="$style['main-tag']" class="tag-m">
-          {{ mainTag.name }}
-        </div>
-        <h1 class="text-h1" :class="$style.name">{{ project.name }}</h1>
-        <div :class="$style['thumbnail-wrapper']">
-          <img
-            v-if="project.thumbnail"
-            :class="$style.thumbnail"
-            :src="project.thumbnail.url"
-            :alt="project.thumbnail.name"
-          />
-        </div>
       </div>
+    </div>
 
-      <div v-if="!!carouselMedia?.length" :class="$style['image-list']">
-        <div :class="$style['container-images']">
-          <div
-            v-for="(img, i) in carouselMedia"
-            :key="img.alt + '-' + i"
-            :class="$style['wrapper-image']"
-          >
-            <img :src="img.url" :alt="img.name" :class="$style.image" />
-          </div>
+    <div v-if="!!carouselMedia?.length" :class="$style['image-list']">
+      <div :class="$style['container-images']">
+        <div
+          v-for="(img, i) in carouselMedia"
+          :key="img.alt + '-' + i"
+          :class="$style['wrapper-image']"
+        >
+          <img :src="img.url" :alt="img.name" :class="$style.image" />
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts">

@@ -4,6 +4,11 @@
       <div
         v-for="i in 6"
         :key="i"
+        v-prlx="{
+          custom: true,
+          limit: { min: 0, max: 100 },
+          fromBottom: true,
+        }"
         :class="[$style.line, i % 2 && $style['line--odd']]"
       >
         <h1
@@ -66,17 +71,28 @@ export default Vue.extend({
 
 <style lang="scss" module>
 .root {
-  padding: 350px 0;
+  padding: 350px 0 100vh 0;
   overflow: hidden;
 }
 
 .link {
-  display: block;
+  display: flex;
+  flex-direction: column;
   transform-origin: center center;
   //transform: rotate(-14deg);
 }
 
 .line {
+  transition: transform 400ms ease-out;
+
+  &:not(#{&}--odd) {
+    transform: translate3d(calc(var(--parallax-value) * -0.6vw), 0, 0);
+  }
+  &--odd {
+    align-self: flex-end;
+    transform: translate3d(calc(var(--parallax-value) * 0.6vw), 0, 0);
+  }
+
   &--odd {
     opacity: 0.22;
   }

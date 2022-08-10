@@ -76,7 +76,7 @@ export async function getWebResponseResult(
         return data
       })
       .catch((err) => {
-        console.log(err)
+        console.log('error when fetch webResponse', err)
       })
   })
 }
