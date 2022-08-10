@@ -21,11 +21,16 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import type { VueConstructor } from 'vue'
 import { mapGetters } from 'vuex'
 import VCardProject from '~/components/molecules/VCardProject.vue'
 import { getRandomFloat } from '~/utils/functions'
 
-export default Vue.extend({
+interface Component {
+  locomotiveScroll?: any
+}
+
+export default (Vue as VueConstructor<Vue & Component>).extend({
   name: 'VListProject',
   components: { VCardProject },
   data() {
@@ -50,6 +55,7 @@ export default Vue.extend({
   },
   methods: {
     initLocomotive() {
+      // eslint-disable-next-line new-cap
       this.lmS = new this.locomotiveScroll({
         el: document.querySelector('#main'),
         smooth: true,
