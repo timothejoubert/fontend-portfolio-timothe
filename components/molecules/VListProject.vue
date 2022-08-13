@@ -65,7 +65,7 @@ export default (Vue as VueConstructor<Vue & Component>).extend({
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   align-items: center;
-  column-count: 2;
+  //column-count: 2;
 }
 .card {
   display: block;

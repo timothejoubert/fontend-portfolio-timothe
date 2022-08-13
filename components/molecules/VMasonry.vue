@@ -56,6 +56,7 @@ export default (Vue as VueConstructor<MasonryComponent>).extend({
   },
   mounted() {
     if (this.enabled) {
+      console.log('enbale masonry')
       this.checkIfChildrenAreReady()
       this.addListeners()
       this.$el.classList.add(this.$style.root)
@@ -83,17 +84,12 @@ export default (Vue as VueConstructor<MasonryComponent>).extend({
       this.items.push(item)
     },
     checkIfChildrenAreReady(): void {
-      const instanceItems = this.items.filter(
-        (item) => item.$el instanceof HTMLElement
-      )
-      this.isItemReady =
-        !!this.$slots.default && this.$children.length === instanceItems.length
+      const instanceItems = this.items.filter((item) => item.$el instanceof HTMLElement)
+      this.isItemReady = !!this.$slots.default && this.$children.length === instanceItems.length
 
       if (!this.resizeObserver) {
         this.resizeObserver = new ResizeObserver(this.onResize)
-        instanceItems.forEach((element) =>
-          this.resizeObserver?.observe(element.$el)
-        )
+        instanceItems.forEach((element) => this.resizeObserver?.observe(element.$el))
       }
 
       if (this.isItemReady) {
@@ -132,9 +128,7 @@ export default (Vue as VueConstructor<MasonryComponent>).extend({
       const container = this.$el as HTMLElement
       const grid: MasonryItem[][] = []
       const items = this.items.filter((item) => item.$el instanceof HTMLElement)
-      const rects: DOMRect[] = items.map((item) =>
-        item.$el.getBoundingClientRect()
-      )
+      const rects: DOMRect[] = items.map((item) => item.$el.getBoundingClientRect())
       const columns = [...new Set(rects.map((rect) => rect.x))]
       const numberColumns = columns.length
       const isCSSGrid = getComputedStyle(container).display === 'grid'
@@ -162,8 +156,7 @@ export default (Vue as VueConstructor<MasonryComponent>).extend({
         const previousItem = grid[rowIndex - 1]?.[columnIndex]
         const y = item.fixed
           ? window.scrollY + rect.y
-          : (previousItem ? previousItem.y + previousItem.height : 0) +
-            marginTop
+          : (previousItem ? previousItem.y + previousItem.height : 0) + marginTop
 
         row[columnIndex] = { y, height: rect.height }
 

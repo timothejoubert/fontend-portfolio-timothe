@@ -6,24 +6,35 @@ const server = {
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  // target: 'static',
   // ssr: true,
 
   dev: process.env.NODE_ENV !== 'production',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: pkg.name,
     htmlAttrs: {
       lang: 'fr',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description },
+      {
+        hid: 'description',
+        name: 'description',
+        content: '',
+      },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: 'google-site-verification', content: 'o5sD6l8eVydQy3O8y0D3ETIcgafZZZwbNwKjh_1qimc' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      // favicon
+      { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon/apple-touch-icon.png' },
+      { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon/favicon-32x32.png' },
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon/favicon-16x16.png' },
+      { rel: 'manifest', href: '/favicon/site.webmanifest' },
+      { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#5bbad5' },
+    ],
   },
 
   serverMiddleware: [
@@ -63,12 +74,18 @@ export default {
     '@nuxt/postcss8',
     // https://github.com/nuxt-community/style-resources-module#setup
     '@nuxtjs/style-resources',
+    // https://vueuse.org/guide/#installation
+    '@vueuse/nuxt',
   ],
+  image: {
+    domains: ['notion-static.com'],
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://sitemap.nuxtjs.org/guide/setup
     '@nuxtjs/sitemap',
+    '@nuxt/image',
   ],
   sitemap: {
     hostname: 'https://justine-saez.netlify.app',

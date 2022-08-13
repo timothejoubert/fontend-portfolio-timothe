@@ -11,12 +11,7 @@
         }"
         :class="[$style.line, i % 2 && $style['line--odd']]"
       >
-        <h1
-          ref="line"
-          class="text-h1"
-          :data-text="text"
-          :class="$style['text']"
-        >
+        <h1 ref="line" class="text-h1" :data-text="text" :class="$style['text']">
           {{ text }}
         </h1>
       </div>
@@ -52,9 +47,7 @@ export default Vue.extend({
       const isOffView = targetBox.top + targetBox.height > 0
 
       if (!isInStartView || !isOffView) return
-      const scrollVal = Math.floor(
-        mapRange(targetBox.top, window.innerHeight, -window.innerHeight, 0, 100)
-      )
+      const scrollVal = Math.floor(mapRange(targetBox.top, window.innerHeight, -window.innerHeight, 0, 100))
       // console.log(scrollVal)
       this.translateCalc(scrollVal)
     },
@@ -71,7 +64,11 @@ export default Vue.extend({
 
 <style lang="scss" module>
 .root {
-  padding: 350px 0 100vh 0;
+  width: calc(100% + var(--padding-border) * 2);
+  z-index: 10;
+  left: -40px;
+  position: relative;
+  padding: 500px 0 100vh 0;
   overflow: hidden;
 }
 
@@ -79,11 +76,11 @@ export default Vue.extend({
   display: flex;
   flex-direction: column;
   transform-origin: center center;
-  //transform: rotate(-14deg);
+  transform: rotate(-14deg);
 }
 
 .line {
-  transition: transform 400ms ease-out;
+  transition: transform 0.1s ease-out 0s;
 
   &:not(#{&}--odd) {
     transform: translate3d(calc(var(--parallax-value) * -0.6vw), 0, 0);

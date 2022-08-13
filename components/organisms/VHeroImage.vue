@@ -1,24 +1,27 @@
 <template>
   <div
-    v-if="!!images.length && !!posArray.length"
+    ref="container"
     :class="[$style.hero__cul, allDataFetch && $style['hero__cul--finished']]"
     :style="gridSize"
   >
-    <div
-      v-for="(media, i) in images"
-      :key="i"
-      :class="$style['wrapper-img']"
-      :style="{ '--pos-column': posArray[i][0], '--pos-row': posArray[i][1] }"
-    >
-      <img
-        ref="image"
-        :src="media.url"
-        :alt="media.alt"
-        :class="$style.media"
-        @mouseover="onMouseOver"
-        @mouseleave="onMouseLeave"
-      />
-    </div>
+    <template v-if="!!images.length && !!posArray.length">
+      <div
+        v-for="(media, i) in images"
+        :key="i"
+        :class="$style['wrapper-img']"
+        :style="{ '--pos-column': posArray[i][0], '--pos-row': posArray[i][1] }"
+      >
+        <img
+          ref="image"
+          :src="media.url"
+          :alt="media.alt"
+          :class="$style.media"
+          rel="preload"
+          @mouseover="onMouseOver"
+          @mouseleave="onMouseLeave"
+        />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -67,16 +70,18 @@ export default (
     },
   },
   mounted() {
-    this.sizeGridItem()
-    let repeat = 0
-    const self = this
+    this.$nextTick(() => {
+      this.sizeGridItem()
+      let repeat = 0
+      const self = this
 
-    const interval = setInterval(function () {
-      if (repeat === self.$options.repeatTime || self.allDataFetch)
-        clearInterval(interval)
-      self.generatePositionArray(false)
-      repeat++
-    }, 200)
+      const interval = setInterval(function () {
+        if (repeat === self.$options.repeatTime || self.allDataFetch)
+          clearInterval(interval)
+        self.generatePositionArray(false)
+        repeat++
+      }, 200)
+    })
 
     window.addEventListener('keydown', this.generatePositionArray)
     window.addEventListener('resize', this.sizeGridItem)
@@ -89,10 +94,11 @@ export default (
     sizeGridItem() {
       const containerWidth =
         (this.$el as Element).clientWidth || window.innerWidth - 80
-      console.log('width header', containerWidth, this.$el)
+      const containerHeight =
+        (this.$el as Element).clientHeight || window.innerWidth - 80
       this.gridSize = {
         '--width-column': Math.floor(containerWidth / 10) + 'px',
-        '--height-row': Math.floor(window.innerHeight / 7) + 'px',
+        '--height-row': Math.floor(containerHeight / 7) + 'px',
       }
     },
     generatePositionArray(event: KeyboardEvent | false): void {
@@ -168,12 +174,13 @@ export default (
   --height-row: 1fr;
   --width-column: 1fr;
   position: absolute;
-  height: 100vh;
+  top: var(--padding-border);
+  height: calc(100vh - var(--padding-border) * 2);
   display: grid;
   width: 100%;
   grid-template-columns: repeat(10, var(--width-column));
   grid-template-rows: repeat(7, var(--height-row));
-  grid-gap: 0px;
+  grid-gap: 0;
   //overflow: hidden;
 }
 .wrapper-img {

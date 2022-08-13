@@ -27,11 +27,13 @@ export type PropertiesPage =
 export interface NotionResponseProjectProperties {
   Nom: NotionPropertiesTitle | null
   type?: NotionMultiSelectProperty | null
+  Série?: NotionRichText | null
   'description courte'?: NotionRichText | null
   'description longue'?: NotionRichText | null
   année?: NotionNumberContent | null
   thumbnail?: NotionFilesContent | null
   'lien externe'?: NotionLinkContent | null
+  'Thumbnail info'?: NotionRichText | null
   'description google'?: NotionRichTextContent | null
   ordre?: NotionNumberContent | null
 }
@@ -51,7 +53,9 @@ export interface NotionResponseAboutProperties {
 export interface ProjectData extends PageData {
   slug: string
   thumbnail?: MediaContent | null
+  thumbnailInfo?: NotionRichText | null
   date?: number | null
+  series?: NotionRichText | null
   shortDescription?: NotionRichText | null
   description?: NotionRichText | null
   type?: SelectContentParsed | null

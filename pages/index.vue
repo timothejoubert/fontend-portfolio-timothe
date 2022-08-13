@@ -1,7 +1,5 @@
 <template>
   <div :class="$style.home">
-    <div :class="$style.grain"></div>
-
     <v-header />
 
     <v-list-project v-if="allDataFetch" />
@@ -43,19 +41,6 @@ export default (
       lmS: null,
     }
   },
-  head() {
-    return {
-      titleTemplate: 'Justine Saez | portfolio', // '%s - Justine Saez',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content:
-            'Justine Saez est une illustratrice Lyonnaise passionnée par le corps de la femme. Je me spécialise dans le dessin au crayon mettant en scène des situations quotidiennes de manière humoristique. Je cherche à mettre en avant les émotions via le dessin traditionnel.',
-        },
-      ],
-    }
-  },
   computed: {
     ...mapGetters(['allDataFetch']),
   },
@@ -81,29 +66,19 @@ export default (
   width: 100%;
 }
 
-.grain {
-  position: fixed;
-  width: 100%;
-  height: 100vh;
-  opacity: 0.05;
-  mix-blend-mode: darken;
-  background: url('~static/images/texture-grain.png');
-  user-select: none;
-}
-
 .about-icon {
   position: fixed;
-  right: 20px;
+  z-index: 11;
   top: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
   padding: 10px;
   border: 4px solid black;
   border-radius: 100%;
-  width: 80px;
-  height: 80px;
-  z-index: 11;
-  visibility: hidden;
   transform: translateX(calc(100% + 20px));
   transition: transform 700ms ease(out-quart) 800ms;
+  visibility: hidden;
 
   .root--loading-done & {
     transform: translateX(0);
@@ -111,8 +86,8 @@ export default (
   }
 
   &--open {
-    user-select: none;
     z-index: -3;
+    user-select: none;
   }
 
   span {

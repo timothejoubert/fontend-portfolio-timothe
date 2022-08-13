@@ -14,7 +14,6 @@ module.exports = {
   // add your custom rules here
   rules: {
     // deactivate temp because of this issue https://github.com/typescript-eslint/typescript-eslint/issues/2477
-    'no-console': 'off',
     'no-undef': 'off',
     'no-use-before-define': 'off',
     'vue/require-default-prop': 'off',

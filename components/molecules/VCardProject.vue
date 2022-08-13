@@ -5,36 +5,29 @@
     :class="[$style.root, cardIndex % 2 && $style['root--odd']]"
   >
     <div v-if="!!projectData?.type?.options.length" :class="$style.types">
-      <span
-        v-for="type in projectData.type.options"
-        :key="type.id"
-        :class="$style.type"
-        class="tag-s"
-        >{{ type.name }}</span
-      >
+      <span v-for="type in projectData.type.options" :key="type.id" :class="$style.type" class="tag-s">{{
+        type.name
+      }}</span>
     </div>
-    <div :class="$style['wrapper-media']">
+    <div ref="image" :class="$style['wrapper-media']" :style="imageStyle">
       <img
         v-if="projectData.thumbnail"
         :class="$style.media"
         :src="projectData.thumbnail.url"
         :alt="projectData.thumbnail.name"
         :lazy="isLazyLoad"
+        rel="preload"
       />
     </div>
     <h1 v-if="projectData.name" class="title-card" :class="$style.title">
       {{ cardIndex + '. ' + projectData.name }}
     </h1>
-    <v-rich-text
-      :content="projectData.shortDescription"
-      :class="$style['description']"
-      class="body-s"
-    />
+    <v-rich-text :content="projectData.shortDescription" :class="$style['description']" class="body-s" />
   </nuxt-link>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { VueConstructor } from 'vue'
 import type { PropType } from 'vue'
 import { ProjectData } from '~/utils/api/notion-custom-type'
 import VRichText from '~/components/atoms/VRichText.vue'
@@ -42,7 +35,25 @@ import VRichText from '~/components/atoms/VRichText.vue'
 import toBoolean from '~/utils/to-boolean'
 import GeneralsConst from '~/constants/generals'
 
-export default Vue.extend({
+export interface ImageSize {
+  ratio?: number
+  width?: number
+  height?: number
+}
+
+interface CardProject extends Vue {
+  imageSize?: ImageSize
+}
+
+interface ImageContent {
+  width: number
+  height: number
+}
+export interface ImageResponse {
+  type: string
+  path: ImageContent[]
+}
+export default (Vue as VueConstructor<Vue & CardProject>).extend({
   name: 'VCardProject',
   components: { VRichText },
   props: {
@@ -52,17 +63,55 @@ export default Vue.extend({
       required: true,
     },
   },
+  data() {
+    return {
+      loaded: false,
+      imageSize: {} as ImageSize,
+    }
+  },
   computed: {
     isLazyLoad(): boolean | string {
       return !toBoolean(GeneralsConst.LAZY_LOAD_IMAGE) && 'false'
     },
+    imageStyle(): Record<string, string> {
+      const paddingBottom = (this.imageSize?.ratio || 0) * 100 + '%' || '100%'
+      return { 'padding-bottom': '0' }
+    },
   },
-  /*  async mounted() {
-    const img = await (this.projectData?.thumbnail?.url &&
-      getMeta(this.projectData.thumbnail.url))
+  watch: {
+    'imageSize.ratio'() {
+      this.loaded = true
+    },
+  },
+  async mounted() {
+    if (this.projectData?.thumbnail?.url) {
+      const image = new Image()
+      image.src = this.projectData.thumbnail.url
+      await this.waitImageLoaded(image)
+        .then((data) => {
+          const promiseResponse = data as ImageResponse
+          if (promiseResponse.path[0] && promiseResponse.type === 'load') {
+            const img = promiseResponse.path[0]
+            this.imageSize = {
+              ratio: img.height / img.width,
+              width: img.width,
+              height: img.height,
+            }
+          }
+        })
+        .catch((error) => console.log('error when load img', error))
 
-    console.log(img?.width, img?.height, 'ratio ', img?.width / img?.height)
-  }, */
+      if (image.complete) this.loaded = true
+    }
+  },
+  methods: {
+    waitImageLoaded(imageElement: HTMLImageElement) {
+      return new Promise((resolve, reject) => {
+        imageElement.onload = resolve
+        imageElement.onerror = reject
+      })
+    },
+  },
 })
 </script>
 
@@ -110,9 +159,16 @@ export default Vue.extend({
   background-color: color(grey-50);
 }
 
+.wrapper-media {
+  position: relative;
+}
+
 .media {
+  //position: absolute;
+  top: 0;
+  left: 0;
   transition: grayscale 400ms;
-  filter: grayscale(1);
+  //filter: grayscale(1);
 
   .root:hover {
     filter: grayscale(0);

@@ -20,7 +20,7 @@
       :class="$style['image-header']"
     />
 
-    <h2 ref="intro" :class="$style['text-intro']" class="text-h2">
+    <h2 ref="intro" :class="$style['text-intro']" class="text-h3">
       <strong>Illustratrice curieuse du corps humain,</strong><br />
       je m’amuse à gribouiller des moments<br />
       cocasse du quotidien.
@@ -206,11 +206,6 @@ export default (
   100% {
     transform: scale(1.1, 0.9);
   }
-}
-
-.image-header {
-  position: absolute;
-  top: 0;
 }
 
 .text-intro {

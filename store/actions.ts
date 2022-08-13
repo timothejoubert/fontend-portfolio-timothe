@@ -28,9 +28,9 @@ const actions: ActionTree<RootState, RootState> = {
       console.log('dev mode', prodUrl)
     }
 
-    if (!toBoolean(GeneralsConst.LAZY_LOAD_IMAGE)) commit('allDataFetch', true)
+    if (!toBoolean(GeneralsConst.ACTIVE_LOADING)) commit('allDataFetch', true)
 
-    console.log('active loading', toBoolean(GeneralsConst.LAZY_LOAD_IMAGE))
+    console.log('active loading', toBoolean(GeneralsConst.ACTIVE_LOADING))
 
     const pageLoaderImg = '1ebb67c36ee14fab80166d3a126908c7'
     const databaseProjectListId = '9630213c155243d2833732cb91e63951'

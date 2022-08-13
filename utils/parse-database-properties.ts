@@ -44,10 +44,12 @@ export const parseProjectData = (
       name: properties?.Nom && parseTitle(properties.Nom),
       creationDate: page?.date,
       type: parseSelect(properties?.type, 'type'),
+      series: properties?.['Série'],
       shortDescription: properties?.['description courte'],
       description: properties?.['description longue'],
       date: parseNumber(properties?.['année']),
       thumbnail: properties?.thumbnail && parseMedia(properties.thumbnail)?.[0],
+      thumbnailInfo: properties?.['Thumbnail info'],
       externalLink: parseLink(properties?.['lien externe']),
       googleDesc: properties?.['description google'],
       order: parseNumber(properties?.ordre) || 1,
@@ -87,9 +89,12 @@ export const parseAboutData = (
 export const parseLoadingImage = (
   pageBlockResponse: pageBlockResponse
 ): MediaContent[] => {
-  const dataBaseContent = pageBlockResponse.results as NotionBlockObject[]
+  const dataBaseContent = pageBlockResponse?.results as NotionBlockObject[]
 
-  if (!dataBaseContent) return []
+  if (!dataBaseContent) {
+    console.log('error when fetch notion loading image')
+    return []
+  }
   return dataBaseContent
     .filter((block) => block.type === 'image' && !!block.image?.file?.url)
     .map((block, i) => {

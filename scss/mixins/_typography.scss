@@ -9,15 +9,15 @@
 }
 
 @mixin text-h2 {
-    @include noi;
-    font-size: 21px;
+    @include dida;
+    font-size: 28px;
     line-height: 1;
     color: color(main-orange);
 }
 
 @mixin text-h3 {
     @include noi;
-    font-size: 24px;
+    font-size: 21px;
     line-height: 1;
     color: color(main-orange);
 }

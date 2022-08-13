@@ -1,5 +1,5 @@
 <template>
-  <span v-if="elements" :class="$style.root" class="text-h2">
+  <span v-if="elements" :class="$style.root" class="text-h3">
     <component
       :is="el.component"
       v-for="(el, i) in elements"
