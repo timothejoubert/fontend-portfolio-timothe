@@ -8,6 +8,7 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   // target: 'static',
   // ssr: true,
+  mode: 'universal',
 
   dev: process.env.NODE_ENV !== 'production',
 
