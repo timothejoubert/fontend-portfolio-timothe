@@ -1,46 +1,46 @@
 @use 'sass:math';
 
 @mixin text-h1 {
-    @include dida;
-    font-size: 72px;
-    font-weight: 400;
-    line-height: math.div(108, 120);
-    color: color(main-orange);
+  @include dida;
+  font-size: 72px;
+  font-weight: 400;
+  line-height: math.div(108, 120);
+  color: color(main-orange);
 }
 
 @mixin text-h2 {
-    @include dida;
-    font-size: 28px;
-    line-height: 1;
-    color: color(main-orange);
+  @include dida;
+  font-size: 28px;
+  line-height: 1;
+  color: color(main-orange);
 }
 
 @mixin text-h3 {
-    @include noi;
-    font-size: 21px;
-    line-height: 1;
-    color: color(main-orange);
+  @include noi;
+  font-size: 21px;
+  line-height: 1;
+  color: color(main-orange);
 }
 
 @mixin text-h4 {
-    @include noi;
-    font-size: 24px;
-    line-height: 1;
-    color: color(main-orange);
+  @include noi;
+  font-size: 24px;
+  line-height: 1;
+  color: color(main-orange);
 }
 
 @mixin text-h5 {
-    @include noi;
-    font-size: 24px;
-    line-height: 1;
-    color: color(main-orange);
+  @include noi;
+  font-size: 24px;
+  line-height: 1;
+  color: color(main-orange);
 }
 
 @mixin text-h6 {
-    @include noi;
-    font-size: 24px;
-    line-height: 1;
-    color: color(main-orange);
+  @include noi;
+  font-size: 24px;
+  line-height: 1;
+  color: color(main-orange);
 }
 
 @mixin title-card {
@@ -48,7 +48,7 @@
   font-size: 64px;
   font-weight: 400;
   line-height: math.div(73, 82);
-    color: color(main-orange);
+  color: color(main-orange);
 }
 
 @mixin title-section {
@@ -59,7 +59,6 @@
   opacity: 0.7;
   color: color(light-yellow);
 }
-
 
 @mixin tag-l {
   @include noi;

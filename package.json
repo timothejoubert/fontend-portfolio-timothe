@@ -1,25 +1,22 @@
 {
-  "name": "justine-saez-portfolio",
+  "name": "starter-nuxt-strapi",
   "version": "1.0.0",
-  "private": true,
+  "description": "Starter template for Nuxt strapi portfolio",
   "scripts": {
     "dev": "nuxt",
     "net": "yarn netlify dev",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
+    "lint:style": "stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint": "yarn lint:js"
   },
   "dependencies": {
-    "@notionhq/client": "^0.3.1",
+    "@nuxtjs/strapi": "^0.3.0",
     "@nuxt/image": "^0.7.1",
     "@nuxtjs/sitemap": "^2.4.0",
-    "@rezo-zero/intervention-request-provider": "^0.3.0",
-    "core-js": "^3.15.1",
-    "netlify-cli": "^10.6.2",
-    "nuxt": "^2.15.7",
-    "vue-prlx": "^1.3.4"
+    "nuxt": "^2.15.7"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",
@@ -28,10 +25,9 @@
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
-    "@nuxtjs/style-resources": "^1.2.1",
-    "@nuxtjs/stylelint-module": "^4.1.0",
-    "@vueuse/core": "^9.1.0",
-    "@vueuse/nuxt": "^9.1.0",
+    "@nuxtjs/style-resources": "^1.2.0",
+    "@nuxtjs/stylelint-module": "^4.0.0",
+    "css-loader": "^4.2.0",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^2.0.0",
@@ -47,6 +43,8 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-order": "^4.1.0",
-    "stylelint-scss": "^3.19.0"
+    "stylelint-scss": "^3.19.0",
+    "ts-node": "^10.5.0",
+    "vue-typed-mixins": "^0.2.0"
   }
 }

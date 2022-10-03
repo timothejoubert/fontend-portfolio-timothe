@@ -1,11 +1,8 @@
 import type { MetaInfo } from 'vue-meta'
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
 import { FacebookMetaOptions, PageMetaPropertyName, TwitterMetaOptions } from '~/types/meta'
 import { createFacebookMeta } from '~/utils/meta/facebook'
 import { createTwitterMeta } from '~/utils/meta/twitter'
-import { nameIfy } from '~/utils/functions'
-import { ProjectData } from '~/utils/api/notion-custom-type'
 
 export default Vue.extend({
   data() {
@@ -24,8 +21,8 @@ export default Vue.extend({
         name: 'description',
         content: this.metaDescription,
       } as PageMetaPropertyName,
-      ...createFacebookMeta(this.getFacebookMetaOptions()),
-      ...createTwitterMeta(this.getTwitterMetaOptions()),
+      // ...createFacebookMeta(this.getFacebookMetaOptions()),
+      // ...createTwitterMeta(this.getTwitterMetaOptions()),
       { hid: 'version', name: 'version', content: this.$config.version || '' },
     ]
 
@@ -33,56 +30,56 @@ export default Vue.extend({
       htmlAttrs: {
         lang: 'fr',
       },
-      title: this.getMetaTitle(),
+      title: 'titre dans page.ts', // this.getMetaTitle(),
       meta,
     }
   },
   computed: {
-    ...mapGetters(['projectsData']),
-    project(): ProjectData | undefined {
-      return (this.projectsData as ProjectData[]).find((project) => this.$route.params?.slug === project.slug)
-    },
-    isHomePage(): boolean {
-      return this.$route.fullPath === '/' || this.$route.name === 'index'
-    },
-    isMoreProjectPage(): boolean {
-      return this.$route.name === 'VMoreProject'
-    },
+    // ...mapGetters(['projectsData']),
+    // project(): ProjectData | undefined {
+    //   return (this.projectsData as ProjectData[]).find((project) => this.$route.params?.slug === project.slug)
+    // },
+    // isHomePage(): boolean {
+    //   return this.$route.fullPath === '/' || this.$route.name === 'index'
+    // },
+    // isMoreProjectPage(): boolean {
+    //   return this.$route.name === 'VMoreProject'
+    // },
   },
   methods: {
-    getMetaTitle(): string {
-      if (this.isHomePage) return 'Portfolio | Justine Saez'
-      if (this.isMoreProjectPage) return 'En voir plus '
-
-      const fullPath = this.$route.fullPath.substring(1)
-      const mainRoute = fullPath.substring(0, fullPath.indexOf('/')) || ''
-      const subRoute = nameIfy(this.$route.params.slug) || ''
-
-      return `${subRoute} - ${mainRoute}` || 'Portfolio | Justine Saez'
-    },
-    getMetaImage(): string | undefined {
-      // TODO add meta image for Index && more project
-      return this.project?.thumbnail?.url || require('~/static/images/justine-saez.jpeg') || '/images/justine-saez.jpg'
-    },
-    getPageUrl(): string {
-      return this.$config.baseURL + this.$route.fullPath.substring(1)
-    },
-    getTwitterMetaOptions(): TwitterMetaOptions {
-      return {
-        title: this.getMetaTitle(),
-        description: this.SocialDescription,
-        url: this.getPageUrl(),
-        image: this.getMetaImage(),
-      }
-    },
-    getFacebookMetaOptions(): FacebookMetaOptions {
-      return {
-        title: this.getMetaTitle(),
-        description: this.SocialDescription,
-        url: this.getPageUrl(),
-        siteName: this.getMetaTitle(),
-        image: this.getMetaImage(),
-      }
-    },
+    // getMetaTitle(): string {
+    //   if (this.isHomePage) return 'Portfolio | Justine Saez'
+    //   if (this.isMoreProjectPage) return 'En voir plus '
+    //
+    //   const fullPath = this.$route.fullPath.substring(1)
+    //   const mainRoute = fullPath.substring(0, fullPath.indexOf('/')) || ''
+    //   const subRoute = nameIfy(this.$route.params.slug) || ''
+    //
+    //   return `${subRoute} - ${mainRoute}` || 'Portfolio | Justine Saez'
+    // },
+    // getMetaImage(): string | undefined {
+    //   // TODO add meta image for Index && more project
+    //   return this.project?.thumbnail?.url || require('~/static/images/justine-saez.jpeg') || '/images/justine-saez.jpg'
+    // },
+    // getPageUrl(): string {
+    //   return this.$config.baseURL + this.$route.fullPath.substring(1)
+    // },
+    // getTwitterMetaOptions(): TwitterMetaOptions {
+    //   return {
+    //     title: this.getMetaTitle(),
+    //     description: this.SocialDescription,
+    //     url: this.getPageUrl(),
+    //     image: this.getMetaImage(),
+    //   }
+    // },
+    // getFacebookMetaOptions(): FacebookMetaOptions {
+    //   return {
+    //     title: this.getMetaTitle(),
+    //     description: this.SocialDescription,
+    //     url: this.getPageUrl(),
+    //     siteName: this.getMetaTitle(),
+    //     image: this.getMetaImage(),
+    //   }
+    // },
   },
 })

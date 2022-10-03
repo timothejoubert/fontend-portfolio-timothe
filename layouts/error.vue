@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
   layout: 'error',
 })
@@ -13,5 +14,6 @@ export default Vue.extend({
 
 <style lang="scss" module>
 .root {
+    position: relative;
 }
 </style>

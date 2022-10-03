@@ -1,12 +1,7 @@
-import {
-  DatabasesQueryResponse,
-  PagesRetrieveResponse,
-} from '@notionhq/client/build/src/api-endpoints'
+import { NuxtError } from '@nuxt/types'
 
-export default interface RootState {
-  imageLoadingList?: PagesRetrieveResponse | null
-  generalData?: DatabasesQueryResponse[] | null
-  projectsData?: DatabasesQueryResponse[] | null
-  aboutData?: PagesRetrieveResponse | null
-  allDataFetch?: boolean | null
+interface RootState {
+  projectsData: ProjectContent | null
+  aboutData: AboutContent | null
+  errorPage: NuxtError | null
 }

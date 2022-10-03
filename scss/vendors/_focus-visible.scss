@@ -3,9 +3,9 @@
   but it will still show up on keyboard focus.
 */
 .js-focus-visible :focus:not(.focus-visible) {
-    outline: none;
+  outline: none;
 }
 
 [data-js-focus-visible] :focus:not([data-focus-visible-added]) {
-    outline: none;
+  outline: none;
 }

@@ -18,12 +18,5 @@ export type ComponentWithCustomOptionsConstructor<T, V extends Vue = Vue> = {
       any
     > &
       T
-  ): ExtendedVue<
-    ComponentWithCustomOptions<T, V>,
-    Data,
-    Methods,
-    Computed,
-    Props,
-    any
-  >
+  ): ExtendedVue<ComponentWithCustomOptions<T, V>, Data, Methods, Computed, Props, any>
 } & VueConstructor

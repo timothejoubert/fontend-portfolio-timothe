@@ -29,14 +29,9 @@ export default {
   longdesc: { type: String, default: undefined },
   ismap: { type: Boolean, default: undefined },
   crossorigin: {
-    type: [Boolean, String] as unknown as () =>
-      | boolean
-      | ''
-      | 'anonymous'
-      | 'use-credentials',
+    type: [Boolean, String] as unknown as () => boolean | '' | 'anonymous' | 'use-credentials',
     default: undefined,
-    validator: (val: string | boolean) =>
-      ['anonymous', 'use-credentials', '', true, false].includes(val),
+    validator: (val: string | boolean) => ['anonymous', 'use-credentials', '', true, false].includes(val),
   },
   loading: { type: String, default: undefined },
   decoding: {

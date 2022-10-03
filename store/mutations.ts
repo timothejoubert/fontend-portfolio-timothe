@@ -1,20 +1,8 @@
 import type { MutationTree } from 'vuex'
-import {
-  DatabasesQueryResponse,
-  PagesRetrieveResponse,
-} from '@notionhq/client/build/src/api-endpoints'
-import RootState from '~/types/store'
-import MutationType from '~/types/mutation-type'
+import MutationType from '~/constants/mutation-type'
+import { RootState } from '~/types/store'
 
 export default {
-  [MutationType.IMAGE_LOADING_LIST]: (state, value: PagesRetrieveResponse) =>
-    (state.imageLoadingList = value),
-  [MutationType.GENERAL_DATA]: (state, value: DatabasesQueryResponse[]) =>
-    (state.generalData = value),
-  [MutationType.PROJECTS_DATA]: (state, value: DatabasesQueryResponse[]) =>
-    (state.projectsData = value),
-  [MutationType.ABOUT_DATA]: (state, value: PagesRetrieveResponse) =>
-    (state.aboutData = value),
-  [MutationType.ALL_DATA_FETCH]: (state, value: boolean) =>
-    (state.allDataFetch = value),
+  [MutationType.PROJECTS_DATA]: (state, value: ProjectContent) => (state.projectsData = value),
+  [MutationType.ABOUT_DATA]: (state, value: AboutContent) => (state.aboutData = value),
 } as MutationTree<RootState>

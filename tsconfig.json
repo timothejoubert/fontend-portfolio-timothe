@@ -1,34 +1,42 @@
 {
-  "compilerOptions": {
-    "target": "ES2018",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "DOM"
-    ],
-    "esModuleInterop": true,
-    "allowJs": true,
-    "sourceMap": true,
-    "strict": true,
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ]
+    "compilerOptions": {
+        "target": "ES2018",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "lib": [
+            "ESNext",
+            "ESNext.AsyncIterable",
+            "DOM"
+        ],
+        "esModuleInterop": true,
+        "allowJs": true,
+        "sourceMap": true,
+        "strict": true,
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "~/*": [
+                "./*"
+            ],
+            "@/*": [
+                "./*"
+            ]
+        },
+        "types": [
+            "@nuxt/types",
+            "@nuxtjs/axios",
+            "@types/node",
+            "nuxt-i18n",
+            "@roadiz/nuxt-module",
+            "@nuxtjs/sentry",
+            "@nuxt/image"
+        ]
     },
-    "types": [
-      "@types/node",
-      "@nuxt/types"
+    "exclude": [
+        "node_modules",
+        ".nuxt",
+        "dist"
     ]
-  },
-  "exclude": [
-    "node_modules",
-    ".nuxt"
-  ]
 }

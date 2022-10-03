@@ -1,7 +1,7 @@
-@import "../variables/breakpoints";
+@import '../variables/breakpoints';
 
 @each $breakpoint, $value in $breakpoints {
-    :export {
-        breakpoint-#{$breakpoint}: $value;
-    }
+  :export {
+    breakpoint-#{$breakpoint}: $value;
+  }
 }

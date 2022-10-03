@@ -1,5 +1,5 @@
 export interface SocialNetworkItem {
-    url: string
-    icon: string
-    title: string
+  url: string
+  icon: string
+  title: string
 }

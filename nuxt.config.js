@@ -1,16 +1,10 @@
-const pkg = require('./package')
-
-const server = {
-  host: '0.0.0.0', // allow external access in dev mode
-}
-
 export default {
   // Target: https://go.nuxtjs.dev/config-target
-  // target: 'static',
-  // ssr: true,
-  mode: 'universal',
+  mode: 'static',
 
-  dev: process.env.NODE_ENV !== 'production',
+  // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-srcdir
+  // define if this file isn't same folder as nuxt front folder
+  // srcDir: 'front',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -42,8 +36,6 @@ export default {
     // {path: '/api', handler: '~/api/index.js'}
   ],
 
-  server,
-
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ['@/scss/main'],
 
@@ -55,10 +47,7 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-    // '~/plugins/api-client.js'
-    '~/plugins/vuePrlx.client.js',
-  ],
+  plugins: [],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -69,37 +58,36 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
-    // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
     // https://github.com/nuxt/postcss8
     '@nuxt/postcss8',
     // https://github.com/nuxt-community/style-resources-module#setup
     '@nuxtjs/style-resources',
-    // https://vueuse.org/guide/#installation
-    '@vueuse/nuxt',
   ],
-  image: {
-    domains: ['notion-static.com'],
-  },
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://sitemap.nuxtjs.org/guide/setup
+    '@nuxtjs/strapi',
     '@nuxtjs/sitemap',
     '@nuxt/image',
   ],
-  sitemap: {
-    hostname: 'https://justine-saez.netlify.app',
+
+  // env: {
+  //   strapiBaseUri: process.env.API_URL || "http://localhost:1337"
+  // },
+
+  strapi: {
+    url: process.env.STRAPI_API_URL || 'http://localhost:1337/api',
+    entities: ['projects', 'about'],
   },
 
-  loading: '@/components/organisms/VLoadingPage.vue',
-  /*   loading: {
-      color: 'blue',
-      height: '50px',
-      throttle: 0,
-      continuous: true,
-      duration: 2000,
-    }, */
+  // https://image.nuxtjs.org/providers/strapi
+  // image: {
+  //   strapi: {
+  //     baseURL: process.env.STRAPI_URL + 'uploads' || 'http://localhost:1337/uploads/',
+  //   },
+  // },
+
+  // loading: '@/components/organisms/VLoadingPage.vue',
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

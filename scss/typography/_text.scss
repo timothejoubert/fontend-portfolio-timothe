@@ -1,48 +1,46 @@
 .text-h1 {
-    @include text-h1;
+  @include text-h1;
 }
 
 .text-h2 {
-    @include text-h2;
+  @include text-h2;
 }
 
 .text-h3 {
-    @include text-h3;
+  @include text-h3;
 }
 
 .text-h4 {
-    @include text-h4;
+  @include text-h4;
 }
 
 .text-h5 {
-    @include text-h5;
+  @include text-h5;
 }
 
 .text-h6 {
-    @include text-h6;
+  @include text-h6;
 }
 
 .title-card {
-    @include title-card;
+  @include title-card;
 }
 
 .title-section {
-    @include title-section;
+  @include title-section;
 }
-
 
 .tag-l {
   @include tag-l;
 }
 
 .tag-m {
-   @include tag-m;
- }
+  @include tag-m;
+}
 
 .tag-s {
   @include tag-s;
 }
-
 
 .body-l {
   @include body-l;
