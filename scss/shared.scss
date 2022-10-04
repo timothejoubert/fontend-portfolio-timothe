@@ -2,11 +2,17 @@
 // all these resources will be included into every component imported by webpack
 // ⚠️ do not include css file or css var declaration
 
-@import 'functions';
-@import 'variables';
-@import 'mixins';
-@import 'variables/colors';
-
-// vendors
-@import '~include-media/dist/_include-media.scss';
-@import 'vendors/include-media';
+//// vendors
+//@import "~include-media/dist/_include-media.scss";
+//@import "vendors/include-media";
+//// functions
+//@import "functions/color";
+//@import "functions/breakpoint";
+//@import "functions/ease";
+//@import "functions/rem";
+//@import "functions/fluid";
+//@import "functions/important";
+//// variables
+//@import "variables";
+//// mixins
+//@import "mixins/typography";

@@ -1,2 +1,33 @@
-@import 'fonts/dida';
-@import 'fonts/noi';
+@font-face {
+    font-display: swap;
+    font-family: 'konstant';
+    font-style: normal;
+    font-weight: normal;
+    src: url('~assets/fonts/KonstantGrotesk.ttf') format('otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'noi';
+    font-style: normal;
+    font-weight: normal;
+    src: url('~assets/fonts/studiofeixen-noiGrotesk-var.ttf') format('otf');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'dida';
+    font-style: normal;
+    font-weight: normal;
+    src: url('~assets/fonts/Dida-Regular.woff2') format('woff2');
+}
+
+
+@font-face {
+    font-display: swap;
+    font-family: 'mongo';
+    font-style: normal;
+    font-weight: normal;
+    src: url('~assets/fonts/Mango-Black.woff') format('woff');
+}
+

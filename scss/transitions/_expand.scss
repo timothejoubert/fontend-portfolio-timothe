@@ -1,0 +1,11 @@
+.expand-enter-active,
+.expand-leave-active {
+    transition: opacity .3s, height .3s;
+    overflow: hidden;
+}
+
+.expand-enter,
+.expand-leave-to {
+    height: 0;
+    opacity: 0;
+}

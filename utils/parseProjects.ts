@@ -1,13 +1,22 @@
-import { StrapiWebResponse } from '~/types/api'
+import { slugify } from '~/utils/utils'
 
-export default function parseProjects(response: StrapiWebResponse): ProjectContent[] {
-  return response.data.map((response: StrapiDataBaseResponse) => {
-    const attributes = response.attributes as ProjectContent
-    return {
-      id: response.id,
-      title: attributes.title,
-      description: attributes.description,
-      thumbnail: attributes.thumbnail.data.attributes,
-    }
-  })
+export interface ProjectContent {
+    title: string
+    slug: string
+    description: string
+    isNew?: boolean
+    thumbnail: ImageAttributes
+}
+
+export default function parseProjects(response: undefined | StrapiWebResponse): ProjectContent[] | undefined {
+    return response?.data?.map((response: StrapiDataBaseResponse) => {
+        const attributes = response.attributes as ProjectResponse
+        return {
+            id: response.id,
+            slug: slugify(attributes.title),
+            title: attributes.title,
+            description: attributes.description,
+            thumbnail: attributes.thumbnail.data.attributes,
+        }
+    })
 }

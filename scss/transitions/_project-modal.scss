@@ -1,0 +1,9 @@
+.project-modal-enter-active,
+.project-modal-leave-active {
+    transition: all 1.2s ease(out-quart);
+}
+
+.project-modal-enter,
+.project-modal-leave-to {
+    flex: 0 0 50%;
+}

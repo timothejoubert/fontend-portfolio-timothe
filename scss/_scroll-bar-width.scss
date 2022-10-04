@@ -1,0 +1,10 @@
+// default values for scroll bar width, it will be defined later in JS
+:root {
+    --scroll-bar-width: 0px;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --scroll-bar-width: 15px;
+    }
+}

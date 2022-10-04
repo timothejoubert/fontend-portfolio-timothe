@@ -1,115 +1,115 @@
 // STRAPI //
 interface StrapiWebResponse {
-  data: StrapiDataBaseResponse[]
-  meta: StrapiMeta
+    data: StrapiDataBaseResponse[] | null
+    meta: StrapiMeta
 }
 
 interface StrapiDataBaseResponse {
-  id: number
-  attributes: ProjectContent | AboutContent
+    id: number
+    attributes: ProjectContent | AboutContent
 }
 
 interface StrapiMeta {
-  meta: StrapiMetaPagination
+    meta: StrapiMetaPagination
 }
 
 interface StrapiMetaPagination {
-  pagination: StrapiMetaPaginationContent
+    pagination: StrapiMetaPaginationContent
 }
 
 interface StrapiMetaPaginationContent {
-  page: number
-  pageSize: number
-  pageCount: number
-  total: number
+    page: number
+    pageSize: number
+    pageCount: number
+    total: number
 }
 
 interface StrapiBlockCreated {
-  createdAt: string
-  updatedAt: string
-  publishedAt: string
+    createdAt: string
+    updatedAt: string
+    publishedAt: string
 }
 // END STRAPI //
 
 // PROJECT //
-interface ProjectContent extends StrapiBlockCreated {
-  title: string
-  description: string
-  isNew: boolean
-  thumbnail: ImageObject
+interface ProjectResponse extends StrapiBlockCreated {
+    title: string
+    description: string
+    isNew: boolean
+    thumbnail: ImageObject
 }
 
 interface AboutContent {
-  title?: string
+    title?: string
 }
 
 // END PROJECT //
 
 // IMAGE //
 interface ImageData {
-  name: string
-  hash: string
-  ext: string
-  mime: string
-  path: null
-  width: number
-  height: number
-  size: number
-  url: string
+    name: string
+    hash: string
+    ext: string
+    mime: string
+    path: null
+    width: number
+    height: number
+    size: number
+    url: string
 }
 
 interface ImageFormats {
-  thumbnail: ImageData
-  small: ImageData
-  medium: ImageData
-  large: ImageData
+    thumbnail: ImageData
+    small: ImageData
+    medium: ImageData
+    large: ImageData
 }
 
 interface ImageAttributes {
-  id: number
-  name: string
-  alternativeText: string
-  caption: string
-  width: number
-  height: number
-  formats: ImageFormats
-  hash: string
-  ext: string
-  mime: string
-  size: 342.87
-  url: string
-  previewUrl: null
-  provider: string
-  provider_metadata: null
-  createdAt: string
-  updatedAt: string
+    id: number
+    name: string
+    alternativeText: string
+    caption: string
+    width: number
+    height: number
+    formats: ImageFormats
+    hash: string
+    ext: string
+    mime: string
+    size: number
+    url: string
+    previewUrl: null
+    provider: string
+    provider_metadata: null
+    createdAt: string
+    updatedAt: string
 }
 
 interface ImageDataContent {
-  attributes: ImageAttributes
+    attributes: ImageAttributes
 }
 
 interface ImageObject {
-  data: ImageDataContent
+    data: ImageDataContent
 }
 
 interface Image {
-  name: string
-  alternativeText: string
-  caption: string
-  width: number
-  height: number
-  formats: ImageFormats
-  hash: string
-  ext: string
-  mime: string
-  size: number
-  url: string
-  previewUrl: null
-  provider: string
-  provider_metadata: null
-  createdAt: string
-  updatedAt: string
+    name: string
+    alternativeText: string
+    caption: string
+    width: number
+    height: number
+    formats: ImageFormats
+    hash: string
+    ext: string
+    mime: string
+    size: number
+    url: string
+    previewUrl: null
+    provider: string
+    provider_metadata: null
+    createdAt: string
+    updatedAt: string
 }
 
 // END IMAGE //

@@ -8,6 +8,7 @@
             "ESNext.AsyncIterable",
             "DOM"
         ],
+
         "esModuleInterop": true,
         "allowJs": true,
         "sourceMap": true,
@@ -26,7 +27,6 @@
         },
         "types": [
             "@nuxt/types",
-            "@nuxtjs/axios",
             "@types/node",
             "nuxt-i18n",
             "@roadiz/nuxt-module",

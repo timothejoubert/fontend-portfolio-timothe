@@ -1,56 +1,35 @@
 <template>
-  <div :class="$style.home">
-    <h1>home</h1>
-    <div>
-      <!--      <ul v-if="!!projects">-->
-      <!--        <li v-for="project in projects" :key="project.id">-->
-      <!--          <h1>-->
-      <!--            <nuxt-link :to="`/projets/${project.attributes.title}`">-->
-      <!--              {{ project.attributes.title }}-->
-      <!--            </nuxt-link>-->
-      <!--          </h1>-->
-      <!--        </li>-->
-      <!--      </ul>-->
-      <pre v-if="projects">{{ projects }}</pre>
-      <ul v-if="projects">
-        <li v-for="(project, i) in projects" :key="i" :class="$style['wrapper-img']">
-          <v-image :strapi-image="project.thumbnail"></v-image>
-        </li>
-      </ul>
+    <div :class="$style.root">
+        <v-home />
+        <!--        <h1>home page</h1>-->
+        <!--        &lt;!&ndash;      <pre v-if="projects">{{ projects }}</pre>&ndash;&gt;-->
+        <!--        <ul v-if="projects" :class="$style.projects">-->
+        <!--            <li v-for="(project, i) in projects" :key="i" :class="$style['wrapper-img']">-->
+        <!--                <router-link :to="`/projets/${project.slug}`">-->
+        <!--                    <h1 v-if="project.title">{{ project.title }}</h1>-->
+        <!--                    <p v-if="project.description">{{ project.description }}</p>-->
+        <!--                    <v-image :strapi-image="project.thumbnail" />-->
+        <!--                </router-link>-->
+        <!--            </li>-->
+        <!--        </ul>-->
+        <!--        <div v-else>-->
+        <!--            <h1>oups je suis pas Back-end... J'arrive pas à récupérer mes données.</h1>-->
+        <!--        </div>-->
     </div>
-  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
-import parseProjects from '~/utils/parseProjects'
-import VImage from '~/components/atoms/VImage.vue'
+import VHome from '~/components/organisms/VHome.vue'
 
 export default Vue.extend({
-  name: 'Index',
-  components: { VImage },
-  // layout: 'home',
-  computed: {
-    ...mapGetters(['projectsData']),
-    projects(): ProjectContent[] {
-      console.log(parseProjects(this.$store.state.projectsData))
-      return parseProjects(this.$store.state.projectsData)
-    },
-  },
+    name: 'Index',
+    components: { VHome },
 })
 </script>
 
 <style lang="scss" module>
-.home {
-  position: relative;
-  width: 100%;
-}
-.wrapper-img {
-  width: 100%;
-
-  img {
-    width: 100%;
-  }
+.root {
+    user-select: auto;
 }
 </style>

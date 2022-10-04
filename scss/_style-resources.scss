@@ -1,0 +1,19 @@
+// this file will be imported by @nuxtjs/style-resources
+// all these resources will be included into every component imported by webpack
+// ⚠️ do not include css file
+
+// vendors
+
+// functions
+@import "functions/color";
+@import "functions/breakpoint";
+@import "functions/ease";
+@import "functions/strip-units";
+@import "functions/rem";
+@import "functions/fluid";
+@import "functions/important";
+// variables
+@import "variables";
+// mixins
+@import "mixins/typography";
+
