@@ -1,7 +1,8 @@
 <template>
-    <div :class="$style.root">
+    <header :class="$style.root">
         <nuxt-link to="/">Logo</nuxt-link>
-    </div>
+        <button @click="toggleOptions">options</button>
+    </header>
 </template>
 
 <script lang="ts">
@@ -9,6 +10,12 @@ import Vue from 'vue'
 
 export default Vue.extend({
     name: 'VHeader',
+    methods: {
+        toggleOptions(): void {
+            console.log('click options toggle value')
+            this.$emit('toggle-options')
+        },
+    },
 })
 </script>
 

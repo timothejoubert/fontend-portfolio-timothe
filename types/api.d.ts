@@ -43,6 +43,10 @@ interface AboutContent {
     title?: string
 }
 
+interface UserUiContent {
+
+}
+
 // END PROJECT //
 
 // IMAGE //

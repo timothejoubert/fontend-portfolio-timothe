@@ -1,46 +1,59 @@
 <template>
     <div :class="$style.root">
-        <div :class="[$style['main-layout'], !!currentProject && $style['main-layout--minify']]">
-            <v-header />
-            <v-home @openProject="openProject" />
-            <v-about />
+        <div :class="[$style['main-layout'], isProjectOpen && $style['main-layout--minify']]">
+            <v-header @toggle-options="toggleOptions" />
+            <v-user-options :open="isOptionsOpen" />
+            <v-nav-project />
+            <div :class="[$style.footer, isProjectOpen && $style['footer--minify'], isAboutOpen && $style['footer--expand']]">
+                <v-footer />
+                <nuxt v-if="isOptionsOpen" :class="$style['about-content']" />
+            </div>
         </div>
         <transition name="project-modal">
-            <v-project v-if="!!currentProject" :project="currentProject" @closeProject="closeProject" />
+            <nuxt v-if="isProjectOpen" :class="$style['project-content']" />
         </transition>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
+import { Route } from 'vue-router/types/router'
 import VHeader from '~/components/organisms/VHeader.vue'
-import VHome from '~/components/organisms/VHome.vue'
-import VProject from '~/components/organisms/VProject.vue'
+import VNavProject from '~/components/organisms/VNavProject.vue'
 import { ProjectContent } from '~/utils/parseProjects'
 
 export default Vue.extend({
-    components: { VHeader, VHome, VProject },
+    components: { VHeader, VNavProject },
     data() {
         return {
+            isProjectOpen: false,
+            isOptionsOpen: false,
+            isAboutOpen: false,
             currentProject: undefined as ProjectContent | undefined,
         }
     },
-    computed: {
-        ...mapGetters(['projectsData']),
-        projects(): ProjectContent[] | undefined {
-            return this.$store.state.projectsData
+    mounted() {
+        this.initRoute()
+    },
+    watch: {
+        $route(to: Route, _from: Route) {
+            // const wasProject = from.path.includes('project')
+            // const wasAbout = from.path.includes('about')
+
+            this.isProjectOpen = to.path.includes('project') // || (to.path.includes('about') && wasProject)
+            this.isAboutOpen = to.path.includes('about')
+            // console.log(this.isAboutOpen, wasProject)
+
         },
     },
     methods: {
-        openProject(value: string): void {
-            console.log(value)
-            this.currentProject = this.projects?.filter((project: ProjectContent) => project.slug === value)[0]
+        toggleOptions(): void {
+            this.isOptionsOpen = !this.isOptionsOpen
         },
-        closeProject(): void {
-            this.currentProject = undefined
-            console.log('close project', this.currentProject)
-        },
+        initRoute(): void {
+            this.isProjectOpen = this.$route.path.includes('project') // || (to.path.includes('about') && wasProject)
+            this.isAboutOpen = this.$route.path.includes('about')
+        }
     },
 })
 </script>
@@ -49,20 +62,39 @@ export default Vue.extend({
 .root {
     display: flex;
     overflow: hidden;
+    width: 100%;
     height: 100vh;
     color: var(--color-main);
 }
 
-.main-layout {
-    position: relative;
-    max-width: var(--max-width);
-    flex: 0 0 100%;
-    padding: 0 20px;
-    margin: 0 auto;
-    transition: all 1.2s ease(out-quart);
+.main-layout,
+.footer {
+    width: 100%;
+    transition: width 1.2s ease(out-quart);
 
     &--minify {
-        flex: 0 0 50%;
+        width: 50%;
+    }
+}
+
+.main-layout {
+    position: relative;
+    padding: 0 20px;
+}
+
+.footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: var(--top-bar-height);
+    padding: rem(20) rem(30);
+    border-top: 1px solid var(--color-main);
+    background-color: var(--color-bg);
+    transition: height 1.2s ease(out-quart), width 1.2s ease(out-quart);
+
+    &--expand {
+        height: calc(100vh - var(--top-bar-height));
     }
 }
 </style>

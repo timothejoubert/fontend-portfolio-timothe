@@ -6,6 +6,7 @@ export interface ProjectContent {
     description: string
     isNew?: boolean
     thumbnail: ImageAttributes
+    medias?: ImageAttributes[]
 }
 
 export default function parseProjects(response: undefined | StrapiWebResponse): ProjectContent[] | undefined {

@@ -2,6 +2,9 @@
 import Vue from 'vue'
 import type { PropType, VNode } from 'vue'
 
+type ImageExtension = '.gif' | '.png' | '.jpg' | '.jpeg' | '.webp'
+type VideoExtension = '.gif' | '.mp4' | '.mov'
+
 export default Vue.extend({
     name: 'VImage',
     props: {
@@ -13,24 +16,29 @@ export default Vue.extend({
         }
     },
     mounted() {
-        const img = this.$el.querySelector('img')
-        if (img?.complete) this.loaded = true
+        if ('querySelector' in this.$el) {
+            const img = this.$el.querySelector('img')
+            if (img?.complete) this.loaded = true
+        }
     },
     render(createElement): VNode {
         const basicImg = this.strapiImage
-        const { alternativeText } = basicImg
-        const img = this.strapiImage?.formats.large || basicImg
+        const { alternativeText } = basicImg || {}
+
+        const img = this.strapiImage?.formats?.large || basicImg
 
         if (!img) return createElement('')
 
-        const { url, width, height } = img
+        const { url, width, height, ext, formats } = img
+
+        // TODO: detect if dev or prod mode for display right path
+        const baseUrl = process.env.NODE_ENV === 'production' ? process.env.STRAPI_URL : 'http://localhost:1337'
 
         const imgAttributes: Record<string, any> = {
-            src: 'https://api-timothe.herokuapp.com' + url,
+            src: baseUrl + url,
             alt: alternativeText || '',
             width: width || '',
             height: height || '',
-            // modifiers: imgModifiers,
         }
 
         const imgNode = createElement('img', {
