@@ -3,12 +3,12 @@
     transition: all 1.2s ease(out-quart);
 }
 
-.project-modal-enter-to,
-.project-modal-leave-from {
-    width: 50%;
-}
-
 .project-modal-enter-from,
 .project-modal-leave-to {
-    width: 0!important;
+    flex: 0 0 0 !important;
 }
+
+//.project-modal-enter-from,
+//.project-modal-leave-to {
+//    width: 0!important;
+//}

@@ -1,7 +1,7 @@
 {
-  "name": "starter-nuxt-strapi",
+  "name": "portfolio-tim",
   "version": "1.0.0",
-  "description": "Starter template for Nuxt strapi portfolio",
+  "description": "Portfolio | Timothe joubert",
   "scripts": {
     "dev": "nuxt",
     "net": "yarn netlify dev",
@@ -18,7 +18,8 @@
     "@nuxtjs/sentry": "^5.1.0",
     "@nuxtjs/svg": "^0.4.0",
     "nuxt": "^2.15.7",
-    "portal-vue": "^2.1.7"
+    "portal-vue": "^2.1.7",
+      "gsap": "^3.10.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

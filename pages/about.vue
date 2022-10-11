@@ -1,6 +1,8 @@
 <template>
     <div :class="$style.root">
-        <h1>About</h1>
+        <h1>
+            <nuxt-link to="/">close About</nuxt-link>
+        </h1>
     </div>
 </template>
 

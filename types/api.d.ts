@@ -103,7 +103,7 @@ interface Image {
     caption: string
     width: number
     height: number
-    formats: ImageFormats
+    formats: ImageFormats | null
     hash: string
     ext: string
     mime: string

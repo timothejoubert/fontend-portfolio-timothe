@@ -1,14 +1,14 @@
 <template>
     <section :class="$style.project">
-        <div :class="$style['project-inner']">
+        <div ref="wrapper" :class="$style['project-inner']">
+<!--            <pre>{{ project }}</pre>-->
             <h1 v-if="project">Project page: {{ project.title }}</h1>
             <p v-if="project.description">{{ project.description }}</p>
             <nuxt-link to="/">close</nuxt-link>
             <ul v-if="medias.length">
                 <li v-for="(media, i) in medias" :key="i">
                     <v-image :strapi-image="media" />
-                    <pre>{{media}}</pre>
-
+                    <!--<pre>{{media}}</pre>-->
                 </li>
             </ul>
         </div>
@@ -18,6 +18,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ProjectContent } from '~/utils/parseProjects'
+// import VCounterDom from '~/components/atoms/VCounterDom.vue'
 
 export default Vue.extend({
     name: 'Project',
@@ -42,7 +43,16 @@ export default Vue.extend({
         const pageSlug = this.$route.params.slug
         const projects = this.$store.state.projectsData
         this.project = projects.filter((project: ProjectContent) => project.slug === pageSlug)[0]
-        console.log(this.project)
+        console.log('project data ', this.project)
+        this.initDataIndex()
+    },
+    methods: {
+        initDataIndex(): void {
+            const children = Array.from((this.$refs.wrapper as HTMLElement).children).filter(
+                (child) => child.nodeName !== '#text'
+            )
+            children.forEach((element, i) => element.setAttribute('data-index', String(i)))
+        },
     },
 })
 </script>
@@ -50,9 +60,8 @@ export default Vue.extend({
 <style lang="scss" module>
 .project {
     position: relative;
-    overflow: hidden;
-    width: 50%;
     min-height: 100vh;
+    flex: 1;
     border-left: 1px solid var(--color-main);
     background-color: var(--color-bg);
 }
@@ -61,6 +70,5 @@ export default Vue.extend({
     width: 100%;
     min-width: 50vw;
     padding: rem(40);
-
 }
 </style>

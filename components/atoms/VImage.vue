@@ -24,12 +24,12 @@ export default Vue.extend({
     render(createElement): VNode {
         const basicImg = this.strapiImage
         const { alternativeText } = basicImg || {}
-
+        const formats = basicImg?.formats
         const img = this.strapiImage?.formats?.large || basicImg
 
         if (!img) return createElement('')
 
-        const { url, width, height, ext, formats } = img
+        const { url, width, height, ext } = img || {}
 
         // TODO: detect if dev or prod mode for display right path
         const baseUrl = process.env.NODE_ENV === 'production' ? process.env.STRAPI_URL : 'http://localhost:1337'

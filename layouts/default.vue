@@ -4,9 +4,15 @@
             <v-header @toggle-options="toggleOptions" />
             <v-user-options :open="isOptionsOpen" />
             <v-nav-project />
-            <div :class="[$style.footer, isProjectOpen && $style['footer--minify'], isAboutOpen && $style['footer--expand']]">
+            <div
+                :class="[
+                    $style.footer,
+                    isProjectOpen && $style['footer--minify'],
+                    isAboutOpen && $style['footer--expand'],
+                ]"
+            >
                 <v-footer />
-                <nuxt v-if="isOptionsOpen" :class="$style['about-content']" />
+                <nuxt v-if="isAboutOpen" :class="$style['about-content']" />
             </div>
         </div>
         <transition name="project-modal">
@@ -53,7 +59,7 @@ export default Vue.extend({
         initRoute(): void {
             this.isProjectOpen = this.$route.path.includes('project') // || (to.path.includes('about') && wasProject)
             this.isAboutOpen = this.$route.path.includes('about')
-        }
+        },
     },
 })
 </script>
