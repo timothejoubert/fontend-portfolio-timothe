@@ -3,6 +3,16 @@
     transition: opacity 0.3s;
 }
 
+.fade-06-enter-active,
+.fade-06-leave-active {
+    transition: opacity 0.6s;
+}
+
+.fade-10-enter-active,
+.fade-10-leave-active {
+    transition: opacity 1s;
+}
+
 .fade-enter,
 .fade-leave-to {
     opacity: 0;

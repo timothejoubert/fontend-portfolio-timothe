@@ -1,4 +1,4 @@
-
+import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 
 export default {
     // Target: https://go.nuxtjs.dev/config-target
@@ -10,6 +10,7 @@ export default {
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
+        title: process.env.APP_TITLE,
         htmlAttrs: {
             lang: 'fr',
         },
@@ -27,10 +28,11 @@ export default {
         link: [
             // favicon
             { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon/apple-touch-icon.png' },
+            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
             { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon/favicon-32x32.png' },
             { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon/favicon-16x16.png' },
             { rel: 'manifest', href: '/favicon/site.webmanifest' },
-            { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#5bbad5' },
+            { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#da532c' },
         ],
     },
 
@@ -61,9 +63,12 @@ export default {
         '@nuxtjs/stylelint-module',
         // https://github.com/nuxt/postcss8
         '@nuxt/postcss8',
+        // https://github.com/nuxt-community/svg-module
+        '@nuxtjs/svg',
         // https://github.com/nuxt-community/style-resources-module#setup
         '@nuxtjs/style-resources',
     ],
+
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
         // https://sitemap.nuxtjs.org/guide/setup
@@ -80,12 +85,26 @@ export default {
         entities: ['projects', 'about'],
     },
 
+    // https://fr.nuxtjs.org/docs/2.x/configuration-glossary/configuration-runtime-config/
+    publicRuntimeConfig: {
+        appTitle: process.env.APP_TITLE,
+        baseUrl: process.env.APP_BASE_URL,
+    },
+
     // https://image.nuxtjs.org/providers/strapi
     // image: {
     //   strapi: {
     //     baseURL: process.env.STRAPI_URL + 'uploads' || 'http://localhost:1337/uploads/',
     //   },
     // },
+    // https://github.com/nuxt-community/svg-module
+    svg: {
+        svgSpriteLoader: {
+            extract: true,
+            runtimeGenerator: require.resolve('./utils/svg/sprite-component-generator.js'),
+            spriteFilename: 'image/sprite.[hash:8].svg',
+        },
+    },
 
     // loading: '@/components/organisms/VLoadingPage.vue',
 
@@ -104,5 +123,13 @@ export default {
                 },
             },
         },
+        plugins: [
+            new SpriteLoaderPlugin({
+                plainSprite: true,
+                spriteAttrs: {
+                    id: 'svg-sprite',
+                },
+            }),
+        ],
     },
 }

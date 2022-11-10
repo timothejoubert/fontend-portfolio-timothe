@@ -9,6 +9,7 @@ export default Vue.extend({
         tag: { type: String, default: 'div' },
     },
     render(createElement, context): VNode {
+        if (!this && !(this as any).$slots.default) return createElement('')
         const { tag } = context.props
 
         const data: VNodeData = {
@@ -18,13 +19,15 @@ export default Vue.extend({
         }
 
         const children: VNode[] = (context.slots()?.default as VNode[]).filter((child) => child.tag) || []
+
         const childrenNode = children.map((child, index) => {
             const isNuxtLink = child.componentOptions?.tag === 'nuxt-link' || child.tag === 'vue-component-19-NuxtLink'
             const tag = isNuxtLink ? 'a' : child.tag ? child.tag : ''
 
-            const data = isNuxtLink ? child.componentOptions?.propsData : child.data
-            const link = isNuxtLink ? { href: child.componentOptions?.propsData?.to } : null
-            console.log(tag)
+            const propsData = child.componentOptions?.propsData as Record<'to', any>
+            const data = isNuxtLink ? propsData : child.data
+            const link = isNuxtLink ? { href: propsData?.to } : null
+
             const childNode = createElement(
                 tag,
                 {
@@ -32,16 +35,14 @@ export default Vue.extend({
                     attrs: {
                         'data-index': index,
                         ...context.data.attrs,
-                        href: child.componentOptions?.propsData?.to,
+                        href: propsData?.to,
                     },
                 },
                 [child.children]
             )
-            // console.log(childNode)
+
             return childNode
         })
-
-        console.log(children)
 
         return createElement(tag, data, childrenNode)
     },

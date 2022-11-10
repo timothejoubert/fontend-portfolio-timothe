@@ -1,76 +1,130 @@
 @use 'sass:math';
 
 @mixin text-h1 {
-    font-family: $konstant;
-    font-size: 72px;
-    font-weight: 400;
+    font-family: $noi;
+    font-size: 172px;
+    font-weight: 900;
     line-height: math.div(108, 120);
 }
 
 @mixin text-h2 {
-    font-size: 28px;
+    font-family: $noi;
+    font-size: 72px;
+    font-weight: 900;
     line-height: 1;
 }
 
 @mixin text-h3 {
-    font-size: 21px;
+    font-family: $noi;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 2px;
+}
+
+//@mixin text-h4 {
+//    font-size: 24px;
+//    line-height: 1;
+//}
+//
+//@mixin text-h5 {
+//    font-size: 24px;
+//    line-height: 1;
+//}
+//
+//@mixin text-h6 {
+//    font-size: 24px;
+//    line-height: 1;
+//}
+
+@mixin text-accent {
+    font-family: $varent;
+    font-size: 17px;
+    font-weight: 900;
+    font-variation-settings: "wght" 900;
     line-height: 1;
 }
 
-@mixin text-h4 {
-    font-size: 24px;
+@mixin over-title-l {
+    font-family: $noi;
+    font-size: 23px;
+    font-weight: 900;
     line-height: 1;
+    text-transform: uppercase;
 }
 
-@mixin text-h5 {
-    font-size: 24px;
+@mixin over-title-m {
+    font-family: $noi;
+    font-size: 15px;
+    font-weight: 900;
     line-height: 1;
+    text-transform: uppercase;
 }
 
-@mixin text-h6 {
-    font-size: 24px;
-    line-height: 1;
-}
-
-@mixin title-card {
-    font-size: 64px;
-    font-weight: 400;
-    line-height: math.div(73, 82);
-}
-
-@mixin title-section {
-    font-size: 21px;
-    font-weight: 400;
-    line-height: 1;
-    opacity: 0.7;
-}
-
-@mixin tag-l {
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 1;
-}
-
-@mixin tag-m {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1;
-}
-
-@mixin tag-s {
+@mixin over-title-s {
+    font-family: $noi;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 700;
     line-height: 1;
+    text-transform: uppercase;
+}
+
+@mixin over-title-xs {
+    font-family: $noi;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
 }
 
 @mixin body-l {
-    font-size: 24px;
-    font-weight: 600;
+    font-family: $noi;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 2.1;
+}
+
+@mixin body-m {
+    font-family: $noi;
+    font-size: 16px;
+    font-weight: 500;
     line-height: 1;
 }
 
 @mixin body-s {
-    font-size: 18px;
+    font-family: $noi;
+    font-size: 15px;
     font-weight: 300;
+    line-height: 1.4;
+}
+
+@mixin body-xs {
+    font-family: $noi;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+@mixin body-xxs {
+    font-family: $noi;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+
+@mixin button-s {
+    font-family: $noi;
+    font-size: 13px;
+    font-weight: 800;
     line-height: 1;
+    text-transform: uppercase;
+}
+
+@mixin button-m {
+    font-family: $noi;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
 }

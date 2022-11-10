@@ -7,10 +7,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import mixins from 'vue-typed-mixins'
+import Page from '~/mixins/Page'
 
-export default Vue.extend({
+export default mixins(Page).extend({
     name: 'About',
+    data() {
+        return {
+            pageData: { title: 'À propos', metaDescription: 'description about' },
+        }
+    },
 })
 </script>
 

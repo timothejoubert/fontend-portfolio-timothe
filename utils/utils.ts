@@ -32,3 +32,13 @@ export const getRandomFloat = (min: number, max: number, decimals: number) => {
 export const nameIfy = (text: string | null | undefined): string => {
     return text?.replace(/[-_.'"]/g, ' ') || 'text undefined'
 }
+
+export const getRandomInt = (min: number, max: number): number => {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+export const getCssProp = (propName: string) => {
+    return getComputedStyle(document.documentElement).getPropertyValue(propName)
+}

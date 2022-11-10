@@ -10,41 +10,54 @@
   @include text-h3;
 }
 
-.text-h4 {
-  @include text-h4;
+//.text-h4 {
+//  @include text-h4;
+//}
+//
+//.text-h5 {
+//  @include text-h5;
+//}
+//
+//.text-h6 {
+//  @include text-h6;
+//}
+
+.text-accent {
+    @include text-accent;
 }
 
-.text-h5 {
-  @include text-h5;
+.over-title-l {
+    @include over-title-l;
 }
 
-.text-h6 {
-  @include text-h6;
+.over-title-m {
+    @include over-title-m;
 }
 
-.title-card {
-  @include title-card;
+.over-title-s {
+    @include over-title-s;
 }
 
-.title-section {
-  @include title-section;
-}
-
-.tag-l {
-  @include tag-l;
-}
-
-.tag-m {
-  @include tag-m;
-}
-
-.tag-s {
-  @include tag-s;
+.over-title-xs {
+    @include over-title-xs;
 }
 
 .body-l {
   @include body-l;
 }
+
+.body-m {
+    @include body-m;
+}
+
 .body-s {
   @include body-s;
+}
+
+.body-xs {
+    @include body-xs;
+}
+
+.body-xxs {
+    @include body-xxs;
 }

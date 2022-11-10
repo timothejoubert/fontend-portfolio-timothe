@@ -1,0 +1,9 @@
+.transY-100-enter-active,
+.transY-100-leave-active {
+    transition: transform 0.8s;
+}
+
+.transY-100-enter,
+.transY-100-leave-to {
+    transform: translateY(100px);
+}

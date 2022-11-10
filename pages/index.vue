@@ -1,21 +1,26 @@
 <template>
-    <div :class="$style.root">
-<!--        <v-nav-project />-->
-    </div>
+    <div :class="$style.root"></div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import VNavProject from '~/components/organisms/VNavProject.vue'
+import mixins from 'vue-typed-mixins'
+import Page from '~/mixins/Page'
 
-export default Vue.extend({
+export default mixins(Page).extend({
     name: 'Index',
-    components: { VNavProject },
+    updated() {
+        console.log('index updated')
+    },
+    data() {
+        return {
+            pageData: { title: 'portfolio', metaDescription: 'home page' } as PageData,
+        }
+    },
 })
 </script>
 
 <style lang="scss" module>
 .root {
-    user-select: auto;
+    position: relative;
 }
 </style>

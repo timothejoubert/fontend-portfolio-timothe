@@ -9,18 +9,24 @@
 @font-face {
     font-display: swap;
     font-family: 'noi';
-    font-style: normal;
-    font-weight: normal;
-    src: url('~assets/fonts/studiofeixen-noiGrotesk-var.ttf') format('otf');
+    font-weight: 100 900;
+    font-style: oblique 0deg 10deg;
+    src:
+        url('~assets/fonts/noigrotesk-variable.ttf') format('truetype'),
+        url('~assets/fonts/noigrotesk-variable.woff') format('woff'),
+        url('~assets/fonts/noigrotesk-variable.woff2') format('woff2');
 }
 
 @font-face {
     font-display: swap;
-    font-family: 'dida';
-    font-style: normal;
-    font-weight: normal;
-    src: url('~assets/fonts/Dida-Regular.woff2') format('woff2');
+    font-family: 'varent';
+    font-weight: 100 900;
+    src:
+        url('~assets/fonts/varentgrotesk.ttf') format('truetype'),
+        url('~assets/fonts/varentgrotesk.woff') format('woff'),
+        url('~assets/fonts/varentgrotesk.woff2') format('woff2');
 }
+
 
 
 @font-face {

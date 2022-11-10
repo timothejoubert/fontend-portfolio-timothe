@@ -1,0 +1,8 @@
+<svg width="28" height="23" viewBox="0 0 28 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" width="2" height="23" rx="1" class="rect__setting"/>
+    <rect x="13" width="2" height="23" rx="1" class="rect__setting"/>
+    <rect x="22" width="2" height="23" rx="1" class="rect__setting"/>
+    <circle cx="5" cy="13" r="4" class="circle__setting circle--side" stroke-width="2"/>
+    <circle cx="23" cy="13" r="4" class="circle__setting circle--side" stroke-width="2"/>
+    <circle cx="14" cy="8" r="4" class="circle__setting circle--center" stroke-width="2"/>
+</svg>

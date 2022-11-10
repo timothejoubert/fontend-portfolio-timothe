@@ -171,6 +171,8 @@ $rounded-border-radius: $rounded-border-radius-x $rounded-border-radius-y;
 
 .root {
     display: inline-block;
+    width: var(--figure-width);
+    height: var(--figure-height);
     background-color: var(--image-background-color);
     border-radius: var(--image-border-radius, 0);
     transform: translate(0); // update context to prevent crop glitch on safari
@@ -220,21 +222,5 @@ $rounded-border-radius: $rounded-border-radius-x $rounded-border-radius-y;
 
 .root--loaded img {
     opacity: 1;
-}
-
-.copyright {
-    position: absolute !important;
-    z-index: 2;
-    right: var(--gutter);
-    bottom: var(--gutter);
-}
-.copyright--top {
-    top: var(--gutter);
-    right: var(--gutter);
-}
-.copyright--bottom-start {
-    right: inherit;
-    bottom: var(--gutter);
-    left: var(--gutter);
 }
 </style>

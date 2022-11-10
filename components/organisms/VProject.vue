@@ -9,7 +9,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType } from 'vue'
-import { ProjectContent } from '~/utils/parseProjects'
 
 export default Vue.extend({
     name: 'VProject',

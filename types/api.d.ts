@@ -1,12 +1,17 @@
 // STRAPI //
-interface StrapiWebResponse {
+interface StrapiWebResponses {
     data: StrapiDataBaseResponse[] | null
+    meta: StrapiMeta
+}
+
+interface StrapiWebResponse {
+    data: StrapiDataBaseResponse | null
     meta: StrapiMeta
 }
 
 interface StrapiDataBaseResponse {
     id: number
-    attributes: ProjectContent | AboutContent
+    attributes: StrapiProjectAttributes | StrapiAboutAttributes
 }
 
 interface StrapiMeta {
@@ -25,29 +30,21 @@ interface StrapiMetaPaginationContent {
 }
 
 interface StrapiBlockCreated {
-    createdAt: string
-    updatedAt: string
-    publishedAt: string
+    createdAt?: string
+    updatedAt?: string
+    publishedAt?: string
 }
 // END STRAPI //
 
-// PROJECT //
-interface ProjectResponse extends StrapiBlockCreated {
+interface NodeType {
+    '@type': string
+}
+
+interface PageData extends NodeType {
     title: string
-    description: string
-    isNew: boolean
-    thumbnail: ImageObject
+    metaDescription?: string
+    thumbnail?: ImageObject
 }
-
-interface AboutContent {
-    title?: string
-}
-
-interface UserUiContent {
-
-}
-
-// END PROJECT //
 
 // IMAGE //
 interface ImageData {
@@ -70,13 +67,13 @@ interface ImageFormats {
 }
 
 interface ImageAttributes {
-    id: number
+    id?: number
     name: string
     alternativeText: string
     caption: string
-    width: number
-    height: number
-    formats: ImageFormats
+    width: number | null
+    height: number | null
+    formats: ImageFormats | null
     hash: string
     ext: string
     mime: string
@@ -117,3 +114,38 @@ interface Image {
 }
 
 // END IMAGE //
+
+// PROJECT //
+interface StrapiProjectAttributes extends StrapiBlockCreated, PageData {
+    description: string | null
+    isNew: boolean
+    date: string | null
+    thumbnail: ImageObject
+    tags: any // define type
+    medias: ImageObject[]
+    link: any // define type
+}
+
+interface StrapiAboutAttributes extends StrapiBlockCreated, PageData {
+    description: RichText
+    socials?: Socials[]
+    sections?: AboutSection[]
+}
+
+interface UserUiContent {}
+
+// RICH TEXT //
+interface RichText {
+    time: number
+    blocks: BlockContent[]
+    version: string
+}
+
+interface BlockContent {
+    id: string
+    type: string
+    data: BlockContentData
+}
+interface BlockContentData {
+    text: string
+}

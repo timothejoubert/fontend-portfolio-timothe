@@ -1,7 +1,7 @@
 {
-  "name": "portfolio-tim",
+  "name": "portfolio-timothe",
   "version": "1.0.0",
-  "description": "Portfolio | Timothe joubert",
+  "description": "Portfolio Timothe joubert",
   "scripts": {
     "dev": "nuxt",
     "net": "yarn netlify dev",
@@ -13,13 +13,14 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
-    "@nuxtjs/strapi": "^0.3.0",
     "@nuxt/image": "^0.7.1",
     "@nuxtjs/sentry": "^5.1.0",
+    "@nuxtjs/strapi": "^0.3.0",
     "@nuxtjs/svg": "^0.4.0",
+    "gsap": "^3.10.2",
     "nuxt": "^2.15.7",
     "portal-vue": "^2.1.7",
-      "gsap": "^3.10.2"
+    "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

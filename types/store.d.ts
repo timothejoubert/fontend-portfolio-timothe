@@ -1,9 +1,16 @@
 import { NuxtError } from '@nuxt/types'
-import { ProjectContent } from '~/utils/parseProjects'
 
 interface RootState {
     projectsData: ProjectContent | null
-    aboutData: AboutContent | null
+    aboutData: AboutBlock | null
+    animationEnter: boolean
     uiProperties: UserUiContent | null
+    splashScreenFinish: boolean
+    alreadyVisited: boolean
+    isAboutOpen: boolean
+    isUiOptionsOpen: boolean
+    selectedFilter: string
+    windowWidth: number
+    windowHeight: number
     errorPage: NuxtError | null
 }
