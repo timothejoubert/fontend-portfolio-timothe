@@ -16,7 +16,7 @@ interface AboutArticle {
 }
 
 interface Socials {
-    name?: string
+    name?: 'instagram' | 'github' | 'codepen' | 'p5' | 'facebook' | 'behance'
     icon?: ImageData
     url?: string
 }

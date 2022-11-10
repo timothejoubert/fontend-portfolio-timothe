@@ -7,8 +7,8 @@ const ABOUT_DATA = {
             url: 'https://instagram.com',
         },
         {
-            name: 'instagram',
-            url: 'https://instagram.com',
+            name: 'github',
+            url: 'https://github.com',
         },
     ],
     description:

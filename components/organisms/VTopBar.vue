@@ -1,13 +1,19 @@
 <template>
     <nav :class="rootClasses">
-        <nuxt-link to="/" :class="[$style.logo, 'text-h3']">FOURRE TOUT</nuxt-link>
+        <component
+            :is="isHomePage && !isAboutOpen ? 'nuxt-link' : 'div'"
+            :to="isHomePage ? '/' : undefined"
+            :class="[$style.logo, 'text-h3']"
+            @click="onLogoClick"
+            >FOURRE TOUT</component
+        >
         <button
             :class="$style.setting"
             :aria-label="`${value ? 'Close' : 'Open'} options panel`"
             type="button"
             role="switch"
             :aria-checked="value.toString()"
-            @click="onClick"
+            @click="updateUiOptionsState"
         >
             <svg width="28" height="23" viewBox="0 0 28 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="4" width="2" height="23" rx="1" :class="$style.rect" />
@@ -23,6 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 
 export default Vue.extend({
     name: 'VTopBar',
@@ -30,16 +37,32 @@ export default Vue.extend({
         value: Boolean,
     },
     computed: {
+        ...mapGetters(['isAboutOpen', 'isUiOptionsOpen']),
+        isHomePage(): boolean {
+            return this.$route.path !== '/'
+        },
         rootClasses(): (string | boolean | undefined)[] {
-            return [this.$style.root, this.isAnimationEnter && this.$style['root--enter']]
+            return [
+                this.$style.root,
+                (this.isAboutOpen || this.isUiOptionsOpen) && this.$style['root--modal-open'],
+                this.isAnimationEnter && this.$style['root--enter'],
+            ]
         },
         isAnimationEnter(): boolean {
             return this.$store.state.animationEnter
         },
     },
     methods: {
-        onClick() {
-            this.$emit('update')
+        updateUiOptionsState() {
+            this.$emit('toggle-options')
+        },
+        onLogoClick() {
+            if (this.isAboutOpen) {
+                this.$emit('toggleAbout')
+            }
+            if (this.isUiOptionsOpen) {
+                this.updateUiOptionsState()
+            }
         },
     },
 })
@@ -66,6 +89,10 @@ export default Vue.extend({
 
 .logo {
     text-transform: uppercase;
+
+    .root--modal-open & {
+        cursor: pointer;
+    }
 
     &::before {
         position: relative;

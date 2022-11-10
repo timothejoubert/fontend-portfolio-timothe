@@ -1,6 +1,5 @@
 <template>
     <div :class="$style.root">
-<!--        <p v-if="about.description" :class="[$style.description, 'body-l']">{{ about.description }}</p>-->
         <v-bold-markdown
             v-if="about.description"
             :class="[$style.description, 'body-l']"

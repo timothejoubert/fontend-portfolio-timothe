@@ -1,7 +1,6 @@
 <template>
     <div :class="$style.root">
         <transition name="fade">
-            <!-- TODO VPlash is always display and create error in splitWord => when mounted looking for DOM element aren't displayed  -->
             <v-splash-screen
                 v-if="displaySplashScreen && !isSplashDone"
                 :start="displaySplashScreen"
@@ -10,7 +9,7 @@
         </transition>
         <div :class="[$style['main-layout'], isProjectOpen && $style['main-layout--minify']]">
             <header>
-                <v-top-bar v-model="isOptionsOpen" @update="toggleOptions" />
+                <v-top-bar v-model="isOptionsOpen" @toggle-options="toggleOptions" @toggleAbout="toggleAbout" />
                 <v-ui-options ref="optionsPanel" :is-open="isOptionsOpen" />
                 <v-nav-project
                     ref="nav"
