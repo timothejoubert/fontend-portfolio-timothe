@@ -1,12 +1,8 @@
 <template>
     <nav :class="rootClasses">
-        <component
-            :is="isHomePage && !isAboutOpen ? 'nuxt-link' : 'div'"
-            :to="isHomePage ? '/' : undefined"
-            :class="[$style.logo, 'text-h3']"
-            @click="onLogoClick"
-            >FOURRE TOUT</component
-        >
+        <button :class="[$style.logo, 'text-h3']" aria-label="close all panels" @click="onLogoClick">
+            FOURRE TOUT
+        </button>
         <button
             :class="$style.setting"
             :aria-label="`${value ? 'Close' : 'Open'} options panel`"
@@ -51,18 +47,20 @@ export default Vue.extend({
         isAnimationEnter(): boolean {
             return this.$store.state.animationEnter
         },
+        isInProjectPage(): boolean {
+            return this.$route.fullPath.includes('project')
+        },
     },
     methods: {
         updateUiOptionsState() {
             this.$emit('toggle-options')
         },
         onLogoClick() {
-            if (this.isAboutOpen) {
-                this.$emit('toggleAbout')
-            }
-            if (this.isUiOptionsOpen) {
-                this.updateUiOptionsState()
-            }
+            if (this.isInProjectPage) this.$router.push('/')
+
+            if (this.isAboutOpen) this.$emit('toggleAbout')
+
+            if (this.isUiOptionsOpen) this.updateUiOptionsState()
         },
     },
 })

@@ -1,18 +1,21 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType, VNode } from 'vue'
+import ImagePlaceHolder from '~/assets/images/icons/not-found.svg?sprite'
 
 type ImageExtension = '.gif' | '.png' | '.jpg' | '.jpeg' | '.webp'
 type VideoExtension = '.gif' | '.mp4' | '.mov'
 
 export default Vue.extend({
     name: 'VImage',
+    components: { ImagePlaceHolder },
     props: {
         strapiImage: Object as PropType<Image>,
     },
     data() {
         return {
             loaded: false,
+            isSourceNotFound: false,
         }
     },
     mounted() {
@@ -50,15 +53,21 @@ export default Vue.extend({
                 load: () => {
                     this.loaded = true
                 },
+                error: () => {
+                    this.isSourceNotFound = true
+                },
             },
         })
-        return createElement(
-            'figure',
-            {
-                class: [this.$style.root],
-            },
-            [imgNode]
-        )
+
+        return this.isSourceNotFound
+            ? createElement(ImagePlaceHolder, { class: this.$style.placeholder })
+            : createElement(
+                  'figure',
+                  {
+                      class: [this.$style.root],
+                  },
+                  [imgNode]
+              )
         // let width = 0
         // if (typeof this.width !== 'undefined')
         //   width = this.width === 'string' ? parseFloat(this.width) : (this.width as number)
@@ -222,5 +231,13 @@ $rounded-border-radius: $rounded-border-radius-x $rounded-border-radius-y;
 
 .root--loaded img {
     opacity: 1;
+}
+
+.placeholder {
+    display: block;
+    width: 40px;
+    height: 100%;
+    margin: auto;
+    opacity: 0.3;
 }
 </style>

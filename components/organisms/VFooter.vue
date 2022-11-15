@@ -105,12 +105,12 @@ export default Vue.extend({
     display: flex;
     height: 100%;
     align-items: center;
-    padding: 0 19px;
+    //padding: 0 19px 0 0;
     cursor: pointer;
     transition: transform var(--project-duration) ease(out-quart);
 
     @include media('>=md') {
-        transform: translateX(calc(50vw - 50% - var(--socials-width, '0px') / 4));
+        transform: translateX(calc(50vw - 50% - var(--socials-width, '0px') / 2));
     }
 
     .root--collapsed & {
@@ -123,7 +123,7 @@ export default Vue.extend({
 
     .about-link:hover &,
     .root--open & {
-        transform: translateX(-5px);
+        //transform: translateX(-5px);
     }
 }
 
@@ -136,13 +136,7 @@ export default Vue.extend({
     height: 17px;
     align-items: center;
     justify-content: center;
-    //clip-path: circle(20% at 50% 50%);
-    //transition: clip-path 0.4s 0s;
-    //
-    //.about-link:hover &,
-    //.root--open & {
-    //    clip-path: circle(50% at 50% 50%);
-    //}
+    transform: translateX(calc(100% + 10px));
 }
 
 .circle-outlined {
@@ -174,6 +168,10 @@ export default Vue.extend({
         transform: scale(1);
         transition-delay: 0s !important;
     }
+
+    @include media('<md') {
+        transform: scale(1);
+    }
 }
 
 .arrow {
@@ -200,6 +198,13 @@ export default Vue.extend({
     .root--open & {
         transition-delay: 0.45s;
         transition-timing-function: ease(in-quad);
+    }
+
+    @include media('<md') {
+        .root:not(.root--open) & {
+            opacity: 1;
+            transform: translateY(0%) rotate(-90deg);
+        }
     }
 }
 
@@ -230,17 +235,20 @@ export default Vue.extend({
 
 .social {
     display: flex;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     align-items: center;
     justify-content: center;
-    margin: 0 rem(8);
     color: var(--color-main);
+
+    &:not(:last-child) {
+        margin-right: rem(18);
+    }
 
     &::before {
         position: absolute;
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
         background-color: var(--color-main);
         border-radius: 100%;
         content: '';
@@ -258,9 +266,9 @@ export default Vue.extend({
 }
 
 .social__icon {
-    width: 16px;
+    width: 14px;
     height: auto;
-    opacity: 0.55;
+    opacity: 0.4;
     transition: opacity 0.2s;
 
     .social:hover & {

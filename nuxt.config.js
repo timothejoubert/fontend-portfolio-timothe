@@ -108,6 +108,49 @@ export default {
 
     // loading: '@/components/organisms/VLoadingPage.vue',
 
+    // https://storybook.nuxtjs.org/api/options
+    storybook: {
+        stories: ['~/stories/**/*.stories.js'],
+        parameters: {
+            viewport: {
+                viewports: {
+                    iPhoneSE: {
+                        name: 'iPhone SE',
+                        styles: {
+                            width: '375px',
+                            height: '660px',
+                        },
+                    },
+                    iPadPortrait: {
+                        name: 'iPad portrait',
+                        styles: {
+                            width: '768px',
+                            height: '1024px',
+                        },
+                    },
+                    iPadLandscape: {
+                        name: 'iPad landscape',
+                        styles: {
+                            width: '1024px',
+                            height: '768px',
+                        },
+                    },
+                },
+            },
+        },
+        addons: [
+            {
+                name: '@storybook/preset-scss',
+                options: {
+                    cssLoaderOptions: {
+                        modules: true,
+                        localIdentName: '[name]__[local]--[hash:base64:5]',
+                    },
+                },
+            },
+        ],
+    },
+
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
         loaders: {

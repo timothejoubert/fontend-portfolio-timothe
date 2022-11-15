@@ -16,6 +16,9 @@
 @import "functions/important";
 // variables
 @import "variables";
+@import "~/components/molecules/VButton/variables";
+
 // mixins
 @import "mixins/typography";
-
+@import "mixins/theme";
+@import "~/components/molecules/VButton/mixins";

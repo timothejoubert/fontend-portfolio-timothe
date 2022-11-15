@@ -1,0 +1,12 @@
+$themes: (
+    light: (
+        default: #DBE6EC,
+        on-default: #131212,
+    ),
+    dark: (
+        default: #131212,
+        on-default: #DBE6EC,
+    )
+);
+
+$default-theme: dark;

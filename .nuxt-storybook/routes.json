@@ -1,0 +1,23 @@
+[
+  {
+    "name": "about",
+    "path": "/about",
+    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/pages/about.vue",
+    "chunkName": "pages/about",
+    "_name": "_6c9e16f2"
+  },
+  {
+    "name": "project-slug",
+    "path": "/project/:slug?",
+    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/pages/project/_slug.vue",
+    "chunkName": "pages/project/_slug",
+    "_name": "_cd201ee4"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_2d2e6168"
+  }
+]

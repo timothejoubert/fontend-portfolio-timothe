@@ -201,10 +201,10 @@ export default mixins(Resize).extend({
     padding: 0 var(--padding-border);
     border-top: 1px solid var(--color-main);
     background-color: var(--color-bg);
-    transition: height var(--project-duration) ease(out-quart), width var(--project-duration) ease(out-quart);
     -ms-overflow-style: none; /* IE and Edge */
     overflow-y: scroll;
     scrollbar-width: none; /* Firefox */
+    transition: height var(--project-duration) ease(out-quart), width var(--project-duration) ease(out-quart);
 
     &::-webkit-scrollbar {
         display: none;

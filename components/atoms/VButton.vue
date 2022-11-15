@@ -1,5 +1,5 @@
 <template>
-    <button :class="rootClass" @click="onClick">
+    <button :class="rootClass" :tabindex="!isVisible && '-1'" @click="onClick">
         <span ref="inner" :class="$style['inner']">
             <span v-if="$slots.default || label" :class="$style['label']">
                 <slot>{{ label }}</slot>
@@ -21,6 +21,7 @@ type ButtonSize = 's' | 'm' | 'l'
 export default Vue.extend({
     name: 'VButton',
     props: {
+        isVisible: { type: Boolean, default: true },
         label: String,
         theme: String as PropType<ButtonTheme>,
         rounded: Boolean,

@@ -3,6 +3,7 @@ import Vue from 'vue'
 import type { VNode } from 'vue'
 
 interface SplitWordProps {
+    enabled: boolean
     content: string
     defaultHidden: boolean
     transitionEndEvent: boolean
@@ -12,13 +13,19 @@ export default Vue.extend({
     name: 'VSplitWord',
     // functional: true,
     props: {
+        enabled: { type: Boolean, default: true },
         content: String,
         defaultHidden: Boolean,
         transitionEndEvent: Boolean,
     },
     render(createElement): VNode {
-        const { content, defaultHidden, transitionEndEvent } = this.$props as SplitWordProps
-        if (!content) return createElement('')
+        const { content, defaultHidden, transitionEndEvent, enabled } = this.$props as SplitWordProps
+
+        const wrapperData = { class: [this.$style.root] }
+        const slots = this.$slots && (this.$slots?.default?.[0] as VNode)
+
+        if (!enabled)
+            return ((slots || content) && createElement('div', wrapperData, [slots || content])) || createElement('')
 
         let indexLetter = 0
 
@@ -39,11 +46,7 @@ export default Vue.extend({
                         'span',
                         {
                             ...event,
-                            class: [
-                                this.$style.letter,
-                                defaultHidden && this?.$style?.['letter--hide'],
-                                'split-letter',
-                            ],
+                            class: [this.$style.letter, defaultHidden && this.$style['letter--hide'], 'split-letter'],
                             style: { '--index-letter-in-word': index, '--index-letter-total': indexLetter },
                         },
                         letter
@@ -52,20 +55,19 @@ export default Vue.extend({
             )
         })
 
-        return createElement(
-            'div',
-            {
-                class: [this.$style.word],
-            },
-            childrenNode
-        )
+        return createElement('div', wrapperData, childrenNode)
     },
 })
 </script>
 
 <style lang="scss" module>
-.word {
+.root {
     position: relative;
+    font-family: $noi;
+}
+
+.word {
+    display: inline-block;
 
     & + & {
         margin-left: 0.3em;
@@ -75,15 +77,15 @@ export default Vue.extend({
 .letter {
     position: relative;
     display: inline-block;
+    transition-delay: calc(100ms * var(--index-letter-total, 1));
+    transition-duration: 0.8s;
+    transition-property: transform, opacity, font-variation-settings;
+    transition-timing-function: ease(out-quart);
 
     &.letter--hide {
         font-variation-settings: 'wght' 100;
         opacity: 0;
         transform: translateY(-50px);
-        transition-delay: calc(100ms * var(--index-letter-total, 1));
-        transition-duration: 0.8s;
-        transition-property: transform, opacity, font-variation-settings;
-        transition-timing-function: ease(out-quart);
     }
 
     :global(.load) & {
