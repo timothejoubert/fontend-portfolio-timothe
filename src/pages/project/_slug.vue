@@ -1,5 +1,5 @@
 <template>
-    <v-counter-dom :class="$style.project" :enter="enter">
+    <v-counter-dom :class="$style.project" :enter="enter" transition-name="item-project">
         <nuxt-link ref="back-link" to="/" :class="$style.head">
             <v-button-cross :class="$style.cross" />
             <v-split-word
@@ -9,8 +9,7 @@
                 :content="pageData.title"
             />
         </nuxt-link>
-
-        <div v-if="pageData.tags && pageData.tags.length" :class="$style.tags">
+        <div :class="$style.tags">
             <v-pill
                 v-for="(tag, indexTag) in pageData.tags"
                 :key="indexTag"
@@ -19,15 +18,10 @@
                 :label="tag.name"
             />
         </div>
-
-        <p v-if="pageData.description" :class="[$style.description, 'body-xs']">{{ pageData.description }}</p>
-
-        <nuxt-link v-if="pageData.link && pageData.link.url" :to="pageData.link.url" :class="$style.link">{{
-            pageData.link.label
-        }}</nuxt-link>
-
+        <p :class="[$style.description, 'body-xs']">{{ pageData.description }}</p>
+        <nuxt-link :to="linkUrl" :class="$style.link">{{ linkLabel }}</nuxt-link>
         <ul v-if="medias.length" :class="$style.images">
-            <v-counter-dom inline :enter="enter">
+            <v-counter-dom inline :enter="enter" transition-name="item-project" :start-index="5">
                 <li v-for="(media, i) in medias" :key="i" :class="$style.image">
                     <v-image :strapi-image="media" />
                 </li>
@@ -63,6 +57,12 @@ export default mixins(Page).extend({
                 }) ?? []
             if (thumb && !!others.length) return others.splice(0, 0, thumb)
             return [thumb, thumb, thumb]
+        },
+        linkUrl(): string {
+            return this.pageData.link?.url || ''
+        },
+        linkLabel(): string {
+            return this.pageData.link?.label || ''
         },
     },
     beforeDestroy() {
@@ -110,6 +110,7 @@ export default mixins(Page).extend({
     position: relative;
     display: inline-block;
     margin-right: rem(12);
+    width: 100%;
 }
 
 .tags {

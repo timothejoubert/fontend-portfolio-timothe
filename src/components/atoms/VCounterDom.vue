@@ -19,12 +19,15 @@ export default Vue.extend({
         enabled: { type: Boolean, default: true },
         enter: Boolean,
         inline: Boolean,
+        transitionName: { type: String, default: 'item' },
+        startIndex: { type: Number, default: 0 },
     },
     render(createElement, context): VNode | VNode[] {
         const { props, data } = context
         if (!context.slots().default) return createElement('')
-        if (!props.enabled) return createElement('div', { ...data, ...props }, context.slots().default)
-        let slotIndex = 0
+        if (!props.enabled) return createElement('div', { ...data }, context.slots().default)
+
+        let slotIndex = props.startIndex
 
         const children = context.slots().default.map((slot: VNode) => {
             const linkAttributes = {} as Record<'to' | 'href' | 'target', string>
@@ -41,52 +44,45 @@ export default Vue.extend({
             }
 
             if (slot?.tag) slotIndex++
+
             return createElement(
-                'transition',
+                isRelativeLink ? 'nuxt-link' : isExternalLink ? 'a' : slot?.tag,
                 {
-                    props: {
-                        name: 'item-project',
-                    },
-                    // on: {
-                    //     afterEnter(element: HTMLElement) {
-                    //         element.style.transform = 'translateX(0)'
-                    //     },
-                    //     enter(element: HTMLElement) {
-                    //         element.style.transform = 'translateX(100%)'
-                    //     },
-                    //     leave(element: HTMLElement) {
-                    //         element.style.transform = 'translateX(0)'
-                    //     },
-                    // },
-                },
-                [
-                    createElement(
-                        isRelativeLink ? 'nuxt-link' : isExternalLink ? 'a' : slot?.tag,
+                    ...slot.context?.$props,
+                    props: slot.data?.props,
+                    class: [slot.data?.class, 'item-project'],
+                    style: { '--index': slotIndex },
+                    attrs: linkAttributes,
+                    directives: [
                         {
-                            ...slot.context?.$props,
-                            props: slot.data?.props,
-                            class: [slot.data?.class, 'item-project'],
-                            style: { '--index': slotIndex },
-                            attrs: linkAttributes,
-                            directives: [
-                                {
-                                    name: 'show',
-                                    value: props.enter,
-                                },
-                            ],
+                            name: 'show',
+                            value: props.enter,
                         },
-                        [isRelativeLink ? slot.componentOptions?.children : slot?.children]
-                    ),
-                ]
+                    ],
+                },
+                [isRelativeLink ? slot.componentOptions?.children : slot?.children]
             )
         })
 
-        // const transition =
-        //     props.enabled &&
+        const transitions = children.map((slot: VNode) => {
+            console.log(slot)
+            return slot?.tag
+                ? createElement(
+                      'transition',
+                      {
+                          props: {
+                              name: props.transitionName,
+                          },
+                      },
+                      [slot]
+                  )
+                : createElement('')
+        })
 
         return (
-            (props.inline && children) ||
-            (children && createElement('div', { ...data, ...props }, [children])) ||
+            (props.inline && !props.transitionName && children) ||
+            (props.inline && props.transitionName && transitions) ||
+            (props.transitionName && createElement('div', { ...data, ...props }, [transitions])) ||
             context.slots().default ||
             createElement('')
         )
