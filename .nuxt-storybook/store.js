@@ -17,10 +17,10 @@ let store = {};
   // Enforce store modules
   store.modules = store.modules || {}
 
-  resolveStoreModules(require('../store/actions.ts'), 'actions.ts')
-  resolveStoreModules(require('../store/getters.ts'), 'getters.ts')
-  resolveStoreModules(require('../store/mutations.ts'), 'mutations.ts')
-  resolveStoreModules(require('../store/state.ts'), 'state.ts')
+  resolveStoreModules(require('../src/store/actions.ts'), 'actions.ts')
+  resolveStoreModules(require('../src/store/getters.ts'), 'getters.ts')
+  resolveStoreModules(require('../src/store/mutations.ts'), 'mutations.ts')
+  resolveStoreModules(require('../src/store/state.ts'), 'state.ts')
 
   // If the environment supports hot reloading...
 

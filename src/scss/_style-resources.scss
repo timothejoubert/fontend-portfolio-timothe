@@ -1,0 +1,24 @@
+// this file will be imported by @nuxtjs/style-resources
+// all these resources will be included into every component imported by webpack
+// ⚠️ do not include css file
+
+// vendors
+@import "~include-media/dist/_include-media.scss";
+@import "vendors/include-media";
+
+// functions
+@import "functions/color";
+@import "functions/breakpoint";
+@import "functions/ease";
+@import "functions/strip-units";
+@import "functions/rem";
+@import "functions/fluid";
+@import "functions/important";
+// variables
+@import "variables";
+@import "~/src/components/molecules/VButton/variables";
+
+// mixins
+@import "mixins/typography";
+@import "mixins/theme";
+@import "~/src/components/molecules/VButton/mixins";

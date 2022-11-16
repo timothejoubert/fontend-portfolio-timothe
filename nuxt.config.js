@@ -6,7 +6,7 @@ export default {
 
     // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-srcdir
     // define if this file isn't same folder as nuxt front folder
-    // srcDir: 'front',
+    srcDir: 'src',
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
@@ -101,7 +101,7 @@ export default {
     svg: {
         svgSpriteLoader: {
             extract: true,
-            runtimeGenerator: require.resolve('./utils/svg/sprite-component-generator.js'),
+            runtimeGenerator: require.resolve('./src/utils/svg/sprite-component-generator.js'),
             spriteFilename: 'image/sprite.[hash:8].svg',
         },
     },
