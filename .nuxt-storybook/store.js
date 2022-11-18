@@ -27,10 +27,10 @@ let store = {};
   if (process.client && module.hot) {
     // Whenever any Vuex module is updated...
     module.hot.accept([
-      '../store/actions.ts',
-      '../store/getters.ts',
-      '../store/mutations.ts',
-      '../store/state.ts',
+      '../src/store/actions.ts',
+      '../src/store/getters.ts',
+      '../src/store/mutations.ts',
+      '../src/store/state.ts',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()

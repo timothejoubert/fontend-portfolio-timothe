@@ -1,9 +1,13 @@
 .transY-100-enter-active,
 .transY-100-leave-active {
-    transition: transform 0.8s;
+    transition: transform 0.7s 0.1s ease(out-quad), opacity 0.7s 0.1s ease(in-quad);
 }
 
 .transY-100-enter,
 .transY-100-leave-to {
     transform: translateY(100px);
+    opacity: 0;
+    transition-delay: 0s;
+    transition-timing-function: ease(out-quad);
+    transition-duration: 1s, 0.4s;
 }

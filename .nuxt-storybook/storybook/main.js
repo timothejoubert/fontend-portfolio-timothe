@@ -1,4 +1,4 @@
-const stories = ['../../components/**/*.stories.@(ts|js)','../../stories/**/*.stories.js']
+const stories = ['../../src/components/**/*.stories.@(ts|js)','../../src/stories/**/*.stories.js']
 const addons  = ["@storybook\u002Faddon-essentials",{name:"@storybook\u002Fpreset-scss",options:{cssLoaderOptions:{modules:true,localIdentName:"[name]__[local]--[hash:base64:5]"}}},{
   name: '@storybook/addon-postcss',
   options: {

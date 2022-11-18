@@ -1,6 +1,6 @@
-import VButton from '~/src/components/molecules/VButton/VButton.vue'
-import IconClose from '~/src/assets/images/icons/cross.svg'
-import IconArrow from '~/src/assets/images/icons/arrow.svg'
+import VButton from '~/components/molecules/VButton/VButton.vue'
+import IconClose from '~/assets/images/icons/cross.svg?sprite'
+import IconArrow from '~/assets/images/icons/arrow.svg?sprite'
 
 export default {
     title: 'Molecules/Button',

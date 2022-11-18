@@ -2,22 +2,22 @@
   {
     "name": "about",
     "path": "/about",
-    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/pages/about.vue",
+    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/src/pages/about.vue",
     "chunkName": "pages/about",
-    "_name": "_6c9e16f2"
+    "_name": "_7373a7dc"
   },
   {
     "name": "project-slug",
     "path": "/project/:slug?",
-    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/pages/project/_slug.vue",
+    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/src/pages/project/_slug.vue",
     "chunkName": "pages/project/_slug",
-    "_name": "_cd201ee4"
+    "_name": "_75887ee3"
   },
   {
     "name": "index",
     "path": "/",
-    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/pages/index.vue",
+    "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/src/pages/index.vue",
     "chunkName": "pages/index",
-    "_name": "_2d2e6168"
+    "_name": "_d9a8fabe"
   }
 ]

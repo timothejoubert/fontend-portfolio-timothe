@@ -101,6 +101,10 @@ export default Vue.extend({
             if (name.startsWith('best')) {
                 eventBus.$emit(EventType.FILTER_BEST_PROJECTS)
             }
+
+            if (name.includes('grid-size')) {
+                this.setCssProp('--size-card', value + 'px')
+            }
         },
         setCssProp(propName: string, value: string) {
             return document.documentElement.style.setProperty(propName, value)

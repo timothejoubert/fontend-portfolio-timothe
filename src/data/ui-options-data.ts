@@ -1,4 +1,4 @@
-import USER_THEMES from '~/constants/ui-themes'
+import USER_THEMES from '~/constants/color-theme'
 import { slugify } from '~/utils/utils'
 import TAG_LABELS from '~/data/filters'
 

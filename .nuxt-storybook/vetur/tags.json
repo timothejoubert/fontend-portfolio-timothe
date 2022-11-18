@@ -11,11 +11,17 @@
   "VCounterDom": {
     "description": "Auto imported from components/atoms/VCounterDom.vue"
   },
+  "VCounterDomTemplate": {
+    "description": "Auto imported from components/atoms/VCounterDomTemplate.vue"
+  },
   "VImage": {
     "description": "Auto imported from components/atoms/VImage.vue"
   },
   "VInput": {
     "description": "Auto imported from components/atoms/VInput.vue"
+  },
+  "VLink": {
+    "description": "Auto imported from components/atoms/VLink.vue"
   },
   "VNewPill": {
     "description": "Auto imported from components/atoms/VNewPill.vue"

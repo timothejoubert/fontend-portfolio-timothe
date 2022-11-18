@@ -6,11 +6,7 @@ function isRelativePath(path?: string): boolean {
     return !!path && path.charAt(0) === '/'
 }
 
-function isExternalPath(path?: string): boolean {
-    return !!path && path.charAt(0) === 'h'
-}
-
-const NUXT_LINK_TAG_NAME = 'vue-component-36-NuxtLink'
+const NUXT_LINK_TAG_NAME = 'vue-component-37-NuxtLink'
 
 export default Vue.extend({
     name: 'VCounterDom',
@@ -31,7 +27,7 @@ export default Vue.extend({
 
         const children = context.slots().default.map((slot: VNode) => {
             const linkAttributes = {} as Record<'to' | 'href' | 'target', string>
-            const isNuxtLink = slot?.tag === NUXT_LINK_TAG_NAME
+            const isNuxtLink = slot?.tag === NUXT_LINK_TAG_NAME || (!!slot?.tag && slot.tag.includes('NuxtLink'))
             const isLinkTag = slot?.tag === 'a'
             const isRelativeLink = (isLinkTag && isRelativePath(slot.data?.attrs?.href)) || isNuxtLink
             const url = (slot.componentOptions?.propsData as Record<'to', string>)?.to
@@ -44,7 +40,6 @@ export default Vue.extend({
             }
 
             if (slot?.tag) slotIndex++
-
             return createElement(
                 isRelativeLink ? 'nuxt-link' : isExternalLink ? 'a' : slot?.tag,
                 {
@@ -65,7 +60,6 @@ export default Vue.extend({
         })
 
         const transitions = children.map((slot: VNode) => {
-            console.log(slot)
             return slot?.tag
                 ? createElement(
                       'transition',

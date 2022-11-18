@@ -37,7 +37,6 @@ import Page from '~/mixins/Page'
 import VPill from '~/components/atoms/VPill.vue'
 import VButtonCross from '~/components/atoms/VButtonCross.vue'
 import VCounterDom from '~/components/atoms/VCounterDom.vue'
-// import VCounterDomTemplate from '~/components/atoms/VCounterDomTemplate.vue'
 
 export default mixins(Page).extend({
     name: 'Project',
@@ -109,8 +108,8 @@ export default mixins(Page).extend({
 .link {
     position: relative;
     display: inline-block;
-    margin-right: rem(12);
     width: 100%;
+    margin-right: rem(12);
 }
 
 .tags {
@@ -126,14 +125,14 @@ export default mixins(Page).extend({
 }
 
 .description {
-    margin: rem(35) 0 rem(45);
+    margin: rem(15) 0 rem(25);
     opacity: 0.8;
 }
 
 .images {
     position: relative;
     *:not(.description) + & {
-        margin-top: rem(30);
+        margin-top: rem(33);
     }
 }
 
