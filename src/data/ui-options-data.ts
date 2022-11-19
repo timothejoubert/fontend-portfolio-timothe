@@ -1,6 +1,7 @@
 import USER_THEMES from '~/constants/color-theme'
-import { slugify } from '~/utils/utils'
+import { slugify } from '~/utils/functions'
 import TAG_LABELS from '~/data/filters'
+import Colors from '~/constants/colors'
 
 const colorsThemeData = USER_THEMES.map((theme, index) => {
     const keyValues = Object.entries(theme)
@@ -22,24 +23,28 @@ const UI_PARAMETERS: ParameterSection[] = [
                 title: 'color mode',
                 children: [
                     {
-                        type: 'color',
                         name: 'color-main',
+                        label: 'Main',
+                        type: 'color',
                         value: '#DBE6EC',
                     },
                     {
-                        type: 'color',
                         name: 'color-bg',
+                        label: 'Background',
+                        type: 'color',
                         value: '#131212',
                     },
                     {
-                        type: 'color',
                         name: 'color-accent',
+                        label: 'Accent',
+                        type: 'color',
                         value: '#E3FD41',
                     },
                     {
                         name: 'theme-color',
+                        label: 'Theme',
                         type: 'select',
-                        options: [{ name: 'Theme', value: 'default' }, ...colorsThemeData],
+                        options: [...colorsThemeData],
                     },
                 ],
             },
@@ -47,8 +52,8 @@ const UI_PARAMETERS: ParameterSection[] = [
                 title: 'grid size',
                 children: [
                     {
-                        type: 'slider',
                         name: 'grid-size',
+                        type: 'slider',
                         value: '250',
                         min: '180',
                         max: '800',
@@ -65,25 +70,38 @@ const UI_PARAMETERS: ParameterSection[] = [
                 title: null,
                 children: [
                     {
-                        type: 'select',
-                        options: [{ name: 'Trier par thématique', value: '' }, ...FILTER_OPTIONS],
                         name: 'tags',
+                        type: 'select',
+                        options: [...FILTER_OPTIONS],
+                        value: '',
+                        label: 'Thématiques',
+                    },
+                    {
+                        name: 'randomize',
+                        type: 'button',
+                        label: 'Random',
                         value: '',
                     },
                     {
-                        type: 'button',
-                        label: 'Random',
-                        name: 'randomize',
-                    },
-                    {
-                        type: 'button',
+                        name: 'promote',
+                        type: 'toggle',
                         label: 'Best',
-                        name: 'best',
+                        value: '',
                     },
                 ],
             },
         ],
     },
 ]
+
+export const DEFAULT_STYLE: UserUiStyle = {
+    colorMain: Colors.MAIN,
+    colorBg: Colors.BG,
+    colorAccent: Colors.ACCENT,
+    sizeCard: '300px',
+    randomize: false,
+    promote: false,
+    tags: null,
+}
 
 export default UI_PARAMETERS

@@ -93,6 +93,7 @@ export default mixins(Page).extend({
 
 .title {
     display: inline-flex;
+    align-items: center;
     text-transform: uppercase;
 
     & :global(.split-letter) {

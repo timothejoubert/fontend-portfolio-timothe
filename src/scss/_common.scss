@@ -24,22 +24,27 @@ html {
     --padding-border: 12px;
 
     --max-width: 1700px;
-    --size-card: 200px;
+    //--size-card: 200px;
+    --card-number: 2;
 
     --project-duration: 1.3s;
     --loading-duration: 1.8s;
 
     @include media('>=md') {
-        --size-card: 250px;
+        //--size-card: 250px;
         --padding-border: 50px;
+        --card-number: 3;
     }
 
     @include media('>=lg') {
         --size-card: 300px;
+        --card-number: 4;
+
     }
 
-    @include media('>=xl') {
+    @include media('>=hd') {
         --size-card: 340px;
+        --card-number: 5;
     }
 }
 

@@ -1,4 +1,4 @@
-import { getRandomInt, slugify } from '~/utils/utils'
+import { getRandomInt, slugify } from '~/utils/functions'
 import TAG_LABELS from '~/data/filters'
 
 const getRandomTags = () => {
@@ -9,7 +9,7 @@ const getRandomTags = () => {
 }
 
 const isPromoted = () => {
-    return Math.random() > 0.8
+    return Math.random() > 0.2
 }
 
 const FALLBACK_LINK = { url: 'https://google.com', label: 'lien du projet' }

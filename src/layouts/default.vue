@@ -50,6 +50,7 @@
 import { Route } from 'vue-router/types/router'
 import { mapGetters } from 'vuex'
 import mixins from 'vue-typed-mixins'
+import Vue from 'vue'
 import VTopBar from '~/components/organisms/VTopBar.vue'
 import VNavProject from '~/components/organisms/VNavProject.vue'
 import VAbout from '~/components/organisms/VAbout.vue'
@@ -66,6 +67,7 @@ export default mixins(Resize).extend({
             displaySplashScreen: true,
             enterSplashScreen: false,
             isSplashDone: false,
+            resizeOptionPanelObserver: null as ResizeObserver | null,
 
             isProjectOpen: false,
             isOptionsOpen: false,
@@ -92,12 +94,18 @@ export default mixins(Resize).extend({
         this.isActiveScreenSplash()
         this.addVisitedInStorage()
         this.$nextTick(() => this.initOptionPanelHeight())
+        this.resizeOptionPanelObserver = new ResizeObserver(() => {
+            this.initOptionPanelHeight()
+        })
+        this.resizeOptionPanelObserver.observe((this.$refs.optionsPanel as Vue).$el as HTMLElement)
         this.navElement = (this.$refs.nav as Vue)?.$el
         this.navElement?.addEventListener('scroll', this.getScrollPosition)
     },
     beforeDestroy() {
         this.removeVisitedInStorage()
         this.navElement?.removeEventListener('scroll', this.getScrollPosition)
+        this.resizeOptionPanelObserver?.disconnect()
+        this.resizeOptionPanelObserver = null
     },
     methods: {
         getScrollPosition() {
@@ -153,7 +161,6 @@ export default mixins(Resize).extend({
             localStorage.removeItem('visited')
         },
         initOptionPanelHeight() {
-            // TODO update on ResizeObserver
             this.optionPanelHeight = ((this.$refs.optionsPanel as Vue).$el as HTMLElement).offsetHeight + 'px'
         },
         enterAllElements() {

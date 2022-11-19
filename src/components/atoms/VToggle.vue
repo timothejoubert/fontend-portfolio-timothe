@@ -1,13 +1,12 @@
 <template>
-    <div :class="$style.root">
+    <div :class="[$style.root, isChecked && $style['root--checked']]">
         <label :for="name" :class="$style.label">{{ label }}</label>
-        <span :id="name" :class="$style.output" :style="{ backgroundColor: `var(--${name})` }"></span>
         <input
+            type="checkbox"
             :tabindex="!isVisible && '-1'"
-            :class="$style.input"
-            :type="type"
-            :value="value"
             :name="name"
+            :value="value"
+            :class="$style.input"
             @input="onUpdate"
         />
     </div>
@@ -18,23 +17,28 @@ import Vue from 'vue'
 import type { PropType } from 'vue'
 
 export default Vue.extend({
-    name: 'VInput',
+    name: 'VToggle',
     props: {
         isVisible: Boolean,
         name: String,
+        label: String,
         type: String as PropType<InputType>,
         value: String,
-        label: String,
+    },
+    data() {
+        return {
+            isChecked: false,
+        }
     },
     methods: {
         onUpdate(event: InputEvent) {
-            const value = (event.target as HTMLInputElement).value
+            const value = (event.target as HTMLInputElement).checked
+            this.isChecked = value
             this.$emit('update', { value, name: this.name })
         },
     },
 })
 </script>
-
 <style lang="scss" module>
 .root {
     position: relative;
@@ -43,6 +47,11 @@ export default Vue.extend({
     padding: rem(8) rem(15);
     background-color: var(--color-main);
     border-radius: 100px;
+    cursor: pointer;
+
+    &--checked {
+        background-color: var(--color-accent);
+    }
 }
 
 .inner {
@@ -64,16 +73,16 @@ export default Vue.extend({
 }
 
 .input {
-    all: unset;
+    //all: unset;
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
     height: 100%;
     padding: 0;
-    border: none;
+    //border: none;
     appearance: none;
     opacity: 0;
-    outline: none;
+    //outline: none;
 }
 </style>

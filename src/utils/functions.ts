@@ -42,3 +42,11 @@ export const getRandomInt = (min: number, max: number): number => {
 export const getCssProp = (propName: string) => {
     return getComputedStyle(document.documentElement).getPropertyValue(propName)
 }
+
+export const setCssProp = (propName: string, value: string) => {
+    return document.documentElement.style.setProperty(propName, value)
+}
+
+export const removeCssProp = (propName: string) => {
+    return document.documentElement.style.setProperty(propName, null)
+}

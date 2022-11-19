@@ -20,7 +20,7 @@
 import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import VProjectCard from '~/components/molecules/VProjectCard.vue'
-import { getCssProp } from '~/utils/utils'
+import { getCssProp } from '~/utils/functions'
 import eventBus from '~/utils/event-bus'
 import EventType from '~/constants/event-type'
 
@@ -44,7 +44,6 @@ export default Vue.extend({
             return [...new Array(4)].map(() => this.$store.state.projectsData).flat()
         },
         projects(): ProjectContent[] | [] {
-            console.log('computed projects update', this.isRandomized)
             let projects = this.allProject
 
             if (this.filter) {
@@ -55,14 +54,14 @@ export default Vue.extend({
 
             if (this.isRandomized) {
                 projects = projects.sort(() => 0.5 - Math.random())
-                this.restoreData('randomize')
+                // this.restoreData('randomize')
             }
 
             if (this.isPromoted) {
-                projects = this.allProject.filter((project: ProjectContent) => project.promoted)
-                this.restoreData('promoted')
+                projects = projects.filter((project: ProjectContent) => project.promoted)
+                // this.restoreData('promoted')
             }
-
+            console.log('computed projects, length: ', projects.length)
             return projects
         },
         emptyCardNumber(): number {
@@ -96,13 +95,10 @@ export default Vue.extend({
             this.activeProject = this.$route.params.slug
         },
         randomizeProjects() {
-            this.isRandomized = true
-            // this.projects = displayedProject
-            console.log('randomize projects')
+            this.isRandomized = !this.isRandomized
         },
         filterBestProjects() {
-            this.isPromoted = true
-            console.log('filter best projects')
+            this.isPromoted = !this.isPromoted
         },
         restoreData(data: string) {
             switch (data) {
@@ -136,7 +132,8 @@ export default Vue.extend({
     padding: 0 var(--padding-border);
     grid-auto-rows: min-content;
     grid-gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(var(--size-card), 1fr));
+    //grid-template-columns: repeat(auto-fit, minmax(var(--size-card), 1fr));
+    grid-template-columns: repeat(var(--card-number), 1fr);
 }
 
 .placeholder {

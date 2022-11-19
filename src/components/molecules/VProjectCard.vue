@@ -42,6 +42,8 @@ import { mapGetters } from 'vuex'
 import VImage from '~/components/atoms/VImage.vue'
 import VPill from '~/components/atoms/VPill.vue'
 import VNewPill from '~/components/atoms/VNewPill.vue'
+import eventBus from '~/utils/event-bus'
+import EventType from '~/constants/event-type'
 
 export default Vue.extend({
     name: 'VProjectCard',

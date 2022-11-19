@@ -1,4 +1,4 @@
-import { slugify } from '~/utils/utils'
+import { slugify } from '~/utils/functions'
 
 function parseProjects(response: undefined | StrapiWebResponses): ProjectContent[] | undefined {
     const result = response?.data

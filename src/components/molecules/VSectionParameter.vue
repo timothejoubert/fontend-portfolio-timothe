@@ -15,29 +15,12 @@
         </div>
         <div v-for="(parameter, indexContent) in parameters" :key="indexContent" :class="$style.content">
             <h4 v-if="parameter.title" :class="[$style['content-title'], 'over-title-s']">{{ parameter.title }}</h4>
-            <component
-                :is="
-                    input.type === 'color'
-                        ? 'v-input'
-                        : input.type === 'slider'
-                        ? 'v-slider'
-                        : input.type === 'select'
-                        ? 'v-select'
-                        : input.type === 'button'
-                        ? 'v-button'
-                        : input.type === 'toggle'
-                        ? 'v-toggle'
-                        : ''
-                "
+            <v-input-factory
                 v-for="(input, i) in parameter.children"
                 :key="i"
-                :rounded="input.type === 'button' && true"
-                :theme="input.type === 'button' && 'light'"
-                :size="input.type === 'button' && 'm'"
                 :is-visible="isUiOptionsOpen"
-                :class="[$style.input, 'over-title-s']"
-                v-bind="input"
-                @update="update"
+                :input-data="input"
+                @reset="reset"
             />
         </div>
     </div>
@@ -47,11 +30,9 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import { mapGetters } from 'vuex'
-import Colors from '~/constants/colors'
 import VButton from '~/components/atoms/VButton.vue'
-import eventBus from '~/utils/event-bus'
-import EventType from '~/constants/event-type'
 import MutationType from '~/constants/mutation-type'
+import { removeCssProp } from '~/utils/functions'
 
 export default Vue.extend({
     name: 'VSectionParameter',
@@ -72,48 +53,12 @@ export default Vue.extend({
         },
     },
     methods: {
-        update({ name, value }: any) {
-            // console.log('update options', value, name)
-
-            if (name.startsWith('color')) {
-                const cssVarName = name.replace('Color', '')
-                this.setCssProp(`--${cssVarName}`, value)
-            }
-
-            if (name.startsWith('theme')) {
-                if (value === 'default') this.reset('', '', true)
-                value.split(',').forEach((colorsEntry: string) => {
-                    const indexSeparator = colorsEntry.indexOf(':')
-                    const key = colorsEntry.substring(0, indexSeparator).toLowerCase()
-                    const value = colorsEntry.substring(indexSeparator + 1, colorsEntry.length)
-                    this.setCssProp(`--color-${key}`, value)
-                })
-            }
-
-            if (name.startsWith('tags')) {
-                this.$store.commit(MutationType.SELECTED_FILTER, value)
-            }
-
-            if (name.startsWith('random')) {
-                eventBus.$emit(EventType.RANDOMIZE_PROJECTS)
-            }
-
-            if (name.startsWith('best')) {
-                eventBus.$emit(EventType.FILTER_BEST_PROJECTS)
-            }
-
-            if (name.includes('grid-size')) {
-                this.setCssProp('--size-card', value + 'px')
-            }
-        },
-        setCssProp(propName: string, value: string) {
-            return document.documentElement.style.setProperty(propName, value)
-        },
-        reset(_name: string, _value?: string, resetColor?: boolean) {
-            if (this.isInterface || !!resetColor) {
-                this.setCssProp(`--color-main`, Colors.MAIN)
-                this.setCssProp(`--color-bg`, Colors.BG)
-                this.setCssProp(`--color-accent`, Colors.ACCENT)
+        reset() {
+            if (this.isInterface) {
+                removeCssProp(`--color-main`) //, Colors.MAIN)
+                removeCssProp(`--color-bg`) //, Colors.BG)
+                removeCssProp(`--color-accent`) //, Colors.ACCENT)
+                removeCssProp(`--card-number`) //, Colors.ACCENT)
             }
 
             if (this.isFilter) {
