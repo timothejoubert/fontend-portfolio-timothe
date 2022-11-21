@@ -139,7 +139,7 @@ export default Vue.extend({
         position: relative;
         display: inline-block;
         content: '\00a0';
-        font-size: 5rem;
+        font-size: 2rem;
     }
 }
 
@@ -150,7 +150,7 @@ export default Vue.extend({
         position: relative;
         display: inline-block;
         content: '\00a0';
-        font-size: 5rem;
+        font-size: 2rem;
     }
 }
 
@@ -170,7 +170,7 @@ export default Vue.extend({
         position: relative;
         display: inline-block;
         content: '\00a0';
-        font-size: 5rem;
+        font-size: 2rem;
     }
 
     &.letter--hide {

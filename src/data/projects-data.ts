@@ -12,7 +12,7 @@ const isPromoted = () => {
     return Math.random() > 0.2
 }
 
-const FALLBACK_LINK = { url: 'https://google.com', label: 'lien du projet' }
+const FALLBACK_LINK = [{ id: Math.ceil(Math.random() * 100), url: 'https://google.com', label: 'lien du projet' }]
 
 const PROJECTS_DATA: ProjectContent[] = [
     {
@@ -44,7 +44,7 @@ const PROJECTS_DATA: ProjectContent[] = [
             updatedAt: '2022-10-05T21:12:23.019Z',
         },
         tags: [...getRandomTags()],
-        link: FALLBACK_LINK,
+        links: FALLBACK_LINK,
     },
     {
         '@type': 'project',
@@ -74,7 +74,7 @@ const PROJECTS_DATA: ProjectContent[] = [
             updatedAt: '2022-10-05T21:12:23.019Z',
         },
         tags: [...getRandomTags()],
-        link: FALLBACK_LINK,
+        links: FALLBACK_LINK,
     },
     {
         '@type': 'project',
@@ -105,7 +105,7 @@ const PROJECTS_DATA: ProjectContent[] = [
             updatedAt: '2022-10-08T13:16:05.115Z',
         },
         tags: [...getRandomTags()],
-        link: FALLBACK_LINK,
+        links: FALLBACK_LINK,
     },
     {
         '@type': 'project',
@@ -136,7 +136,7 @@ const PROJECTS_DATA: ProjectContent[] = [
             updatedAt: '2022-11-02T21:33:11.599Z',
         },
         tags: [...getRandomTags()],
-        link: FALLBACK_LINK,
+        links: FALLBACK_LINK,
     },
     {
         '@type': 'project',
@@ -168,7 +168,7 @@ const PROJECTS_DATA: ProjectContent[] = [
             updatedAt: '2022-11-02T21:34:56.150Z',
         },
         tags: [...getRandomTags()],
-        link: FALLBACK_LINK,
+        links: FALLBACK_LINK,
     },
     {
         '@type': 'project',
@@ -200,7 +200,7 @@ const PROJECTS_DATA: ProjectContent[] = [
             updatedAt: '2022-11-02T22:36:13.332Z',
         },
         tags: [...getRandomTags()],
-        link: FALLBACK_LINK,
+        links: FALLBACK_LINK,
     },
 ]
 

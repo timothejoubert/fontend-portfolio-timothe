@@ -1,7 +1,7 @@
 <template>
     <footer :class="rootClasses" :style="{ '--socials-width': socialsWidth }">
         <button :class="$style['about-link']" aria-labelledby="button-toggle-about" @click="onClick">
-            <span v-if="about.title" :class="[$style.title, 'body-s']">{{ about.title }}</span>
+            <span v-if="aboutTitle" :class="[$style.title, 'body-s']">{{ aboutTitle }}</span>
             <span :class="[$style.icon, isAboutOpen && $style['icon--open']]">
                 <span :class="$style['circle-outlined']"></span>
                 <span
@@ -57,10 +57,13 @@ export default Vue.extend({
                 this.isAboutOpen && this.$style['root--open'],
             ]
         },
+        aboutTitle(): string | undefined {
+            return this.about?.title
+        },
         socials(): Socials[] | false {
             return (
                 !!this.about?.socials?.length &&
-                this.about.socials.filter((social) => !!social?.name && validSocialName.includes(social.name))
+                this.about.socials.filter((social) => !!social?.name && validSocialName.includes(social.name.toLowerCase()))
             )
         },
     },

@@ -50,7 +50,9 @@ export default {
     },
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [],
+    // plugins: [
+    //     '@/plugins/cloudinary.js',
+    // ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: ['@/components', '@/components/atoms', '@/components/molecules', '@/components/organisms'],
@@ -75,7 +77,23 @@ export default {
         '@nuxtjs/strapi',
         // '@nuxtjs/sitemap',
         '@nuxt/image',
+        // https://cloudinary.nuxtjs.org/setup
+        '@nuxtjs/cloudinary',
     ],
+
+    // image provider
+    // image: {
+    //     cloudinary: {
+    //         baseURL: '',
+    //     },
+    // },
+    cloudinary: {
+        cloudName: process.env.CLOUDINARY_NAME,
+        apiKey: process.env.CLOUDINARY_KEY,
+        apiSecret: process.env.CLOUDINARY_SECRET,
+        useComponent: true,
+    },
+
     // env: {
     //   strapiBaseUri: process.env.API_URL || "http://localhost:1337"
     // },

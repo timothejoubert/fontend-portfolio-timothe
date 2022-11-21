@@ -56,6 +56,7 @@ export default Vue.extend({
 .slider {
     //-webkit-appearance: none;
     width: 100%;
+    accent-color: var(--color-accent);
     background-color: transparent;
 }
 
@@ -69,16 +70,24 @@ export default Vue.extend({
     border: none;
     background: var(--light-color);
     border-radius: 5px;
+    outline: none;
+    //-webkit-appearance: none;
 }
+
 .slider[type='range']::-webkit-slider-thumb {
     width: 25px;
     height: 25px;
     border: none;
-    -webkit-appearance: none;
+    //-webkit-appearance: none;
     background: var(--light-color);
     border-radius: 50%;
     cursor: pointer;
     transform: translateY(calc(-50% + 2px));
+}
+
+.slider[type='range']::-moz-range-thumb {
+    height: 50px;
+    -webkit-appearance: none;
 }
 //.slider:focus::-webkit-slider-thumb {
 //    background: var(--color-accent);

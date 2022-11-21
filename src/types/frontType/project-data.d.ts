@@ -10,7 +10,7 @@ interface ProjectContent extends NodeType {
     thumbnail: ImageAttributes
     medias?: ImageAttributes[]
     tags?: Tag[]
-    link: Link | null
+    links: Link[] | null
 }
 
 interface Tag {
@@ -19,6 +19,7 @@ interface Tag {
 }
 
 interface Link {
-    label: string
+    id: number
+    label: string | null
     url: string
 }

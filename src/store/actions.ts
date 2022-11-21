@@ -9,7 +9,7 @@ import PROJECTS_DATA from '~/data/projects-data'
 const actions: ActionTree<RootState, RootState> = {
     async nuxtServerInit({ commit }: ActionContext<RootState, RootState>) {
         const baseUrl = process.env.NODE_ENV === 'production' ? process.env.STRAPI_API_URL : 'http://localhost:1337/api'
-        console.log('dev mode', process.env.NODE_ENV !== 'production', baseUrl)
+        console.log('is dev mode: ', process.env.NODE_ENV !== 'production')
 
         const isStaticData = process.env.BACKEND_DATA === 'static'
 
@@ -18,8 +18,8 @@ const actions: ActionTree<RootState, RootState> = {
             commit(MutationType.ABOUT_DATA, ABOUT_DATA)
         } else {
             try {
-                const responseProject = await (await fetch(`${baseUrl}/projects?populate=*`)).json()
-                const responseAbout = await (await fetch(`${baseUrl}/about?populate=*`)).json()
+                const responseProject = await (await fetch(`${baseUrl}/projects?populate=deep`)).json()
+                const responseAbout = await (await fetch(`${baseUrl}/about?populate=deep`)).json()
                 commit(MutationType.PROJECTS_DATA, parseProjects(responseProject))
                 commit(MutationType.ABOUT_DATA, parseAbout(responseAbout))
             } catch (error) {

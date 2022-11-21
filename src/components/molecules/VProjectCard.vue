@@ -15,7 +15,7 @@
                     {{ project.date }}
                 </p>
                 <span v-if="project.promoted" :style="{ color: 'white', marginLeft: '10px' }">❤︎</span>
-                <div v-if="tags && tags.length" :class="[$style.tags]">
+                <div v-if="tags" :class="[$style.tags]">
                     <v-pill
                         v-for="(tag, indexTag) in tags"
                         :key="indexTag"
@@ -42,8 +42,8 @@ import { mapGetters } from 'vuex'
 import VImage from '~/components/atoms/VImage.vue'
 import VPill from '~/components/atoms/VPill.vue'
 import VNewPill from '~/components/atoms/VNewPill.vue'
-import eventBus from '~/utils/event-bus'
-import EventType from '~/constants/event-type'
+// import eventBus from '~/utils/event-bus'
+// import EventType from '~/constants/event-type'
 
 export default Vue.extend({
     name: 'VProjectCard',
@@ -69,7 +69,7 @@ export default Vue.extend({
         },
         tags(): ProjectContent['tags'] | undefined {
             const tags = this.project?.tags?.slice()
-            if (!tags) return
+            if (!tags || !tags?.[0].name) return
             return tags.sort((current: Tag, next: Tag) => {
                 return next.name.length - current.name.length
             })
@@ -234,6 +234,9 @@ export default Vue.extend({
     filter: saturate(0);
     opacity: 0.45;
     transition: transform 0.3s ease(out-quad), filter 0.3s;
+    //width: 100%;
+    //height: 100%;
+    //object-fit: cover;
 
     .root:hover &,
     .root--active & {

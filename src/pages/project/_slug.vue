@@ -9,7 +9,7 @@
                 :content="pageData.title"
             />
         </nuxt-link>
-        <div :class="$style.tags">
+        <div :class="$style.tags" v-if="displayTags">
             <v-pill
                 v-for="(tag, indexTag) in pageData.tags"
                 :key="indexTag"
@@ -19,7 +19,7 @@
             />
         </div>
         <p :class="[$style.description, 'body-xs']">{{ pageData.description }}</p>
-        <nuxt-link :to="linkUrl" :class="$style.link">{{ linkLabel }}</nuxt-link>
+        <nuxt-link v-if="links" v-for="link in links" :key="link.id" :to="link.url" :class="$style.link">{{ link.label }}</nuxt-link>
         <ul v-if="medias.length" :class="$style.images">
             <v-counter-dom inline :enter="enter" transition-name="item-project" :start-index="5">
                 <li v-for="(media, i) in medias" :key="i" :class="$style.image">
@@ -37,6 +37,8 @@ import Page from '~/mixins/Page'
 import VPill from '~/components/atoms/VPill.vue'
 import VButtonCross from '~/components/atoms/VButtonCross.vue'
 import VCounterDom from '~/components/atoms/VCounterDom.vue'
+import toBoolean from "~/utils/to-boolean";
+import GeneralsConst from "~/constants/generals";
 
 export default mixins(Page).extend({
     name: 'Project',
@@ -57,11 +59,11 @@ export default mixins(Page).extend({
             if (thumb && !!others.length) return others.splice(0, 0, thumb)
             return [thumb, thumb, thumb]
         },
-        linkUrl(): string {
-            return this.pageData.link?.url || ''
+        links(): Link[] | undefined {
+            return this.pageData.links?.filter((link) => link.url)
         },
-        linkLabel(): string {
-            return this.pageData.link?.label || ''
+        displayTags(): boolean {
+            return toBoolean(GeneralsConst.DISPLAY_PROJECT_TAGS)
         },
     },
     beforeDestroy() {
@@ -128,6 +130,10 @@ export default mixins(Page).extend({
 .description {
     margin: rem(15) 0 rem(25);
     opacity: 0.8;
+
+    *:not(.tags) + & {
+        margin-top: 0;
+    }
 }
 
 .images {

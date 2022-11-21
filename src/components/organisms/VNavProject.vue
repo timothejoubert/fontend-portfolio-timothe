@@ -7,7 +7,7 @@
         </ul>
         <ul v-else :class="$style.projects">
             <li
-                v-for="i in emptyCardNumber"
+                v-for="i in defaultColumnCard"
                 :key="i"
                 :class="$style.placeholder"
                 :style="{ '--placeholder-delay': i }"
@@ -29,6 +29,7 @@ export default Vue.extend({
     components: { VProjectCard },
     data() {
         return {
+            defaultColumnCard: 3,
             activeProject: '',
             isRandomized: false,
             isPromoted: false,
@@ -40,6 +41,7 @@ export default Vue.extend({
             return this.$store.state.selectedFilter
         },
         allProject(): ProjectContent[] | [] {
+            // console.log(this.$store.state.projectsData)
             if (!this.$store.state.projectsData) return []
             return [...new Array(4)].map(() => this.$store.state.projectsData).flat()
         },
@@ -64,17 +66,6 @@ export default Vue.extend({
             console.log('computed projects, length: ', projects.length)
             return projects
         },
-        emptyCardNumber(): number {
-            const cardSize = Math.ceil(parseFloat(getCssProp('--size-card')))
-            const gutter = this.$refs?.grid
-                ? Math.ceil(parseFloat(getComputedStyle(this.$refs.grid as HTMLElement)?.gap))
-                : 20
-            const wrapperWidth =
-                this.$store.state.windowWidth - Math.ceil(parseFloat(getCssProp('--padding-border'))) * 2
-            const column = Math.floor(wrapperWidth / cardSize)
-            const totalGutterWidth = gutter * (column - 1)
-            return Math.floor((wrapperWidth - totalGutterWidth) / cardSize) * 3
-        },
     },
     watch: {
         $route() {
@@ -83,6 +74,7 @@ export default Vue.extend({
     },
     mounted() {
         this.getActiveRoute()
+        this.updateEmptyCardNumber()
         eventBus.$on(EventType.RANDOMIZE_PROJECTS, this.randomizeProjects)
         eventBus.$on(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
     },
@@ -91,6 +83,18 @@ export default Vue.extend({
         eventBus.$off(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
     },
     methods: {
+        updateEmptyCardNumber() {
+            this.defaultColumnCard = Number(getCssProp('--card-number') || 4) * 3
+            // const cardSize = Math.ceil(parseFloat(getCssProp('--size-card')))
+            // const gutter = this.$refs?.grid
+            //     ? Math.ceil(parseFloat(getComputedStyle(this.$refs.grid as HTMLElement)?.gap))
+            //     : 20
+            // const wrapperWidth =
+            //     this.$store.state.windowWidth - Math.ceil(parseFloat(getCssProp('--padding-border'))) * 2
+            // const column = Math.floor(wrapperWidth / cardSize)
+            // const totalGutterWidth = gutter * (column - 1)
+            // return Math.floor((wrapperWidth - totalGutterWidth) / cardSize) * 3
+        },
         getActiveRoute() {
             this.activeProject = this.$route.params.slug
         },

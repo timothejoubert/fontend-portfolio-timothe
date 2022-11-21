@@ -59,11 +59,14 @@ interface ImageData {
     url: string
 }
 
+type ImageFormatName = 'thumbnail' | 'small' | 'medium' | 'large'
+
 interface ImageFormats {
-    thumbnail: ImageData
-    small: ImageData
-    medium: ImageData
-    large: ImageData
+    // [key: string]: ImageData
+    thumbnail?: ImageData
+    small?: ImageData
+    medium?: ImageData
+    large?: ImageData
 }
 
 interface ImageAttributes {
@@ -81,9 +84,14 @@ interface ImageAttributes {
     url: string
     previewUrl: null
     provider: string
-    provider_metadata: null
+    provider_metadata: ProviderMetaData | null
     createdAt: string
     updatedAt: string
+}
+
+interface ProviderMetaData {
+    public_id: string
+    resource_type: string
 }
 
 interface ImageDataContent {
@@ -123,11 +131,11 @@ interface StrapiProjectAttributes extends StrapiBlockCreated, PageData {
     thumbnail: ImageObject
     tags: any // define type
     medias: ImageObject[]
-    link: any // define type
+    links: Link[]
 }
 
 interface StrapiAboutAttributes extends StrapiBlockCreated, PageData {
-    description: RichText
+    description: string
     socials?: Socials[]
     sections?: AboutSection[]
 }

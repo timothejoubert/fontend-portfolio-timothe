@@ -25,21 +25,45 @@ export default Vue.extend({
         }
     },
     render(createElement): VNode {
-        const basicImg = this.strapiImage
-        const { alternativeText } = basicImg || {}
-        const formats = basicImg?.formats
-        const img = this.strapiImage?.formats?.large || basicImg
+        // console.log(this.strapiImage)
+        const mainImage = this.strapiImage
+        const img = mainImage || this.strapiImage?.formats?.large
 
         if (!img) return createElement('')
 
         const { url, width, height, ext } = img || {}
 
         // TODO: detect if dev or prod mode for display right path
-        const baseUrl = process.env.NODE_ENV === 'production' ? process.env.STRAPI_URL : 'http://localhost:1337'
+        const baseUrl = process.env.NODE_ENV !== 'dev' ? '' : 'http://localhost:1337'
+
+        let srcSet = ''
+        let imgSizes = ''
+        // (max-width: 640px) 100vw,
+        // get srcset string from all img formats
+        if (mainImage && !!Object.getOwnPropertyDescriptor(mainImage, 'formats') && !!mainImage.formats) {
+            Object.keys(mainImage.formats)
+                .sort((prev: string, next: string) => {
+                    const formats = mainImage?.formats as ImageFormats
+                    if (!formats) return 0
+                    const prevFormat = formats[prev as ImageFormatName]
+                    const nextFormat = formats[next as ImageFormatName]
+                    return (prevFormat?.width || 0) - (nextFormat?.width || 0)
+                })
+                .forEach((formatKey: string, index: number, formatsKey: string[]) => {
+                    const format = mainImage?.formats as ImageFormats
+                    const formatData = format[formatKey as ImageFormatName] as ImageData
+                    if (!formatData) return
+                    const separator = index === formatsKey.length - 1 ? '' : ','
+                    srcSet += `${formatData.url} ${formatData.width}w` + separator
+                    imgSizes += `(max-width: ${formatData.width}px) 50vw` + separator
+                })
+        }
 
         const imgAttributes: Record<string, any> = {
+            srcset: srcSet,
+            sizes: imgSizes,
             src: baseUrl + url,
-            alt: alternativeText || '',
+            alt: img?.alternativeText || 'text alternative fallback',
             width: width || '',
             height: height || '',
         }
