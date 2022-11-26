@@ -2,11 +2,8 @@
 }
 
 .v-button__inner {
-
-    //.v-button:not(.v-button--disabled) &{
-    //    @media (prefers-reduced-motion: reduce) {
-    //    }
-    //}
+    // @media (prefers-reduced-motion: reduce) {
+    // }
 }
 
 .v-button__label {
@@ -15,24 +12,4 @@
 .v-button__icon {
 }
 
-@keyframes slideOut {
-    0%{
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100%{
-        opacity: 0;
-        transform: translateY(-15px);
-    }
-}
-
-@keyframes slideIn {
-    0%{
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    100%{
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+//@keyframes slideOut {}

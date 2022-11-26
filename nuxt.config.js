@@ -1,3 +1,4 @@
+import fs from 'fs'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 
 export default {
@@ -128,6 +129,7 @@ export default {
 
     // https://storybook.nuxtjs.org/api/options
     storybook: {
+        port: 4000,
         stories: ['~/stories/**/*.stories.js'],
         parameters: {
             viewport: {

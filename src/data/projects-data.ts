@@ -4,7 +4,7 @@ import TAG_LABELS from '~/data/filters'
 const getRandomTags = () => {
     return [...Array(getRandomInt(1, 4)).keys()].map(() => {
         const label = TAG_LABELS[Math.floor(Math.random() * TAG_LABELS.length)]
-        return { name: label, slug: slugify(label) }
+        return { name: label, slug: slugify(label), id: Math.ceil(Math.random() * 100) }
     })
 }
 

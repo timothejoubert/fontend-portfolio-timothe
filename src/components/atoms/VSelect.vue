@@ -23,7 +23,7 @@ export default Vue.extend({
     methods: {
         onChange(event: Event) {
             const value = (event.target as HTMLInputElement).value
-            this.$emit('update', { value, name: this.name })
+            this.$emit('update', { value, inputName: this.name })
         },
     },
 })

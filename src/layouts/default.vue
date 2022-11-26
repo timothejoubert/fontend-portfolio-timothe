@@ -22,6 +22,7 @@
             <div
                 :class="[
                     $style.bottom,
+                    isSplashDone && $style['bottom--enter'],
                     isProjectOpen && $style['bottom--minify'],
                     isAboutOpen && $style['bottom--expand'],
                 ]"
@@ -164,6 +165,7 @@ export default mixins(Resize).extend({
             this.optionPanelHeight = ((this.$refs.optionsPanel as Vue).$el as HTMLElement).offsetHeight + 'px'
         },
         enterAllElements() {
+            this.isSplashDone = true
             this.$store.commit(MutationType.ANIMATION_ENTER, true)
         },
     },
@@ -213,7 +215,9 @@ export default mixins(Resize).extend({
     -ms-overflow-style: none; /* IE and Edge */
     overflow-y: scroll;
     scrollbar-width: none; /* Firefox */
-    transition: height var(--project-duration) ease(out-quart), width var(--project-duration) ease(out-quart);
+    transform: translateY(100%);
+    transform-origin: bottom center;
+    transition: transform 0.55s 0.6s, height var(--project-duration) ease(out-quart), width var(--project-duration) ease(out-quart);
 
     &::-webkit-scrollbar {
         display: none;
@@ -222,6 +226,10 @@ export default mixins(Resize).extend({
     &--expand {
         height: calc(100vh - var(--top-bar-height) * 1px + 1px);
         //height: calc(90vh - var(--top-bar-height) * 1px);
+    }
+
+    &--enter {
+        transform: translateY(0);
     }
 }
 

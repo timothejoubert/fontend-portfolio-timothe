@@ -46,14 +46,15 @@ export default Vue.extend({
                 : (this.pageData?.title ? this.pageData.title + ' | ' : '') + this.$config.appTitle
         },
     },
-    watch: {
-        $route() {
-            console.log('route change')
-        },
-    },
     methods: {
         getMetaImage(): string | undefined {
-            return this.pageData?.thumbnail?.data?.attributes?.url || '/images/share.jpg'
+            const thumbnail: ImageDataContent | false =
+                !!this.pageData?.thumbnail?.data &&
+                (Array.isArray(this.pageData.thumbnail.data)
+                    ? (this.pageData.thumbnail.data[0] as ImageDataContent)
+                    : this.pageData.thumbnail.data)
+
+            return thumbnail ? thumbnail?.attributes?.url : '/images/share.jpg'
         },
         getPageUrl(): string {
             return this.$config.baseURL + this.$route.fullPath.substring(1)

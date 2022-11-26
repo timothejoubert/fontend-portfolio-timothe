@@ -1,3 +1,9 @@
+interface StrapiAboutResponse extends StrapiBlockCreated, PageData {
+    description: string
+    socials?: Socials[]
+    sections?: AboutSection[]
+}
+
 // ABOUT //
 interface AboutBlock extends StrapiBlockCreated, PageData {
     socials: Socials[] | null

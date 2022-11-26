@@ -9,7 +9,7 @@ interface RootState {
     alreadyVisited: boolean
     isAboutOpen: boolean
     isUiOptionsOpen: boolean
-    selectedFilter: string
+    selectedFilter: string[]
     windowWidth: number
     windowHeight: number
     errorPage: NuxtError | null

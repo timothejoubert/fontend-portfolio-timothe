@@ -34,7 +34,7 @@ export default Vue.extend({
         onUpdate(event: InputEvent) {
             const value = (event.target as HTMLInputElement).checked
             this.isChecked = value
-            this.$emit('update', { value, name: this.name })
+            this.$emit('update', { value, inputName: this.name })
         },
     },
 })

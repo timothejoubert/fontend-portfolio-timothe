@@ -66,6 +66,9 @@ export default Vue.extend({
                 this.about.socials.filter((social) => !!social?.name && validSocialName.includes(social.name.toLowerCase()))
             )
         },
+        isAnimationEnter(): boolean {
+            return this.$store.state.animationEnter
+        },
     },
     mounted() {
         this.getSocialsWidth()

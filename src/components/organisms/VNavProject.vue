@@ -48,9 +48,9 @@ export default Vue.extend({
         projects(): ProjectContent[] | [] {
             let projects = this.allProject
 
-            if (this.filter) {
+            if (this.filter?.length) {
                 projects = this.allProject.filter((project: ProjectContent) => {
-                    return project.tags?.some((tag) => tag.slug === this.filter)
+                    return project.tags?.some((tag) => this.filter.includes(tag.slug))
                 })
             }
 

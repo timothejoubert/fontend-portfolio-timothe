@@ -8,12 +8,14 @@
     >
         <nuxt-link :to="`/project/${project.slug}`" :tabindex="isAboutOpen && '-1'">
             <div :class="$style.information">
-                <h1 v-if="project.title" :class="[$style['information__content'], $style.title, 'body-m']">
-                    {{ project.title }}
-                </h1>
-                <p v-if="project.date" :class="[$style['information__content'], $style.date, 'body-s']">
-                    {{ project.date }}
-                </p>
+                <div :class="$style.information__head">
+                    <h1 v-if="project.title" :class="[$style.title, 'body-m']">
+                        {{ project.title }}
+                    </h1>
+                    <p v-if="project.date" :class="[$style.date, 'body-s']">
+                        {{ project.date }}
+                    </p>
+                </div>
                 <span v-if="project.promoted" :style="{ color: 'white', marginLeft: '10px' }">❤︎</span>
                 <div v-if="tags" :class="[$style.tags]">
                     <v-pill
@@ -42,8 +44,6 @@ import { mapGetters } from 'vuex'
 import VImage from '~/components/atoms/VImage.vue'
 import VPill from '~/components/atoms/VPill.vue'
 import VNewPill from '~/components/atoms/VNewPill.vue'
-// import eventBus from '~/utils/event-bus'
-// import EventType from '~/constants/event-type'
 
 export default Vue.extend({
     name: 'VProjectCard',
@@ -82,7 +82,7 @@ export default Vue.extend({
         },
         displayRemote(): boolean {
             // TODO error in client-side rendered
-            return Math.random() > 0.8
+            return !!this.project?.promoted // Math.random() > 0.8
         },
     },
     methods: {
@@ -140,7 +140,10 @@ export default Vue.extend({
     margin: rem(14);
 }
 
-.information__content {
+.information__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     opacity: 1;
     transition: opacity 0.15s 0.15s, transform 0.15s 0.15s;
 

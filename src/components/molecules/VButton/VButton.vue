@@ -50,6 +50,7 @@ export default Vue.extend({
     },
     computed: {
         classNames(): (string | boolean | undefined)[] {
+            console.log(this.label)
             return [
                 'v-button',
                 this.outlined && 'v-button--outlined',

@@ -101,6 +101,7 @@ export default Vue.extend({
 
 .content-title {
     margin-right: rem(20);
+    opacity: 0.35;
 }
 
 .input {

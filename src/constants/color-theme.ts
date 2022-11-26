@@ -19,6 +19,11 @@ const USER_THEMES = [
         BG: '#0e4548',
         ACCENT: '#b3f2ff',
     },
+    {
+        MAIN: '#69f7a6',
+        BG: '#160d17',
+        ACCENT: '#ff5252',
+    },
 ]
 
 export default USER_THEMES

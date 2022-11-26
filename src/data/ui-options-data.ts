@@ -10,8 +10,8 @@ const colorsThemeData = USER_THEMES.map((theme, index) => {
     return { name: `Theme ${index + 1}`, value: keyValues }
 })
 
-const FILTER_OPTIONS = TAG_LABELS.map((label: string) => {
-    return { name: label, value: slugify(label) }
+const checkBoxesTag = TAG_LABELS.map((label: string) => {
+    return { name: 'tag-' + slugify(label), label, type: 'checkbox' as InputType, checked: false, icon: 'validate' }
 })
 
 const UI_PARAMETERS: ParameterSection[] = [
@@ -67,28 +67,34 @@ const UI_PARAMETERS: ParameterSection[] = [
         displayHeaderButton: true,
         parameters: [
             {
-                title: null,
+                title: 'Trier par',
                 children: [
                     {
-                        name: 'tags',
-                        type: 'select',
-                        options: [...FILTER_OPTIONS],
+                        name: 'date',
+                        type: 'button',
+                        label: 'date',
                         value: '',
-                        label: 'Thématiques',
+                        icon: 'date',
                     },
                     {
                         name: 'randomize',
                         type: 'button',
                         label: 'Random',
                         value: '',
+                        icon: 'shuffle',
                     },
                     {
                         name: 'promote',
                         type: 'toggle',
                         label: 'Best',
                         value: '',
+                        icon: 'heart',
                     },
                 ],
+            },
+            {
+                title: 'Filtrer par',
+                children: [...checkBoxesTag],
             },
         ],
     },

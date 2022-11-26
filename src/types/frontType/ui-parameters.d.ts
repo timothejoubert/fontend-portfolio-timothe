@@ -19,11 +19,12 @@ interface ParameterContent {
     children?: InputParameter[]
 }
 
-interface InputParameter extends RangeParameter, SelectParameter {
+interface InputParameter extends RangeParameter, SelectParameter, checkboxParameter {
     type: InputType
-    name: OptionsName
+    name: OptionsName | string
     value?: string | boolean
     label?: string
+    icon?: string
 }
 
 interface SelectOption {
@@ -41,10 +42,15 @@ interface RangeParameter {
     step?: string
 }
 
+interface checkboxParameter {
+    checked?: boolean
+}
+
 type OptionsName =
     | 'color-main'
     | 'color-bg'
     | 'color-accent'
+    | 'date'
     | 'theme-color'
     | 'grid-size'
     | 'tags'

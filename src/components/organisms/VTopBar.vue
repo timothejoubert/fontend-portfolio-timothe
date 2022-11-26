@@ -40,8 +40,8 @@ export default Vue.extend({
         rootClasses(): (string | boolean | undefined)[] {
             return [
                 this.$style.root,
-                (this.isAboutOpen || this.isUiOptionsOpen) && this.$style['root--modal-open'],
                 this.isAnimationEnter && this.$style['root--enter'],
+                (this.isAboutOpen || this.isUiOptionsOpen) && this.$style['root--modal-open'],
             ]
         },
         isAnimationEnter(): boolean {

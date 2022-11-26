@@ -11,7 +11,7 @@ interface StrapiWebResponse {
 
 interface StrapiDataBaseResponse {
     id: number
-    attributes: StrapiProjectAttributes | StrapiAboutAttributes
+    attributes: StrapiProjectResponse | StrapiAboutResponse
 }
 
 interface StrapiMeta {
@@ -47,26 +47,13 @@ interface PageData extends NodeType {
 }
 
 // IMAGE //
-interface ImageData {
-    name: string
-    hash: string
-    ext: string
-    mime: string
-    path: null
-    width: number
-    height: number
-    size: number
-    url: string
+interface ImageObject {
+    data: ImageDataContent | ImageDataContent[]
 }
 
-type ImageFormatName = 'thumbnail' | 'small' | 'medium' | 'large'
-
-interface ImageFormats {
-    // [key: string]: ImageData
-    thumbnail?: ImageData
-    small?: ImageData
-    medium?: ImageData
-    large?: ImageData
+interface ImageDataContent {
+    id: number
+    attributes: ImageAttributes
 }
 
 interface ImageAttributes {
@@ -89,17 +76,31 @@ interface ImageAttributes {
     updatedAt: string
 }
 
+type ImageFormatName = 'thumbnail' | 'small' | 'medium' | 'large'
+
+interface ImageFormats {
+    // [key: string]: ImageData
+    thumbnail?: ImageData
+    small?: ImageData
+    medium?: ImageData
+    large?: ImageData
+}
+
+interface ImageData {
+    name: string
+    hash: string
+    ext: string
+    mime: string
+    path: null
+    width: number
+    height: number
+    size: number
+    url: string
+}
+
 interface ProviderMetaData {
     public_id: string
     resource_type: string
-}
-
-interface ImageDataContent {
-    attributes: ImageAttributes
-}
-
-interface ImageObject {
-    data: ImageDataContent
 }
 
 interface Image {
@@ -119,25 +120,6 @@ interface Image {
     provider_metadata: null
     createdAt: string
     updatedAt: string
-}
-
-// END IMAGE //
-
-// PROJECT //
-interface StrapiProjectAttributes extends StrapiBlockCreated, PageData {
-    description: string | null
-    isNew: boolean
-    date: string | null
-    thumbnail: ImageObject
-    tags: any // define type
-    medias: ImageObject[]
-    links: Link[]
-}
-
-interface StrapiAboutAttributes extends StrapiBlockCreated, PageData {
-    description: string
-    socials?: Socials[]
-    sections?: AboutSection[]
 }
 
 interface UserUiContent {}

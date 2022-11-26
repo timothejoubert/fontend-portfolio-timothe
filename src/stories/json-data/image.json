@@ -1,0 +1,82 @@
+{
+    "name": "serie1-all.jpg",
+    "alternativeText": "serie1-all.jpg",
+    "caption": "serie1-all.jpg",
+    "width": 2475,
+    "height": 2471,
+    "formats": {
+        "large": {
+            "ext": ".jpg",
+            "url": "https://res.cloudinary.com/duiyjc3zu/image/upload/v1669232531/large_serie1_all_0cc621b252.jpg",
+            "hash": "large_serie1_all_0cc621b252",
+            "mime": "image/jpeg",
+            "name": "large_serie1-all.jpg",
+            "path": null,
+            "size": 109.07,
+            "width": 1000,
+            "height": 998,
+            "provider_metadata": {
+                "public_id": "serie1_all_0cc621b252",
+                "resource_type": "image"
+            }
+        },
+        "small": {
+            "ext": ".jpg",
+            "url": "https://res.cloudinary.com/duiyjc3zu/image/upload/v1669232534/small_serie1_all_0cc621b252.jpg",
+            "hash": "small_serie1_all_0cc621b252",
+            "mime": "image/jpeg",
+            "name": "small_serie1-all.jpg",
+            "path": null,
+            "size": 41.25,
+            "width": 500,
+            "height": 499,
+            "provider_metadata": {
+                "public_id": "serie1_all_0cc621b252",
+                "resource_type": "image"
+            }
+        },
+        "medium": {
+            "ext": ".jpg",
+            "url": "https://res.cloudinary.com/duiyjc3zu/image/upload/v1669232533/medium_serie1_all_0cc621b252.jpg",
+            "hash": "medium_serie1_all_0cc621b252",
+            "mime": "image/jpeg",
+            "name": "medium_serie1-all.jpg",
+            "path": null,
+            "size": 74.3,
+            "width": 750,
+            "height": 749,
+            "provider_metadata": {
+                "public_id": "serie1_all_0cc621b252",
+                "resource_type": "image"
+            }
+        },
+        "thumbnail": {
+            "ext": ".jpg",
+            "url": "https://res.cloudinary.com/duiyjc3zu/image/upload/v1669232530/thumbnail_serie1_all_0cc621b252.jpg",
+            "hash": "thumbnail_serie1_all_0cc621b252",
+            "mime": "image/jpeg",
+            "name": "thumbnail_serie1-all.jpg",
+            "path": null,
+            "size": 6.69,
+            "width": 157,
+            "height": 156,
+            "provider_metadata": {
+                "public_id": "serie1_all_0cc621b252",
+                "resource_type": "image"
+            }
+        }
+    },
+    "hash": "serie1_all_0cc621b252",
+    "ext": ".jpg",
+    "mime": "image/jpeg",
+    "size": 351.14,
+    "url": "https://res.cloudinary.com/duiyjc3zu/image/upload/v1669232529/serie1_all_0cc621b252.jpg",
+    "previewUrl": null,
+    "provider": "cloudinary",
+    "provider_metadata": {
+        "public_id": "serie1_all_0cc621b252",
+        "resource_type": "image"
+    },
+    "createdAt": "2022-11-23T19:42:14.742Z",
+    "updatedAt": "2022-11-23T19:42:14.742Z"
+}

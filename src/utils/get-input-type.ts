@@ -14,6 +14,10 @@ export function isFilterButton(name?: string): boolean {
     return name === 'tags' || name === 'randomize' || name === 'best'
 }
 
+export function isTag(name?: string): boolean {
+    return !!name?.includes('tag')
+}
+
 export function isTagFilter(name?: string): boolean {
     return name === 'tags'
 }

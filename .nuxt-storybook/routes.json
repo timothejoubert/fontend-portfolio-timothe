@@ -3,21 +3,18 @@
     "name": "about",
     "path": "/about",
     "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/src/pages/about.vue",
-    "chunkName": "pages/about",
-    "_name": "_7373a7dc"
+    "chunkName": "pages/about"
   },
   {
     "name": "project-slug",
     "path": "/project/:slug?",
     "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/src/pages/project/_slug.vue",
-    "chunkName": "pages/project/_slug",
-    "_name": "_75887ee3"
+    "chunkName": "pages/project/_slug"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/src/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_d9a8fabe"
+    "chunkName": "pages/index"
   }
 ]

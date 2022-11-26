@@ -14,11 +14,17 @@
   "VCounterDomTemplate": {
     "description": "Auto imported from components/atoms/VCounterDomTemplate.vue"
   },
+  "VHtmlParser": {
+    "description": "Auto imported from components/atoms/VHtmlParser.vue"
+  },
   "VImage": {
     "description": "Auto imported from components/atoms/VImage.vue"
   },
   "VInput": {
     "description": "Auto imported from components/atoms/VInput.vue"
+  },
+  "VInputFactory": {
+    "description": "Auto imported from components/atoms/VInputFactory.vue"
   },
   "VLink": {
     "description": "Auto imported from components/atoms/VLink.vue"
@@ -37,6 +43,9 @@
   },
   "VSplitWord": {
     "description": "Auto imported from components/atoms/VSplitWord.vue"
+  },
+  "VToggle": {
+    "description": "Auto imported from components/atoms/VToggle.vue"
   },
   "VAboutArticle": {
     "description": "Auto imported from components/molecules/VAboutArticle.vue"

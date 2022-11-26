@@ -10,7 +10,7 @@ export default Vue.extend({
     name: 'VImage',
     components: { ImagePlaceHolder },
     props: {
-        strapiImage: Object as PropType<Image>,
+        strapiImage: Object as PropType<ImageAttributes>,
     },
     data() {
         return {
