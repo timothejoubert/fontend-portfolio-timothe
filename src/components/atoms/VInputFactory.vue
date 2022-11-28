@@ -1,5 +1,5 @@
 <template>
-    <component :is="component" v-if="component" v-bind="inputProps" @update="update">
+    <component :is="component" v-if="component && tagExistInProjects" v-bind="inputProps" @update="update">
         <template v-if="iconName" #icon>
             <component :is="iconName" :class="$style.icon" />
         </template>
@@ -39,6 +39,16 @@ export default Vue.extend({
         isVisible: Boolean,
     },
     computed: {
+        tagExistInProjects(): boolean {
+            if (!isTag(this.inputData.name)) return true
+
+            const currentTagIsInProjects = this.$store.state.projectsData
+                .map((project: ProjectContent) =>
+                    project.tags?.filter((tag) => this.inputProps.name.replace('tag-', '') === tag.slug)
+                )
+                .flat(2)
+            return !!currentTagIsInProjects?.length
+        },
         component(): string | undefined {
             const { type } = this.inputData
             if (!type) return
@@ -71,7 +81,11 @@ export default Vue.extend({
             if (windowWidth < getBreakpointValue('md')) cardNumber = 2
             if (windowWidth > getBreakpointValue('md') && windowWidth < getBreakpointValue('lg')) cardNumber = 4
             if (windowWidth > getBreakpointValue('lg') && windowWidth < getBreakpointValue('hd')) cardNumber = 6
+            if (windowWidth > getBreakpointValue('hd')) cardNumber = 7
             return cardNumber
+        },
+        minCardNumber(): number {
+            return this.$store.state.windowWidth > getBreakpointValue('md') ? 2 : 1
         },
         inputProps(): Record<string, any> {
             const name = this.inputData.name
@@ -79,12 +93,13 @@ export default Vue.extend({
                 ...this.inputData,
                 label: this.inputData.label,
                 isVisible: this.isVisible,
-                class: [this.$style.input, 'over-title-s'],
+                class: [this.$style.input, !isTag(this.inputData.name) ? 'over-title-l' : 'over-title-s'],
             }
 
             if (this.component === 'v-button') {
                 return {
                     ...defaultAttributes,
+                    class: [...defaultAttributes.class, this.$style['input--filter']],
                     rounded: true,
                     theme: 'light',
                     size: 'm',
@@ -95,7 +110,7 @@ export default Vue.extend({
                 return {
                     ...defaultAttributes,
                     class: [...defaultAttributes.class, this.$style.range],
-                    min: '1',
+                    min: this.minCardNumber + '',
                     step: '1',
                     max: this.maxCardNumber + '',
                 }
@@ -104,7 +119,13 @@ export default Vue.extend({
             if (isTag(name)) {
                 return {
                     ...defaultAttributes,
-                    class: [...defaultAttributes.class, this.$style.checkbox],
+                    class: [
+                        ...defaultAttributes.class,
+                        this.$style['input--outlined'],
+                        this.$style['input--rounded'],
+                        this.$style.checkbox,
+                    ],
+                    outlined: true,
                     checked: this.$store.state.selectedFilter.includes(this.inputData?.name.replace('tag-', '')),
                     value: this.inputData?.name,
                 }
@@ -115,6 +136,8 @@ export default Vue.extend({
     },
     methods: {
         update({ inputName, value }: { inputName: string; value: string }) {
+            console.log('factory update event', inputName, value)
+
             if (isColorInput(inputName)) {
                 const cssVarName = inputName.replace('Color', '')
                 setCssProp(`--${cssVarName}`, value)
@@ -131,14 +154,18 @@ export default Vue.extend({
             }
 
             if (isTagFilter(inputName)) {
+                console.log('factory filter')
                 this.$store.commit(MutationType.SELECTED_FILTER, value)
             }
 
             if (isRandomFilter(inputName)) {
+                console.log('factory random')
                 eventBus.$emit(EventType.RANDOMIZE_PROJECTS)
             }
 
             if (isPromoteFilter(inputName)) {
+                console.log('factory best')
+
                 eventBus.$emit(EventType.FILTER_BEST_PROJECTS)
             }
 
@@ -156,7 +183,6 @@ export default Vue.extend({
                 } else {
                     filteredTag.push(tagName)
                 }
-                console.log(filteredTag)
                 this.$store.commit(MutationType.SELECTED_FILTER, filteredTag)
             }
         },
@@ -165,38 +191,61 @@ export default Vue.extend({
 </script>
 <style lang="scss" module>
 .input {
-    @include v-button-default-css-vars($v-button-vars);
-    @include v-button-default-css-vars($v-button-inner-vars, '-inner');
-    @include v-button-default-css-vars($v-button-label-vars, '-label');
-    @include theme-variants;
+    &:not(.range) {
+        background-color: var(--color-main);
+        color: var(--color-bg);
 
-    // sizes
-    $vars: map-remove($v-button-vars, default);
+        @include v-button-default-css-vars($v-button-vars);
+        @include v-button-default-css-vars($v-button-inner-vars, '-inner');
+        @include v-button-default-css-vars($v-button-label-vars, '-label');
+        @include theme-variants;
 
-    @each $key, $value in $vars {
-        &--size-#{$key} {
-            @include v-button-size($key);
+        // sizes
+        $vars: map-remove($v-button-vars, default);
+
+        @each $key, $value in $vars {
+            .input--size-#{$key} {
+                @include v-button-size($key);
+            }
         }
     }
 
     &:not(:last-child) {
         margin-right: rem(10);
     }
-}
 
-.input:not(.range) {
-    background-color: var(--color-main);
-    color: var(--color-bg);
-}
+    &--outlined {
+        border-width: var(--btn-border-width, 0.5px);
+        border-style: solid;
+        border-color: var(--color-main);
+        border-radius: inherit;
+        transition: all 0.3s;
+    }
 
-.input.checkbox {
-    background-color: inherit;
-    color: var(--color-main);
-    outline: 1px solid var(--color-main);
+    &--rounded {
+        @include v-button-default-css-vars($v-button-rounded-vars, '-rounded');
+    }
+
+    &--filter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &.checkbox {
+        margin-bottom: rem(10);
+        background-color: inherit;
+        color: var(--color-main);
+    }
 }
 
 .icon {
     @include v-button-default-css-vars($v-button-icon-vars, '-icon');
     @include v-button-default-css-vars($v-button-icon-size-vars, '-icon-size');
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
 }
 </style>

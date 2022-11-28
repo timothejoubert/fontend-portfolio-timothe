@@ -16,6 +16,7 @@
             :checked="checked"
             :name="name"
             @input="onUpdate"
+            @keypress.enter="onUpdate"
         />
     </div>
 </template>
@@ -35,6 +36,7 @@ export default Vue.extend({
         value: String,
         label: String,
         checked: Boolean,
+        outlined: Boolean,
     },
     computed: {
         rootClasses(): (string | false | undefined)[] {
@@ -54,8 +56,8 @@ export default Vue.extend({
 .root {
     position: relative;
     display: inline-flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     //padding: rem(8) rem(15);
     //border-radius: 100px;
     cursor: pointer;

@@ -82,6 +82,7 @@ export default Vue.extend({
 
 .reset {
     margin-left: rem(16);
+    font-weight: 500;
 }
 
 .title,
@@ -95,12 +96,13 @@ export default Vue.extend({
     align-items: center;
 
     &:not(:last-child) {
-        margin-bottom: rem(15);
+        margin-bottom: rem(20);
     }
 }
 
 .content-title {
-    margin-right: rem(20);
+    min-width: rem(80);
+    margin-right: rem(25);
     opacity: 0.35;
 }
 

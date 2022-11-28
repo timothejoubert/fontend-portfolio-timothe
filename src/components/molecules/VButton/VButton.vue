@@ -20,6 +20,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import './_hover.scss'
+import { isPromoteFilter, isRandomFilter } from '~/utils/get-input-type'
 
 function isRelativePath(path: string): boolean {
     return path.charAt(0) === '/'
@@ -28,6 +29,7 @@ function isRelativePath(path: string): boolean {
 export default Vue.extend({
     name: 'VButton',
     props: {
+        name: String,
         filled: Boolean,
         label: [String, Boolean],
         size: [String, Boolean],
@@ -50,7 +52,6 @@ export default Vue.extend({
     },
     computed: {
         classNames(): (string | boolean | undefined)[] {
-            console.log(this.label)
             return [
                 'v-button',
                 this.outlined && 'v-button--outlined',
@@ -89,7 +90,10 @@ export default Vue.extend({
     },
     methods: {
         onClick(event: MouseEvent) {
-            this.$emit('click', event)
+            console.log('click on:', this.name)
+            if (isRandomFilter(this.name) || isPromoteFilter(this.name)) {
+                this.$emit('update', { value: '', inputName: this.name })
+            } else this.$emit('click', event)
         },
     },
 })
@@ -234,6 +238,7 @@ export default Vue.extend({
 .v-button__label {
     @include v-button-default-css-vars($v-button-label-vars, '-label');
 
+    line-height: 0;
     transition: color 0.3s;
 
     @media (prefers-reduced-motion: reduce) {

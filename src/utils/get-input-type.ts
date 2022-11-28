@@ -1,5 +1,5 @@
-export function isColorInput(name: string): boolean {
-    return name.includes('color-')
+export function isColorInput(name: string | undefined): boolean {
+    return !!name?.includes('color-')
 }
 
 export function isColorThemeSelect(name?: string): boolean {

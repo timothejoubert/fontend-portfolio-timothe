@@ -85,7 +85,7 @@ const UI_PARAMETERS: ParameterSection[] = [
                     },
                     {
                         name: 'promote',
-                        type: 'toggle',
+                        type: 'button',
                         label: 'Best',
                         value: '',
                         icon: 'heart',

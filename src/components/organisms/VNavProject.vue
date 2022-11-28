@@ -41,9 +41,8 @@ export default Vue.extend({
             return this.$store.state.selectedFilter
         },
         allProject(): ProjectContent[] | [] {
-            // console.log(this.$store.state.projectsData)
             if (!this.$store.state.projectsData) return []
-            return [...new Array(4)].map(() => this.$store.state.projectsData).flat()
+            return [...new Array(1)].map(() => this.$store.state.projectsData).flat()
         },
         projects(): ProjectContent[] | [] {
             let projects = this.allProject
@@ -53,16 +52,16 @@ export default Vue.extend({
                     return project.tags?.some((tag) => this.filter.includes(tag.slug))
                 })
             }
-
             if (this.isRandomized) {
                 projects = projects.sort(() => 0.5 - Math.random())
-                // this.restoreData('randomize')
+                this.restoreData('randomize')
             }
 
             if (this.isPromoted) {
                 projects = projects.filter((project: ProjectContent) => project.promoted)
-                // this.restoreData('promoted')
+                this.restoreData('promoted')
             }
+
             console.log('computed projects, length: ', projects.length)
             return projects
         },
