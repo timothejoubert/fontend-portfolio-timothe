@@ -81,7 +81,7 @@ export default Vue.extend({
 }
 
 .reset {
-    margin-left: rem(16);
+    margin-left: rem(20);
     font-weight: 500;
 }
 

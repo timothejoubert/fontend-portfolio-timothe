@@ -76,7 +76,7 @@ export default Vue.extend({
 
     &--size {
         &-s {
-            padding: rem(5) rem(8);
+            padding: rem(4) rem(10) rem(3);
         }
         &-m {
             padding: rem(8) rem(15);

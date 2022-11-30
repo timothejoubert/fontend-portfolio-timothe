@@ -7,7 +7,7 @@
             :class="$style.output"
             :style="{ backgroundColor: `var(--${name})` }"
         ></span>
-        <icon-validate v-if="checked" :class="$style.icon" />
+        <component :is="iconName" v-if="displayIcon" :class="$style.icon" />
         <input
             :tabindex="!isVisible && '-1'"
             :class="$style.input"
@@ -25,15 +25,20 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import IconValidate from '~/assets/images/icons/validate.svg?sprite'
+import IconHeart from '~/assets/images/icons/heart.svg?sprite'
+import IconShuffle from '~/assets/images/icons/shuffle.svg?sprite'
+import IconDate from '~/assets/images/icons/date.svg?sprite'
+import { isFilterButton, isTag } from '~/utils/get-input-type'
 
 export default Vue.extend({
     name: 'VInput',
-    components: { IconValidate },
+    components: { IconValidate, IconHeart, IconShuffle, IconDate },
     props: {
         isVisible: Boolean,
         name: String,
+        icon: String,
         type: String as PropType<InputType>,
-        value: String,
+        value: [String, Boolean],
         label: String,
         checked: Boolean,
         outlined: Boolean,
@@ -41,6 +46,28 @@ export default Vue.extend({
     computed: {
         rootClasses(): (string | false | undefined)[] {
             return [this.$style.root, !!this.checked && this.$style['root--checked']]
+        },
+        checkedTags(): string[] {
+            return this.$store.state.selectedFilter
+        },
+        isIconButton(): boolean {
+            return isFilterButton(this.name) && !!this.iconName
+        },
+        isIconButtonActive(): boolean {
+            return true
+        },
+        displayIcon(): boolean {
+            return (
+                this.isIconButton ||
+                (isTag(this.name) &&
+                    !!this.checkedTags &&
+                    !!this.checkedTags.filter((tag: string) => this.name.includes(tag))?.length)
+            )
+        },
+        iconName(): string {
+            if (!this?.icon) return ''
+            const parsedName = this.icon.charAt(0).toUpperCase() + this.icon.slice(1)
+            return `Icon${parsedName}`
         },
     },
     methods: {
@@ -74,7 +101,7 @@ export default Vue.extend({
     width: 12px;
     height: 12px;
     border: 1px solid var(--color-bg);
-    margin-left: rem(10);
+    margin-left: rem(8);
 }
 
 .input {
@@ -94,6 +121,6 @@ export default Vue.extend({
 .icon {
     width: rem(17);
     height: auto;
-    margin-left: rem(6);
+    margin-left: rem(8);
 }
 </style>

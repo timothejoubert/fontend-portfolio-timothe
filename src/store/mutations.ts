@@ -12,5 +12,6 @@ export default {
     [MutationType.IS_ABOUT_OPEN]: (state, value: boolean) => (state.isAboutOpen = value),
     [MutationType.IS_UI_OPTIONS_OPEN]: (state, value: boolean) => (state.isUiOptionsOpen = value),
     [MutationType.SELECTED_FILTER]: (state, value: string[]) => (state.selectedFilter = value),
+    [MutationType.ACTIVE_FILTERS]: (state, value: string[]) => (state.activeFilters = value),
     [MutationType.ALREADY_VISITED]: (state, value: boolean) => (state.alreadyVisited = value),
 } as MutationTree<RootState>

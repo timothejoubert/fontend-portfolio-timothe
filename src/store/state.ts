@@ -13,6 +13,7 @@ export default (): RootState => ({
     isAboutOpen: false,
     isUiOptionsOpen: false,
     selectedFilter: [],
+    activeFilters: [],
     // General
     errorPage: null,
     windowWidth: 0,

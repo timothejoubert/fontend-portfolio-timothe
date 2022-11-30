@@ -10,6 +10,7 @@ interface RootState {
     isAboutOpen: boolean
     isUiOptionsOpen: boolean
     selectedFilter: string[]
+    activeFilters: string[]
     windowWidth: number
     windowHeight: number
     errorPage: NuxtError | null

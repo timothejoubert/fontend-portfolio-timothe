@@ -11,7 +11,7 @@ export function isCardSlider(name?: string): boolean {
 }
 
 export function isFilterButton(name?: string): boolean {
-    return name === 'tags' || name === 'randomize' || name === 'best'
+    return name === 'randomize' || name === 'best' || name === 'promote' || name === 'date'
 }
 
 export function isTag(name?: string): boolean {
@@ -28,4 +28,8 @@ export function isRandomFilter(name?: string): boolean {
 
 export function isPromoteFilter(name?: string): boolean {
     return name === 'promote'
+}
+
+export function isDate(name?: string): boolean {
+    return name === 'date'
 }

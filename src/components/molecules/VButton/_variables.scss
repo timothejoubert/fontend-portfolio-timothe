@@ -22,7 +22,7 @@ $v-button-vars: (
 
 $v-button-rounded-vars: (
     default: (
-        border-radius: math.div(25px, 2)
+        border-radius: math.div(28px, 2)
     ),
     xm: (
         border-radius: math.div(36px, 2)
@@ -42,7 +42,7 @@ $v-button-rounded-vars: (
 $v-button-inner-vars: (
     default: (
         min-width: 62px,
-        height: 25px,
+        height: 28px,
         padding: 0 16px
     ),
     xs: (
@@ -70,7 +70,7 @@ $v-button-inner-vars: (
 // icon
 $v-button-icon-vars: (
     default: (
-        margin: 0 0 0 8px,
+        margin: 0 0 0 5px,
     ),
     xs: (
         margin: 0 6px,
@@ -89,7 +89,7 @@ $v-button-icon-vars: (
 // icon
 $v-button-icon-size-vars: (
     default: (
-        width: 18px
+        width: 22px
     ),
     xs: (
         width: 8px,

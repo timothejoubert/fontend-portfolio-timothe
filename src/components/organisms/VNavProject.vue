@@ -23,6 +23,7 @@ import VProjectCard from '~/components/molecules/VProjectCard.vue'
 import { getCssProp } from '~/utils/functions'
 import eventBus from '~/utils/event-bus'
 import EventType from '~/constants/event-type'
+import { isDate, isPromoteFilter } from '~/utils/get-input-type'
 
 export default Vue.extend({
     name: 'VNavProject',
@@ -31,38 +32,64 @@ export default Vue.extend({
         return {
             defaultColumnCard: 3,
             activeProject: '',
-            isRandomized: false,
+            isRandomized: 0,
+            projectOrder: false,
             isPromoted: false,
         }
     },
     computed: {
         ...mapGetters(['projectsData']),
-        filter(): string {
+        tagFilter(): string[] {
             return this.$store.state.selectedFilter
+        },
+        activeFilter(): string[] {
+            return this.$store.state.activeFilters
         },
         allProject(): ProjectContent[] | [] {
             if (!this.$store.state.projectsData) return []
             return [...new Array(1)].map(() => this.$store.state.projectsData).flat()
         },
+        isPromoteActive(): boolean {
+            return !!this.activeFilter?.filter((filter: string) => isPromoteFilter(filter))?.length
+        },
+        activeRandomize(): boolean {
+            const randomizeValue = this.activeFilter?.filter((item) => item.includes('randomize'))
+            return !!randomizeValue?.length
+        },
+        isOrderedActive(): boolean {
+            return !!this.activeFilter?.filter((filter: string) => isDate(filter))?.length
+        },
         projects(): ProjectContent[] | [] {
             let projects = this.allProject
 
-            if (this.filter?.length) {
+            if (this.tagFilter?.length) {
                 projects = this.allProject.filter((project: ProjectContent) => {
-                    return project.tags?.some((tag) => this.filter.includes(tag.slug))
+                    return project.tags?.some((tag) => this.tagFilter.includes(tag.slug))
                 })
             }
-            if (this.isRandomized) {
-                projects = projects.sort(() => 0.5 - Math.random())
-                this.restoreData('randomize')
-            }
 
-            if (this.isPromoted) {
-                projects = projects.filter((project: ProjectContent) => project.promoted)
-                this.restoreData('promoted')
-            }
+            if (this.activeRandomize) projects = projects.sort(() => 0.5 - Math.random())
+            if (this.isPromoteActive) projects = projects.filter((project: ProjectContent) => project.promoted)
 
-            console.log('computed projects, length: ', projects.length)
+            projects = this.isOrderedActive
+                ? projects.sort(
+                      (previousProject, nextProject) => Number(nextProject.date) - Number(previousProject.date)
+                  )
+                : projects.sort(
+                      (previousProject, nextProject) => Number(previousProject.date) - Number(nextProject.date)
+                  )
+
+            console.log(
+                'random: ',
+                this.isRandomized,
+                'isPromoted:',
+                this.isPromoted,
+                'order:',
+                this.projectOrder,
+                'projects length:',
+                projects.length
+            )
+
             return projects
         },
     },
@@ -74,12 +101,14 @@ export default Vue.extend({
     mounted() {
         this.getActiveRoute()
         this.updateEmptyCardNumber()
-        eventBus.$on(EventType.RANDOMIZE_PROJECTS, this.randomizeProjects)
-        eventBus.$on(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
+        // eventBus.$on(EventType.RANDOMIZE_PROJECTS, this.randomizeProjects)
+        // eventBus.$on(EventType.FILTER_PROJECT_ORDER, this.updateProjectOrder)
+        // eventBus.$on(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
     },
     beforeDestroy() {
-        eventBus.$off(EventType.RANDOMIZE_PROJECTS, this.randomizeProjects)
-        eventBus.$off(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
+        // eventBus.$off(EventType.RANDOMIZE_PROJECTS, this.randomizeProjects)
+        // eventBus.$off(EventType.FILTER_PROJECT_ORDER, this.updateProjectOrder)
+        // eventBus.$off(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
     },
     methods: {
         updateEmptyCardNumber() {
@@ -98,20 +127,13 @@ export default Vue.extend({
             this.activeProject = this.$route.params.slug
         },
         randomizeProjects() {
-            this.isRandomized = !this.isRandomized
+            this.isRandomized = Math.random() * 100
+        },
+        updateProjectOrder() {
+            this.projectOrder = !this.projectOrder
         },
         filterBestProjects() {
             this.isPromoted = !this.isPromoted
-        },
-        restoreData(data: string) {
-            switch (data) {
-                case 'randomize':
-                    this.isRandomized = false
-                    break
-                case 'promoted':
-                    this.isPromoted = false
-                    break
-            }
         },
     },
 })
