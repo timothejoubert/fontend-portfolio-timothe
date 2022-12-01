@@ -23,7 +23,7 @@ import VProjectCard from '~/components/molecules/VProjectCard.vue'
 import { getCssProp } from '~/utils/functions'
 import eventBus from '~/utils/event-bus'
 import EventType from '~/constants/event-type'
-import { isDate, isPromoteFilter } from '~/utils/get-input-type'
+import { isDate, isPromoteFilter, isRandomFilter } from '~/utils/get-input-type'
 
 export default Vue.extend({
     name: 'VNavProject',
@@ -32,7 +32,7 @@ export default Vue.extend({
         return {
             defaultColumnCard: 3,
             activeProject: '',
-            isRandomized: 0,
+            randomizeValue: '',
             projectOrder: false,
             isPromoted: false,
         }
@@ -50,14 +50,21 @@ export default Vue.extend({
             return [...new Array(1)].map(() => this.$store.state.projectsData).flat()
         },
         isPromoteActive(): boolean {
-            return !!this.activeFilter?.filter((filter: string) => isPromoteFilter(filter))?.length
+            return (
+                !!this.activeFilter?.length &&
+                !!this.activeFilter?.filter((filter: string) => isPromoteFilter(filter))?.length
+            )
         },
         activeRandomize(): boolean {
-            const randomizeValue = this.activeFilter?.filter((item) => item.includes('randomize'))
-            return !!randomizeValue?.length
+            return (
+                !!this.activeFilter?.length &&
+                !!this.activeFilter?.filter((filter: string) => isRandomFilter(filter))?.length
+            )
         },
         isOrderedActive(): boolean {
-            return !!this.activeFilter?.filter((filter: string) => isDate(filter))?.length
+            return (
+                !!this.activeFilter?.length && !!this.activeFilter?.filter((filter: string) => isDate(filter))?.length
+            )
         },
         projects(): ProjectContent[] | [] {
             let projects = this.allProject
@@ -78,18 +85,6 @@ export default Vue.extend({
                 : projects.sort(
                       (previousProject, nextProject) => Number(previousProject.date) - Number(nextProject.date)
                   )
-
-            console.log(
-                'random: ',
-                this.isRandomized,
-                'isPromoted:',
-                this.isPromoted,
-                'order:',
-                this.projectOrder,
-                'projects length:',
-                projects.length
-            )
-
             return projects
         },
     },
@@ -101,16 +96,12 @@ export default Vue.extend({
     mounted() {
         this.getActiveRoute()
         this.updateEmptyCardNumber()
-        // eventBus.$on(EventType.RANDOMIZE_PROJECTS, this.randomizeProjects)
-        // eventBus.$on(EventType.FILTER_PROJECT_ORDER, this.updateProjectOrder)
-        // eventBus.$on(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
     },
-    beforeDestroy() {
-        // eventBus.$off(EventType.RANDOMIZE_PROJECTS, this.randomizeProjects)
-        // eventBus.$off(EventType.FILTER_PROJECT_ORDER, this.updateProjectOrder)
-        // eventBus.$off(EventType.FILTER_BEST_PROJECTS, this.filterBestProjects)
-    },
+    beforeDestroy() {},
     methods: {
+        getActiveRoute() {
+            this.activeProject = this.$route.params.slug
+        },
         updateEmptyCardNumber() {
             this.defaultColumnCard = Number(getCssProp('--card-number') || 4) * 3
             // const cardSize = Math.ceil(parseFloat(getCssProp('--size-card')))
@@ -122,18 +113,6 @@ export default Vue.extend({
             // const column = Math.floor(wrapperWidth / cardSize)
             // const totalGutterWidth = gutter * (column - 1)
             // return Math.floor((wrapperWidth - totalGutterWidth) / cardSize) * 3
-        },
-        getActiveRoute() {
-            this.activeProject = this.$route.params.slug
-        },
-        randomizeProjects() {
-            this.isRandomized = Math.random() * 100
-        },
-        updateProjectOrder() {
-            this.projectOrder = !this.projectOrder
-        },
-        filterBestProjects() {
-            this.isPromoted = !this.isPromoted
         },
     },
 })

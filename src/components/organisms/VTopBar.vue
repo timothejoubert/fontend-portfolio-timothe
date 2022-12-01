@@ -1,6 +1,11 @@
 <template>
     <nav :class="rootClasses">
-        <button :class="[$style.logo, 'text-h3']" aria-label="close all panels" @click="onLogoClick">
+        <button
+            :class="[$style.logo, 'text-h3']"
+            :tabindex="!enableClickOnLogo && '-1'"
+            aria-labelledby="Close all panels"
+            @click="onLogoClick"
+        >
             FOURRE TOUT
         </button>
         <button
@@ -35,7 +40,7 @@ export default Vue.extend({
     computed: {
         ...mapGetters(['isAboutOpen', 'isUiOptionsOpen']),
         isHomePage(): boolean {
-            return this.$route.path !== '/'
+            return this.$route.path === '/'
         },
         rootClasses(): (string | boolean | undefined)[] {
             return [
@@ -43,6 +48,9 @@ export default Vue.extend({
                 this.isAnimationEnter && this.$style['root--enter'],
                 (this.isAboutOpen || this.isUiOptionsOpen) && this.$style['root--modal-open'],
             ]
+        },
+        enableClickOnLogo(): boolean {
+            return this.isAboutOpen || this.isUiOptionsOpen || !this.isHomePage
         },
         isAnimationEnter(): boolean {
             return this.$store.state.animationEnter
@@ -88,9 +96,9 @@ export default Vue.extend({
 .logo {
     text-transform: uppercase;
 
-    .root--modal-open & {
-        cursor: pointer;
-    }
+    //.root--modal-open & {
+    //    cursor: pointer;
+    //}
 
     &::before {
         position: relative;

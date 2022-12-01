@@ -1,5 +1,12 @@
 <template>
-    <component :is="component" v-if="component && tagExistInProjects" v-bind="inputProps" @update="update" />
+    <component
+        :is="component"
+        v-if="component && tagExistInProjects"
+        v-bind="inputProps"
+        :aria-label="'Button ' + inputData.name"
+        tabindex="-1"
+        @update="update"
+    />
 </template>
 
 <script lang="ts">
@@ -19,8 +26,6 @@ import {
     isTag,
 } from '~/utils/get-input-type'
 import MutationType from '~/constants/mutation-type'
-import eventBus from '~/utils/event-bus'
-import EventType from '~/constants/event-type'
 import { getBreakpointValue } from '~/utils/media'
 import { setCssProp } from '~/utils/functions'
 import VInputButton from '~/components/molecules/VButton/VInputButton.vue'
@@ -33,14 +38,14 @@ export interface EventClickInput {
 export default Vue.extend({
     name: 'VInputFactory',
     components: { VButton, VInput, VSlider, VToggle, VInputButton },
+    props: {
+        inputData: Object as PropType<InputParameter>,
+        isVisible: Boolean,
+    },
     data() {
         return {
             randomizeIndex: 0,
         }
-    },
-    props: {
-        inputData: Object as PropType<InputParameter>,
-        isVisible: Boolean,
     },
     computed: {
         tagExistInProjects(): boolean {
@@ -113,20 +118,50 @@ export default Vue.extend({
         minCardNumber(): string {
             return this.$store.state.windowWidth > getBreakpointValue('md') ? '2' : '1'
         },
+        activeFilters(): string[] | [] {
+            return this.$store.state.activeFilters || []
+        },
+        isDateActive(): boolean {
+            return (
+                this.inputData.name === 'date' &&
+                !!this.activeFilters?.length &&
+                !!this.activeFilters?.filter((filter: string) => filter === 'date')?.length
+            )
+        },
+        isRandomizeActive(): boolean {
+            return (
+                this.inputData.name === 'randomize' &&
+                !!this.activeFilters?.length &&
+                !!this.activeFilters.filter((filter: string) => filter.includes('randomize'))?.length
+            )
+        },
+        isPromoteActive(): boolean {
+            return (
+                this.inputData.name === 'promote' &&
+                !!this.activeFilters?.length &&
+                !!this.activeFilters.filter((filter: string) => filter === 'promote')?.length
+            )
+        },
         inputProps(): Record<string, any> {
             const isRounded = this.isButton || this.isCheckbox || this.isColorInput
             const theme = this.isTagInput ? 'light' : 'dark'
             const isOutlined = this.isTagInput
             const range = this.isRangeInput ? { step: '1', min: this.minCardNumber, max: this.maxCardNumber } : null
             const size = this.isTagInput ? 'sm' : 'm'
-            const checked = this.isCheckbox && !!this.inputData?.checked
+            const checked =
+                (this.isCheckbox && !!this.inputData?.checked) ||
+                this.isPromoteActive ||
+                this.isDateActive ||
+                this.isRandomizeActive
             return {
                 ...this.inputData,
+                value: checked ? undefined : this.inputData.value,
                 isVisible: this.isVisible,
                 range,
                 checked,
                 class: [
                     this.$style.button,
+                    !this.isTagInput && this.$style['button--capitalize'],
                     this.isRangeInput && this.$style['button--range'],
                     this.$style['button--filled'],
                     this.$style[`button--theme-${theme}`],
@@ -167,19 +202,24 @@ export default Vue.extend({
             const currentFilter = [...this.$store.state.activeFilters]
             let filteredFilter = currentFilter
 
-            const randomizeIsSet = !!filteredFilter.filter((item) => item.includes('randomize'))?.length
-
-            if (randomizeIsSet && !isDate(filterName) && !isPromoteFilter(filterName)) {
-                this.updateRandomize(filteredFilter)
-                return
-            }
-
-            if (currentFilter.includes(filterName)) {
+            if (isRandomFilter(filterName)) {
+                filteredFilter = this.updateRandomizeValue(currentFilter)
+            } else if (currentFilter.includes(filterName)) {
                 filteredFilter = currentFilter.filter((activeTag: string) => activeTag !== filterName)
             } else {
                 filteredFilter.push(filterName)
             }
             this.$store.commit(MutationType.ACTIVE_FILTERS, filteredFilter)
+        },
+        updateRandomizeValue(currentFilter: string[]): string[] {
+            const currentFilterCopy = currentFilter.slice()
+            const alreadySet = currentFilterCopy.join().includes('randomize')
+            if (alreadySet) {
+                currentFilter[0] = currentFilter[0] === 'randomize-on' ? 'randomize-off' : 'randomize-on'
+                return currentFilter
+            } else {
+                return ['randomize', ...currentFilter]
+            }
         },
         updateRandomize(currentFilter: string[]) {
             this.randomizeIndex++
@@ -204,8 +244,12 @@ export default Vue.extend({
     min-width: rem(62);
     height: rem(30);
     padding: 0 rem(22);
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
+
+    &--capitalize {
+        text-transform: uppercase;
+    }
 
     & option,
     & select {
@@ -217,6 +261,7 @@ export default Vue.extend({
         height: rem(28);
         padding: 0 rem(16);
         font-size: 12px;
+        font-weight: 400;
     }
 
     &:not(:last-child) {
