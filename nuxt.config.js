@@ -107,7 +107,7 @@ export default {
     // https://fr.nuxtjs.org/docs/2.x/configuration-glossary/configuration-runtime-config/
     publicRuntimeConfig: {
         appTitle: process.env.APP_TITLE,
-        baseUrl: process.env.APP_BASE_URL,
+        baseUrl: process.env.DEPLOYMENT_DATA === 'local' ? process.env.LOCAL_API_URL : process.env.STRAPI_API_URL,
     },
 
     // https://image.nuxtjs.org/providers/strapi
