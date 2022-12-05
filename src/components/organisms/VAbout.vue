@@ -1,11 +1,5 @@
 <template>
     <div :class="$style.root">
-        <!--        <v-bold-markdown-->
-        <!--            v-if="about.description"-->
-        <!--            :class="[$style.description, 'body-l']"-->
-        <!--            :content="about.description"-->
-        <!--        />-->
-
         <v-html-parser v-if="about.description" :class="[$style.description, 'body-l']" :content="about.description" />
 
         <div v-if="sections" :class="$style.sections">
@@ -18,7 +12,6 @@
 import Vue from 'vue'
 import type { PropType } from 'vue'
 import VAboutSection from '~/components/molecules/VAboutSection.vue'
-import VBoldMarkdown from '~/components/atoms/VBoldMarkdown.vue'
 import VHtmlParser from '~/components/atoms/VHtmlParser.vue'
 
 export default Vue.extend({
@@ -29,7 +22,6 @@ export default Vue.extend({
     },
     computed: {
         sections(): AboutSection[] | false {
-            console.log(this.about)
             return !!this.about?.sections?.length && this.about.sections
         },
     },
@@ -45,15 +37,11 @@ export default Vue.extend({
 
 .description {
     padding: rem(80) 0;
-
-    @include media('>=md') {
-        padding: rem(115) 0 rem(105);
-    }
-
     color: lightgrey;
+    word-break: break-word;
 
     & > b {
-        padding: rem(10) rem(12) rem(13);
+        padding: rem(8) rem(9) rem(9);
         background-color: var(--color-about-yellow-bg);
         border-radius: rem(5);
         color: var(--color-about-yellow);
@@ -64,6 +52,14 @@ export default Vue.extend({
     & > b:nth-last-child(-n + 3) {
         background-color: var(--color-about-purple-bg);
         color: var(--color-about-purple);
+    }
+
+    @include media('>=md') {
+        padding: rem(115) 0 rem(105);
+
+        & > b {
+            padding: rem(10) rem(12) rem(13);
+        }
     }
 }
 .sections {

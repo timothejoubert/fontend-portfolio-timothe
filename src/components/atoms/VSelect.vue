@@ -1,6 +1,6 @@
 <template>
     <select :id="name" :tabindex="!isVisible && '-1'" :name="name" :class="$style.root" @change="onChange">
-        <option value="">{{ label }}</option>
+        <option :value="value">{{ label }}</option>
         <option v-for="(option, i) in options" :key="i" :value="option.value">
             {{ option.name }}
         </option>

@@ -30,6 +30,7 @@ export default Vue.extend({
         return {
             defaultColumnCard: 3,
             activeProject: '',
+            updateRandomize: false,
             randomizeValue: '',
             projectOrder: false,
             isPromoted: false,
@@ -45,18 +46,12 @@ export default Vue.extend({
         },
         allProject(): ProjectContent[] | [] {
             if (!this.$store.state.projectsData) return []
-            return [...new Array(1)].map(() => this.$store.state.projectsData).flat()
+            return [...new Array(4)].map(() => this.$store.state.projectsData).flat()
         },
         isPromoteActive(): boolean {
             return (
                 !!this.activeFilter?.length &&
                 !!this.activeFilter?.filter((filter: string) => isPromoteFilter(filter))?.length
-            )
-        },
-        activeRandomize(): boolean {
-            return (
-                !!this.activeFilter?.length &&
-                !!this.activeFilter?.filter((filter: string) => isRandomFilter(filter))?.length
             )
         },
         isOrderedActive(): boolean {
@@ -73,22 +68,36 @@ export default Vue.extend({
                 })
             }
 
-            if (this.activeRandomize) projects = projects.sort(() => 0.5 - Math.random())
+            if (this.updateRandomize) projects = projects.sort(() => 0.5 - Math.random())
             if (this.isPromoteActive) projects = projects.filter((project: ProjectContent) => project.promoted)
 
-            projects = this.isOrderedActive
-                ? projects.sort(
-                      (previousProject, nextProject) => Number(nextProject.date) - Number(previousProject.date)
-                  )
-                : projects.sort(
-                      (previousProject, nextProject) => Number(previousProject.date) - Number(nextProject.date)
-                  )
+            projects =
+                this.isOrderedActive || !!this.activeFilter?.length
+                    ? projects.sort(
+                          (previousProject, nextProject) => Number(previousProject.date) - Number(nextProject.date)
+                      )
+                    : projects.sort(
+                          (previousProject, nextProject) => Number(nextProject.date) - Number(previousProject.date)
+                      )
             return projects
         },
     },
     watch: {
         $route() {
             this.getActiveRoute()
+        },
+        activeFilter(newValue, previousValue) {
+            const hasRandomize =
+                !!this.activeFilter?.length &&
+                !!this.activeFilter?.filter((filter: string) => filter.includes('randomize'))?.length
+
+            const randomIndex = this.activeFilter.findIndex((filter) => filter.includes('randomize'))
+            if ((newValue[randomIndex] !== previousValue[randomIndex] && hasRandomize) || !previousValue) {
+                this.updateRandomizeValue()
+                this.updateRandomize = true
+            } else {
+                this.updateRandomize = false
+            }
         },
     },
     mounted() {
@@ -97,20 +106,14 @@ export default Vue.extend({
     },
     beforeDestroy() {},
     methods: {
+        updateRandomizeValue() {
+            this.randomizeValue = this.activeFilter?.filter((filter: string) => filter.includes('randomize'))?.[0] || ''
+        },
         getActiveRoute() {
             this.activeProject = this.$route.params.slug
         },
         updateEmptyCardNumber() {
             this.defaultColumnCard = Number(getCssProp('--card-number') || 4) * 3
-            // const cardSize = Math.ceil(parseFloat(getCssProp('--size-card')))
-            // const gutter = this.$refs?.grid
-            //     ? Math.ceil(parseFloat(getComputedStyle(this.$refs.grid as HTMLElement)?.gap))
-            //     : 20
-            // const wrapperWidth =
-            //     this.$store.state.windowWidth - Math.ceil(parseFloat(getCssProp('--padding-border'))) * 2
-            // const column = Math.floor(wrapperWidth / cardSize)
-            // const totalGutterWidth = gutter * (column - 1)
-            // return Math.floor((wrapperWidth - totalGutterWidth) / cardSize) * 3
         },
     },
 })

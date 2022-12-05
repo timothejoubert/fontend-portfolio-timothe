@@ -54,9 +54,9 @@ const UI_PARAMETERS: ParameterSection[] = [
                     {
                         name: 'grid-size',
                         type: 'slider',
-                        value: '250',
-                        min: '180',
-                        max: '800',
+                        value: '4',
+                        min: '1',
+                        max: '6',
                     },
                 ],
             },

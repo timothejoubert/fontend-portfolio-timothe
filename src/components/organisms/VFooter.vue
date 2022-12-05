@@ -1,6 +1,6 @@
 <template>
     <footer :class="rootClasses" :style="{ '--socials-width': socialsWidth }">
-        <button :class="$style['about-link']" aria-labelledby="button-toggle-about" @click="onClick">
+        <button :class="$style['about-link']" aria-label="button-toggle-about" @click="onClick">
             <span v-if="aboutTitle" :class="[$style.title, 'body-s']">{{ aboutTitle }}</span>
             <span :class="[$style.icon, isAboutOpen && $style['icon--open']]">
                 <span :class="$style['circle-outlined']"></span>
@@ -32,6 +32,7 @@ import IconInstagram from '~/assets/images/icons/instagram.svg?sprite'
 import IconGithub from '~/assets/images/icons/github.svg?sprite'
 import IconP5 from '~/assets/images/icons/p5.svg?sprite'
 import IconCodepen from '~/assets/images/icons/codepen.svg?sprite'
+import { getBreakpointValue } from '~/utils/media'
 
 const validSocialName = ['instagram', 'github', 'codepen', 'p5', 'facebook', 'behance']
 
@@ -53,9 +54,12 @@ export default Vue.extend({
         rootClasses(): (string | false | undefined)[] {
             return [
                 this.$style.root,
-                this.isProjectOpen && this.$style['root--collapsed'],
+                this.buttonAlignLeft && this.$style['root--collapsed'],
                 this.isAboutOpen && this.$style['root--open'],
             ]
+        },
+        buttonAlignLeft(): boolean {
+            return this.isProjectOpen || this.$store.state.windowWidth < getBreakpointValue('lg')
         },
         aboutTitle(): string | undefined {
             return this.about?.title
@@ -63,7 +67,9 @@ export default Vue.extend({
         socials(): Socials[] | false {
             return (
                 !!this.about?.socials?.length &&
-                this.about.socials.filter((social) => !!social?.name && validSocialName.includes(social.name.toLowerCase()))
+                this.about.socials.filter(
+                    (social) => !!social?.name && validSocialName.includes(social.name.toLowerCase())
+                )
             )
         },
         isAnimationEnter(): boolean {

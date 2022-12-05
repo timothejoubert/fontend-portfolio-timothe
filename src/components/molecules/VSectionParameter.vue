@@ -18,6 +18,7 @@
             <v-input-factory
                 v-for="(input, i) in parameter.children"
                 :key="i"
+                ref="input-factory"
                 :is-visible="isUiOptionsOpen"
                 :input-data="input"
                 @reset="reset"
@@ -55,14 +56,19 @@ export default Vue.extend({
     methods: {
         reset() {
             if (this.isInterface) {
-                removeCssProp(`--color-main`) //, Colors.MAIN)
-                removeCssProp(`--color-bg`) //, Colors.BG)
-                removeCssProp(`--color-accent`) //, Colors.ACCENT)
-                removeCssProp(`--card-number`) //, Colors.ACCENT)
+                removeCssProp(`--color-main`)
+                removeCssProp(`--color-bg`)
+                removeCssProp(`--color-accent`)
+                removeCssProp(`--card-number`)
+                const inputGridSize = (this.$refs['input-factory'] as Vue[]).filter(
+                    (inputInstance) => inputInstance.$props.inputData.name === 'grid-size'
+                )?.[0]
+                ;(inputGridSize as any)?.resetSelectedTheme()
             }
 
             if (this.isFilter) {
-                this.$store.commit(MutationType.SELECTED_FILTER, '')
+                this.$store.commit(MutationType.SELECTED_FILTER, [])
+                this.$store.commit(MutationType.ACTIVE_FILTERS, [])
             }
         },
     },
@@ -96,13 +102,14 @@ export default Vue.extend({
     align-items: center;
 
     &:not(:last-child) {
-        margin-bottom: rem(20);
+        margin-bottom: rem(15);
     }
 }
 
 .content-title {
     min-width: rem(80);
     margin-right: rem(25);
+    margin-bottom: rem(7);
     opacity: 0.35;
 }
 

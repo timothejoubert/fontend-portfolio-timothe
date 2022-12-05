@@ -16,16 +16,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import type { PropType } from 'vue'
-import { getBreakpointValue } from '~/utils/media'
-// import { getCssProp } from '~/utils/utils'
 
 export default Vue.extend({
     name: 'VSlider',
     props: {
         isVisible: Boolean,
         name: String,
-        options: Array as PropType<SelectOption[]>,
         value: String,
         min: String,
         max: String,
@@ -50,19 +46,14 @@ export default Vue.extend({
 <style lang="scss" module>
 .root {
     position: relative;
-    width: 400px;
+    width: min(400px, calc(100% - 12px));
 }
 
 .slider {
-    //-webkit-appearance: none;
     width: 100%;
     accent-color: var(--color-accent);
     background-color: transparent;
 }
-
-//.slider[type='range']:focus {
-//    outline: none;
-//}
 
 .slider[type='range']::-webkit-slider-runnable-track {
     width: 100%;

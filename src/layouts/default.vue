@@ -155,7 +155,6 @@ export default mixins(Resize).extend({
             localStorage.setItem('visited', 'true')
         },
         isFirstConnexion(): boolean {
-            console.log('isFirstConnexion', !localStorage.getItem('visited'))
             return !localStorage.getItem('visited')
         },
         removeVisitedInStorage() {
@@ -179,6 +178,10 @@ export default mixins(Resize).extend({
     width: 100%;
     height: 100vh;
     color: var(--color-main);
+
+    @include media('>=lg') {
+        flex-direction: column;
+    }
 }
 
 .main-layout,
@@ -186,9 +189,15 @@ export default mixins(Resize).extend({
     width: 100%;
     transition: width var(--project-duration) ease(out-quart);
 
-    &--minify {
-        width: 50%;
+    @include media('>=lg') {
+        &--minify {
+            width: 50%;
+        }
     }
+}
+
+.bottom {
+    z-index: 1;
 }
 
 .main-layout {
@@ -236,10 +245,11 @@ export default mixins(Resize).extend({
 
 .project-panel {
     position: fixed;
+    top: calc(var(--top-bar-height) * 1px);
     right: 0;
-    width: 50vw;
-    max-height: 100vh;
-    border-left: 1px solid var(--color-main);
+    bottom: calc(var(--top-bar-height) * 1px);
+    width: 100%;
+    max-height: calc(100vh - var(--top-bar-height));
     background-color: var(--color-bg);
     -ms-overflow-style: none; /* IE and Edge */
     overflow-y: scroll;
@@ -247,6 +257,14 @@ export default mixins(Resize).extend({
 
     &::-webkit-scrollbar {
         display: none;
+    }
+
+    @include media('>=lg') {
+        top: 0;
+        bottom: inherit;
+        width: 50vw;
+        max-height: 100vh;
+        border-left: 1px solid var(--color-main);
     }
 }
 </style>

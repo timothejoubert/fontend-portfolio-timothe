@@ -2,9 +2,8 @@ import { RootState } from '~/types/store'
 
 export default (): RootState => ({
     // Data
-    projectsData: null,
+    projectsData: [],
     aboutData: null,
-    uiProperties: null,
     // Loading
     animationEnter: false,
     splashScreenFinish: false,

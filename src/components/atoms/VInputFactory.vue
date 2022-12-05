@@ -27,7 +27,7 @@ import {
 } from '~/utils/get-input-type'
 import MutationType from '~/constants/mutation-type'
 import { getBreakpointValue } from '~/utils/media'
-import { setCssProp } from '~/utils/functions'
+import { clamp, getCssProp, setCssProp } from '~/utils/functions'
 import VInputButton from '~/components/molecules/VButton/VInputButton.vue'
 
 export interface EventClickInput {
@@ -45,6 +45,8 @@ export default Vue.extend({
     data() {
         return {
             randomizeIndex: 0,
+            projectOpen: false,
+            colorThemeReset: '',
         }
     },
     computed: {
@@ -109,44 +111,42 @@ export default Vue.extend({
         maxCardNumber(): string {
             let cardNumber = '8'
             const windowWidth = this.$store.state.windowWidth
-            if (windowWidth < getBreakpointValue('md')) cardNumber = '2'
+            if (windowWidth < getBreakpointValue('md')) cardNumber = '3'
             if (windowWidth > getBreakpointValue('md') && windowWidth < getBreakpointValue('lg')) cardNumber = '4'
             if (windowWidth > getBreakpointValue('lg') && windowWidth < getBreakpointValue('hd')) cardNumber = '6'
             if (windowWidth > getBreakpointValue('hd')) cardNumber = '7'
+            if (this.projectOpen) cardNumber = '3'
             return cardNumber
         },
         minCardNumber(): string {
-            return this.$store.state.windowWidth > getBreakpointValue('md') ? '2' : '1'
+            return this.$store.state.windowWidth > getBreakpointValue('md') && !this.projectOpen ? '2' : '1'
         },
         activeFilters(): string[] | [] {
             return this.$store.state.activeFilters || []
         },
         isDateActive(): boolean {
-            return (
-                this.inputData.name === 'date' &&
-                !!this.activeFilters?.length &&
-                !!this.activeFilters?.filter((filter: string) => filter === 'date')?.length
-            )
+            return this.inputData.name === 'date' && this.isActiveFilterInclude('date')
         },
         isRandomizeActive(): boolean {
-            return (
-                this.inputData.name === 'randomize' &&
-                !!this.activeFilters?.length &&
-                !!this.activeFilters.filter((filter: string) => filter.includes('randomize'))?.length
-            )
+            return this.inputData.name === 'randomize' && this.isActiveFilterInclude('randomize')
         },
         isPromoteActive(): boolean {
-            return (
-                this.inputData.name === 'promote' &&
-                !!this.activeFilters?.length &&
-                !!this.activeFilters.filter((filter: string) => filter === 'promote')?.length
-            )
+            return this.inputData.name === 'promote' && this.isActiveFilterInclude('promote')
         },
         inputProps(): Record<string, any> {
             const isRounded = this.isButton || this.isCheckbox || this.isColorInput
             const theme = this.isTagInput ? 'light' : 'dark'
             const isOutlined = this.isTagInput
-            const range = this.isRangeInput ? { step: '1', min: this.minCardNumber, max: this.maxCardNumber } : null
+            const range = this.isRangeInput
+                ? {
+                      step: '1',
+                      min: this.minCardNumber,
+                      max: this.maxCardNumber,
+                      value:
+                          clamp(Number(this.inputData.value), Number(this.minCardNumber), Number(this.maxCardNumber)) +
+                          '',
+                  }
+                : null
             const size = this.isTagInput ? 'sm' : 'm'
             const checked =
                 (this.isCheckbox && !!this.inputData?.checked) ||
@@ -157,8 +157,8 @@ export default Vue.extend({
                 ...this.inputData,
                 value: checked ? undefined : this.inputData.value,
                 isVisible: this.isVisible,
-                range,
                 checked,
+                ...range,
                 class: [
                     this.$style.button,
                     !this.isTagInput && this.$style['button--capitalize'],
@@ -172,7 +172,34 @@ export default Vue.extend({
             }
         },
     },
+    watch: {
+        $route() {
+            this.updateIsProjectOpen()
+        },
+    },
+    mounted() {
+        this.updateIsProjectOpen()
+    },
     methods: {
+        isActiveFilterInclude(name: string): boolean {
+            return (
+                !!this.activeFilters?.length && !!this.activeFilters.filter((filter: string) => filter === name)?.length
+            )
+        },
+        updateIsProjectOpen() {
+            this.projectOpen = this.$route.fullPath !== '/'
+        },
+        getCurrentColumnNumber(): number {
+            const cardSize = Math.ceil(parseFloat(getCssProp('--size-card')))
+            const gutter = this.$refs?.grid
+                ? Math.ceil(parseFloat(getComputedStyle(this.$refs.grid as HTMLElement)?.gap))
+                : 20
+            const wrapperWidth =
+                this.$store.state.windowWidth - Math.ceil(parseFloat(getCssProp('--padding-border'))) * 2
+            const column = Math.floor(wrapperWidth / cardSize)
+            const totalGutterWidth = gutter * (column - 1)
+            return Math.floor((wrapperWidth - totalGutterWidth) / cardSize) * 3
+        },
         updateColor(inputName: string, value: string) {
             const cssVarName = inputName.replace('Color', '')
             setCssProp(`--${cssVarName}`, value as string)
@@ -235,6 +262,10 @@ export default Vue.extend({
             if (isCardSlider(inputName)) setCssProp('--card-number', value as string)
             if (isTag(inputName)) this.updateTags(inputName)
         },
+        resetSelectedTheme() {
+            console.log('reset select input')
+            this.colorThemeReset = ''
+        },
     },
 })
 </script>
@@ -244,6 +275,7 @@ export default Vue.extend({
     min-width: rem(62);
     height: rem(30);
     padding: 0 rem(22);
+    margin-bottom: rem(7);
     font-size: 12px;
     font-weight: 600;
 

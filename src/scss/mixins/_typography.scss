@@ -78,9 +78,14 @@
 
 @mixin body-l {
     font-family: $noi;
-    font-size: 28px;
+    font-size: 18px;
     font-weight: 400;
     line-height: 2.1;
+
+    @include media('>=md') {
+        font-size: 28px;
+        font-weight: 400;
+    }
 }
 
 @mixin body-m {

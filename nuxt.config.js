@@ -95,10 +95,6 @@ export default {
         useComponent: true,
     },
 
-    // env: {
-    //   strapiBaseUri: process.env.API_URL || "http://localhost:1337"
-    // },
-
     strapi: {
         url: process.env.STRAPI_API_URL || 'http://localhost:1337/api',
         entities: ['projects', 'about'],
