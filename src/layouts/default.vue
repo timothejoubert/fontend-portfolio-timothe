@@ -18,7 +18,6 @@
                     :style="{ '--option-panel-height': optionPanelHeight }"
                 />
             </header>
-
             <div
                 :class="[
                     $style.bottom,
@@ -60,9 +59,10 @@ import toBoolean from '~/utils/to-boolean'
 import MutationType from '~/constants/mutation-type'
 import VUiOptions from '~/components/organisms/VUiOptions.vue'
 import Resize from '~/mixins/Resize'
+import VDragGallery from '~/components/organisms/VDragGallery.vue'
 
 export default mixins(Resize).extend({
-    components: { VTopBar, VNavProject, VAbout, VUiOptions },
+    components: { VTopBar, VNavProject, VAbout, VUiOptions, VDragGallery },
     data() {
         return {
             displaySplashScreen: true,
@@ -217,7 +217,8 @@ export default mixins(Resize).extend({
     scrollbar-width: none; /* Firefox */
     transform: translateY(100%);
     transform-origin: bottom center;
-    transition: transform 0.55s 0.6s, height var(--project-duration) ease(out-quart), width var(--project-duration) ease(out-quart);
+    transition: transform 0.55s 0.6s, height var(--project-duration) ease(out-quart),
+        width var(--project-duration) ease(out-quart);
 
     &::-webkit-scrollbar {
         display: none;

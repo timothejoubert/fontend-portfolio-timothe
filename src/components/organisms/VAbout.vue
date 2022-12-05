@@ -23,7 +23,7 @@ import VHtmlParser from '~/components/atoms/VHtmlParser.vue'
 
 export default Vue.extend({
     name: 'VAbout',
-    components: { VAboutSection, VBoldMarkdown, VHtmlParser },
+    components: { VAboutSection, VHtmlParser },
     props: {
         about: Object as PropType<AboutBlock>,
     },

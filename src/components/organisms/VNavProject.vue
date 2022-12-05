@@ -21,8 +21,6 @@ import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import VProjectCard from '~/components/molecules/VProjectCard.vue'
 import { getCssProp } from '~/utils/functions'
-import eventBus from '~/utils/event-bus'
-import EventType from '~/constants/event-type'
 import { isDate, isPromoteFilter, isRandomFilter } from '~/utils/get-input-type'
 
 export default Vue.extend({

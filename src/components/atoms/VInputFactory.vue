@@ -52,7 +52,7 @@ export default Vue.extend({
             if (!isTag(this.inputData.name)) return true
 
             const currentTagIsInProjects = this.$store.state.projectsData
-                .map((project: ProjectContent) =>
+                ?.map((project: ProjectContent) =>
                     project.tags?.filter((tag) => this.inputProps.name.replace('tag-', '') === tag.slug)
                 )
                 .flat(2)
